@@ -1,25 +1,45 @@
+<!-- 
+FILE: index.html
+PROJECT: MapSite
+PURPOSE: Interactive map with toggleable layer controls 
+TECH STACK: HTML5, LeafletJS (v1.9.3), JavaScript
+LAST UPDATED: 18.06.2024
+DEPENDENCIES:
+  1. Leaflet CSS/JS (CDN) - https://leafletjs.com/
+  2. Local files: style.css, script.js
+NOTES:
+  - Map container is initialised in script.js.
+  - Layer toggle UI is controlled via JavaScript.
+  - Responsive design (supports mobile/desktop).
+-->
+
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Mini Prototype - OSM with Data Overlay</title>
+  <title>MapSite</title>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- For mobile use -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />  <!-- Leaflet CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div id="map"></div>
 
-  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script> <!-- Leaflet JS -->
   <script src="script.js"></script>
   <div class="layer-toggle">
-  <button id="layer-btn">☰ Layers</button>
-  <div id="layer-options" class="hidden">
-    <label>
-      <input type="checkbox" id="toggle-listed" checked />
-      Listed Buildings
-    </label>
+    <button id="layer-btn">☰ Layers</button>
+    <div id="layer-options" class="hidden">
+      <label>
+        <input type="checkbox" id="toggle-listed" checked />
+        Listed Buildings
+        </label>
+      <label>
+        <input type="checkbox" id="toggle-trees" checked />
+        Tree Locations
+      </label>
   </div>
 </div>
 </body>
 </html>
+
