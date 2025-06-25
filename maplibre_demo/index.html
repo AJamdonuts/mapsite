@@ -1,14 +1,37 @@
+<!-- 
+FILE: index.html
+PROJECT: MapSite
+PURPOSE: Interactive map with toggleable layer controls 
+TECH STACK: HTML5, MapLibre GL JS, JavaScript, CSS
+LAST UPDATED: 23.06.2024
+DEPENDENCIES:
+  1.  MapLibre GL JS: https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js, https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css
+  2.  MapTiler style: https://api.maptiler.com/maps/
+  2. Local files: style.css, script.js, datasets/NH_Listed_Building_polygons.geojson
+NOTES:
+-Displays an interactive map using MapLibre GL JS. 
+-Loads a custom map style from MapTiler,URL with API key
+-Centers the map on Canterbury,
+-Overlays polygons from a local GeoJSON file representing listed buildings,
+  styled with a semi-transparent blue fill.
+-->
+
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8" />
   <title>MapLibre GL JS Demo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <!-- For mobile use -->
+  <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet" />  <!-- Loads MapLibre GL JS default CSS from CDN -->
   
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <label style="position: absolute; top: 10px; left: 10px; z-index: 1; background: white; padding: 5px;">
+  <input type="checkbox" id="toggleBuildings" checked>
+  Show Listed Buildings
+</label>
+
   <div id="map"></div>
 
   <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
@@ -21,6 +44,7 @@
     });
 
     map.on('load', () => {
+      // Listed buildings
       map.addSource('listed-buildings', {
         type: 'geojson',
         data: 'datasets/NH_Listed_Building_polygons.geojson'
@@ -35,7 +59,67 @@
           'fill-opacity': 0.5
         }
       });
+
+      // 3D building height extrusion
+      map.addSource('building_height', {
+        type: 'geojson',
+        data: 'datasets/building_height.geojson' 
+      });
+
+      map.addLayer({
+        id: 'buildings-3d',
+        type: 'fill-extrusion',
+        source: 'building_height',
+        paint: {
+          'fill-extrusion-color': '#1f77b4',
+          'fill-extrusion-opacity': 0.7,
+          'fill-extrusion-height': [
+            'coalesce',
+            ['get', 'height'],
+            ['*', ['to-number', ['get', 'building:levels']], 3],
+            10
+          ],
+          'fill-extrusion-base': 0
+        }
+      });
     });
+
+const popup = new maplibregl.Popup({
+  closeButton: false,
+  closeOnClick: false
+});
+
+map.on('mousemove', 'buildings-3d', (e) => {
+  map.getCanvas().style.cursor = 'pointer';
+
+  const feature = e.features[0];
+  const props = feature.properties;
+
+  const name = props.Name || "Unnamed Building";
+
+  // Prefer 'height', fallback to 'building:levels', then 'Unknown'
+  let height;
+  if (props.height) {
+    height = `${props.height} m`;
+  } else if (props['building:levels']) {
+    const levels = parseInt(props['building:levels']);
+    height = `${levels * 3} m (approx from ${levels} levels)`;
+  } else {
+    height = 'Unknown';
+  }
+
+  popup
+    .setLngLat(e.lngLat)
+    .setHTML(`<strong>${name}</strong><br>Height: ${height}`)
+    .addTo(map);
+});
+
+map.on('mouseleave', 'buildings-3d', () => {
+  map.getCanvas().style.cursor = '';
+  popup.remove();
+});
+
+
   </script>
 </body>
 </html>
