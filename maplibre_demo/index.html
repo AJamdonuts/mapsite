@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>MapLibre GL JS Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
+  <script>
+    const map = new maplibregl.Map({
+      container: 'map',
+      style: 'https://api.maptiler.com/maps/streets/style.json?key=sLTnVyFpuI1axO89l1hV', 
+      center: [1.0830, 51.2797], // Canterbury
+      zoom: 13
+    });
+
+    map.on('load', () => {
+      map.addSource('listed-buildings', {
+        type: 'geojson',
+        data: 'datasets/NH_Listed_Building_polygons.geojson'
+      });
+
+      map.addLayer({
+        id: 'listed-fill',
+        type: 'fill',
+        source: 'listed-buildings',
+        paint: {
+          'fill-color': '#1f77b4',
+          'fill-opacity': 0.5
+        }
+      });
+    });
+  </script>
+</body>
+</html>

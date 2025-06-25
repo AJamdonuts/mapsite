@@ -1,0 +1,185 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>deck.gl + MapLibre Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet" />
+  <style>
+    body, html, #map {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden; /* Prevent scrollbars */
+      font-family: 'Inter', sans-serif; /* Consistent font */
+    }
+
+    /* Style for the custom message box */
+    .message-box {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(255, 255, 255, 0.95);
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      z-index: 1000;
+      display: none; /* Hidden by default */
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      max-width: 80%;
+      min-width: 250px;
+      text-align: center;
+      border: 1px solid #ccc;
+    }
+
+    .message-box-content {
+      margin-bottom: 15px;
+      font-size: 16px;
+      color: #333;
+    }
+
+    .message-box-close {
+      background-color: #1f77b4;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+
+    .message-box-close:hover {
+      background-color: #1a5f8e;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <!-- Custom message box element -->
+  <div id="messageBox" class="message-box">
+    <div id="messageBoxContent" class="message-box-content"></div>
+    <button id="messageBoxClose" class="message-box-close">Close</button>
+  </div>
+
+  <!-- MapLibre GL JS -->
+  <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
+  <!-- Deck.gl core -->
+  <script src="https://unpkg.com/deck.gl@8.8.0/dist.min.js"></script>
+  <!-- Deck.gl Mapbox integration module (essential for MapLibre) -->
+  <script src="https://unpkg.com/@deck.gl/mapbox@8.8.0/dist.min.js"></script>
+
+  <script>
+    // Function to show a custom message box
+    function showMessageBox(message) {
+      const messageBox = document.getElementById('messageBox');
+      const messageBoxContent = document.getElementById('messageBoxContent');
+      messageBoxContent.textContent = message;
+      messageBox.style.display = 'flex';
+    }
+
+    // Event listener for closing the message box
+    document.getElementById('messageBoxClose').addEventListener('click', () => {
+      document.getElementById('messageBox').style.display = 'none';
+    });
+
+    // Initialize MapLibre GL map
+    const maplibreMap = new maplibregl.Map({
+      container: 'map',
+      // Using a different OpenStreetMap tile provider as the previous one wasn't loading
+      style: {
+        'version': 8,
+        'sources': {
+          'osm-tiles': {
+            'type': 'raster',
+            'tiles': ['https://a.tile.openstreetmap.org/{z}/{x}/{y}.png'],
+            'tileSize': 256,
+            'attribution': '© OpenStreetMap contributors'
+          }
+        },
+        'layers': [
+          {
+            'id': 'osm-layer',
+            'type': 'raster',
+            'source': 'osm-tiles',
+            'paint': {
+              'raster-fade-duration': 100
+            }
+          }
+        ]
+      },
+      center: [1.0830, 51.2797], // Canterbury
+      zoom: 15 // Increased zoom level for a more zoomed-in view
+    });
+
+    maplibreMap.on('load', () => {
+      console.log('MapLibre GL JS base map loaded.');
+
+      // Initialize MapboxOverlay for Deck.gl integration
+      const deckOverlay = new MapboxOverlay({
+        interleaved: true, // Set to true for correct depth sorting with MapLibre layers
+        layers: [] // Initial empty layers array
+      });
+
+      // Add the Deck.gl overlay as a control to the MapLibre map
+      maplibreMap.addControl(deckOverlay);
+      console.log('Deck.gl MapboxOverlay added to map.');
+
+      // Load your GeoJSON data
+      fetch('datasets/NH_Listed_Building_polygons.geojson')
+        .then(resp => {
+          if (!resp.ok) {
+            // Log the error and show a message if fetch fails
+            console.error(`HTTP error fetching GeoJSON! Status: ${resp.status}, URL: ${resp.url}`);
+            throw new Error(`Failed to load GeoJSON: ${resp.status}`);
+          }
+          return resp.json();
+        })
+        .then(data => {
+          console.log('GeoJSON data loaded:', data);
+          // Create a GeoJsonLayer. This layer automatically handles Polygon and MultiPolygon.
+          const geoJsonLayer = new deck.GeoJsonLayer({
+            id: 'listed-buildings-layer',
+            data: data, // Pass the entire GeoJSON object
+            stroked: true,
+            filled: true,
+            extruded: false, // Set to true for 3D extrusion if desired
+            lineWidthMinPixels: 1,
+            getFillColor: [31, 119, 180, 150], // Blue with transparency
+            getLineColor: [31, 119, 180],     // Solid blue outline
+            getLineWidth: 1,
+            pickable: true,
+            autoHighlight: true,
+            highlightColor: [255, 255, 0, 150], // Yellow highlight on hover
+            onClick: info => {
+              if (info.object && info.object.properties) {
+                const buildingName = info.object.properties.Name || 'Unnamed Building';
+                showMessageBox(`Building: ${buildingName}`);
+              }
+            }
+          });
+
+          // Update the layers in the Deck.gl overlay
+          deckOverlay.setProps({ layers: [geoJsonLayer] });
+          console.log('Deck.gl layers updated with GeoJSON data.');
+        })
+        .catch(error => {
+          console.error('Error loading or processing GeoJSON:', error);
+          showMessageBox('Failed to load building data. Please check the console for more details.');
+        });
+    });
+
+    // Optional: Add an error listener for MapLibre itself
+    maplibreMap.on('error', (e) => {
+      console.error('MapLibre GL JS map error:', e.error);
+      showMessageBox(`Map loading error: ${e.error.message || 'Unknown error'}`);
+    });
+  </script>
+</body>
+</html>
