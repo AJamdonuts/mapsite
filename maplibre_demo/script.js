@@ -12,29 +12,15 @@ map.on('load', () => {
     data: 'datasets/NH_Listed_Building_polygons.geojson',
   });
 
-  map.addSource('osm-trees', {
-    type: 'geojson',
-    data: 'datasets/osm_trees.geojson',
-  });
-
   map.addSource('building_height', {
     type: 'geojson',
     data: 'datasets/building_height.geojson',
-  });
-
-  map.addSource('tree-clusters', {
-    type: 'geojson',
-    data: 'datasets/osm_trees.geojson',
-    cluster: true,
-    clusterMaxZoom: 14,
-    clusterRadius: 50,
   });
 
   map.addSource('landuse', {
     type: 'geojson',
     data: 'datasets/landuse_osm.geojson',
   });
-
 
   map.addSource('pois', {
   type: 'geojson',
@@ -45,11 +31,6 @@ map.on('load', () => {
   type: 'geojson',
   data: 'datasets/ntow_trees.json',
 });
-
-
-
-
-
 
 
   // --- LAYERS ---
@@ -80,94 +61,6 @@ map.on('load', () => {
         10,
       ],
       'fill-extrusion-base': 0,
-    },
-  });
-
-  // Tree points
-  map.addLayer({
-    id: 'osm-tree-points',
-    type: 'circle',
-    source: 'osm-trees',
-    filter: ['==', '$type', 'Point'],
-    paint: {
-      'circle-radius': 3,
-      'circle-color': '#228B22',
-      'circle-opacity': 0.7,
-      'circle-stroke-width': 1,
-      'circle-stroke-color': '#004d00',
-    },
-  });
-
-  // Tree polygons
-  map.addLayer({
-    id: 'osm-tree-polygons',
-    type: 'fill',
-    source: 'osm-trees',
-    filter: ['==', '$type', 'Polygon'],
-    paint: {
-      'fill-color': '#a3c293',
-      'fill-opacity': 0.3,
-    },
-  });
-
-  // Tree clusters circle
-  map.addLayer({
-    id: 'clusters',
-    type: 'circle',
-    source: 'tree-clusters',
-    filter: ['has', 'point_count'],
-    paint: {
-      'circle-color': [
-        'step',
-        ['get', 'point_count'],
-        '#a3c293',
-        10,
-        '#66aa66',
-        25,
-        '#228B22',
-      ],
-      'circle-radius': [
-        'step',
-        ['get', 'point_count'],
-        12,
-        10,
-        16,
-        25,
-        22,
-      ],
-      'circle-stroke-width': 1,
-      'circle-stroke-color': '#004d00',
-    },
-  });
-
-  // Cluster count text
-  map.addLayer({
-    id: 'cluster-count',
-    type: 'symbol',
-    source: 'tree-clusters',
-    filter: ['has', 'point_count'],
-    layout: {
-      'text-field': ['get', 'point_count'],
-      'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
-      'text-size': 12,
-    },
-    paint: {
-      'text-color': '#ffffff',
-    },
-  });
-
-  // Unclustered tree points in clusters source
-  map.addLayer({
-    id: 'unclustered-trees',
-    type: 'circle',
-    source: 'tree-clusters',
-    filter: ['!', ['has', 'point_count']],
-    paint: {
-      'circle-radius': 5,
-      'circle-color': '#228B22',
-      'circle-opacity': 0.7,
-      'circle-stroke-width': 1,
-      'circle-stroke-color': '#000000',
     },
   });
 
@@ -261,8 +154,6 @@ map.on('load', () => {
 
 
 
-
-
   // --- POPUPS & INTERACTION ---
 
   // Land use popup
@@ -351,16 +242,6 @@ for (const category of ['amenity', 'tourism', 'shop']) {
     poiPopup.remove();
   });
 }
-
-
-  // Tree points cursor change only (no popup here)
-  map.on('mouseenter', 'osm-tree-points', () => {
-    map.getCanvas().style.cursor = 'pointer';
-  });
-  map.on('mouseleave', 'osm-tree-points', () => {
-    map.getCanvas().style.cursor = '';
-  });
-
 
   // Tree polygons 
   map.on('click', 'ntow-trees', (e) => {
@@ -536,53 +417,11 @@ for (const category of ['amenity', 'tourism', 'shop']) {
     roadPopup.remove();
   });
 
-  // --- CLUSTER ZOOM ON CLICK ---
-
-  map.on('click', 'clusters', (e) => {
-    const features = map.queryRenderedFeatures(e.point, { layers: ['clusters'] });
-    if (!features.length) return;
-
-    const clusterId = features[0].properties.cluster_id;
-
-    map.getSource('tree-clusters').getClusterExpansionZoom(clusterId, (err, zoom) => {
-      if (err) return;
-      map.easeTo({
-        center: features[0].geometry.coordinates,
-        zoom,
-      });
-    });
-  });
-
-  // Change cursor to pointer when hovering clusters
-  map.on('mouseenter', 'clusters', () => {
-    map.getCanvas().style.cursor = 'pointer';
-  });
-  map.on('mouseleave', 'clusters', () => {
-    map.getCanvas().style.cursor = '';
-  });
+ 
 
   // --- LAYER VISIBILITY TOGGLES ---
 
   // Toggle layers when checkboxes change
-  document.getElementById('toggleOSMTrees').addEventListener('change', function () {
-    const visibility = this.checked ? 'visible' : 'none';
-
-    // Toggle tree points and polygons
-    if (map.getLayer('osm-tree-points')) {
-      map.setLayoutProperty('osm-tree-points', 'visibility', visibility);
-    }
-    if (map.getLayer('osm-tree-polygons')) {
-      map.setLayoutProperty('osm-tree-polygons', 'visibility', visibility);
-    }
-
-    // Toggle cluster layers
-    ['clusters', 'cluster-count', 'unclustered-trees'].forEach(layerId => {
-      if (map.getLayer(layerId)) {
-        map.setLayoutProperty(layerId, 'visibility', visibility);
-      }
-    });
-  });
-
 
   document.getElementById('togglePROW').addEventListener('change', (e) => {
     const visibility = e.target.checked ? 'visible' : 'none';
