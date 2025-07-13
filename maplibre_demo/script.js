@@ -32,6 +32,11 @@ map.on('load', () => {
   data: 'datasets/ntow_trees.json',
 });
 
+  map.addSource('canopy', {
+    type: 'geojson',
+    data: 'datasets/UK_Ward_Canopy_Cover.geojson'
+  });
+
 
   // --- LAYERS ---
 
@@ -152,6 +157,26 @@ map.on('load', () => {
   }
 });
 
+//UK Ward Canopy Cover layer
+  map.addLayer({
+  id: 'ward-canopy',
+  type: 'fill',
+  source: 'canopy',
+  paint: {
+    'fill-color': [
+      'interpolate',
+      ['linear'],
+      ['get', 'percancov'],
+      0, '#f7fcf5',
+      10, '#bae4b3',
+      20, '#74c476',
+      30, '#238b45',
+      40, '#00441b'
+    ],
+    'fill-opacity': 0.4,
+    'fill-outline-color': '#000000'
+  }
+});
 
 
   // --- POPUPS & INTERACTION ---
@@ -272,7 +297,19 @@ for (const category of ['amenity', 'tourism', 'shop']) {
     map.getCanvas().style.cursor = '';
   });
 
-
+  // Canopy cover popup//
+  map.on('click', 'ward-canopy', (e) => {
+  const props = e.features[0].properties;
+  const html = `
+    <strong>Ward:</strong> ${props.wardname}<br>
+    <strong>Canopy Cover:</strong> ${props.percancov.toFixed(1)}%<br>
+    <strong>Survey Year:</strong> ${props.survyear}<br>
+    <strong>Standard Error:</strong> ${props.standerr}%`;
+  new maplibregl.Popup()
+    .setLngLat(e.lngLat)
+    .setHTML(html)
+    .addTo(map);
+});
 
 
   // --- OVERPASS API PROW and Roads ---
@@ -453,6 +490,14 @@ for (const category of ['amenity', 'tourism', 'shop']) {
   if (map.getLayer('ntow-tree-points')) map.setLayoutProperty('ntow-tree-points', 'visibility', visibility);
   if (map.getLayer('ntow-tree-polygons')) map.setLayoutProperty('ntow-tree-polygons', 'visibility', visibility);
   });
+
+  document.getElementById('toggleCanopy').addEventListener('change', (e) => {
+  const visibility = e.target.checked ? 'visible' : 'none';
+  if (map.getLayer('ward-canopy')) {
+    map.setLayoutProperty('ward-canopy', 'visibility', visibility);
+  }
+});
+
 
 
 }); // end of map.on('load')
