@@ -304,7 +304,7 @@ for (const category of ['amenity', 'tourism', 'shop']) {
     map.getCanvas().style.cursor = '';
   });
 
-  // Canopy cover popup//
+  // Canopy cover sidebar//
   map.on('click', 'ward-canopy', (e) => {
   const props = e.features[0].properties;
   const html = `
@@ -312,11 +312,19 @@ for (const category of ['amenity', 'tourism', 'shop']) {
     <strong>Canopy Cover:</strong> ${props.percancov.toFixed(1)}%<br>
     <strong>Survey Year:</strong> ${props.survyear}<br>
     <strong>Standard Error:</strong> ${props.standerr}%`;
-  new maplibregl.Popup()
-    .setLngLat(e.lngLat)
-    .setHTML(html)
-    .addTo(map);
-});
+  document.getElementById('sidebar-content').innerHTML = content;
+  });
+
+  map.on('click', (e) => {
+    const features = map.queryRenderedFeatures(e.point, {
+      layers: ['listed-fill', 'ward-canopy', 'ntow-trees', 'buildings-3d'] // add more layers as needed
+    });
+
+    if (features.length === 0) {
+      document.getElementById('sidebar-content').innerHTML = `<p>Select a feature on the map to view details.</p>`;
+    }
+  });
+
 
 
   // --- OVERPASS API PROW and Roads ---
