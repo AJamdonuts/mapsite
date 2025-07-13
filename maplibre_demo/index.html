@@ -27,22 +27,45 @@ NOTES:
 </head>
 <body>
   <div class="layer-controls collapsed">
-    <button class="toggle-button">Layers ▾</button>
-    <div class="layer-options">
-      <label><input type="checkbox" id="toggleBuildings" checked> Listed Buildings</label>
-      <label><input type="checkbox" id="togglePROW" checked> PROW (footpaths)</label>
-      <label><input type="checkbox" id="toggleRoads" checked> Roads</label>
-      <label><input type="checkbox" id="toggleLanduse" checked /> Land Use</label>
-      <label><input type="checkbox" id="toggleAmenity" checked> Amenity POIs</label>
-      <label><input type="checkbox" id="toggleTourism" checked> Tourism POIs</label>
-      <label><input type="checkbox" id="toggleShop" checked> Shop POIs</label>
-      <label><input type="checkbox" id="toggleNTOW" checked /> NTOW Trees</label>
-      <label><input type="checkbox" id="toggleCanopy" checked> Tree Canopy Cover</label>
+  <button class="toggle-button">Layers ▾</button>
+  <div class="layer-options">
 
-
-
+    <div class="layer-group">
+      <h3 class="group-header" tabindex="0">Built Environment </h3>
+      <div class="group-content">
+        <label><input type="checkbox" id="toggleBuildings"> Listed Buildings</label>
+        <label><input type="checkbox" id="toggleLanduse"> Land Use</label>
+      </div>
     </div>
+
+    <div class="layer-group">
+      <h3 class="group-header" tabindex="0">Natural Features </h3>
+      <div class="group-content">
+        <label><input type="checkbox" id="toggleNTOW"> NTOW Trees</label>
+        <label><input type="checkbox" id="toggleCanopy"> Tree Canopy Cover</label>
+      </div>
+    </div>
+
+    <div class="layer-group">
+      <h3 class="group-header" tabindex="0">Points of Interest </h3>
+      <div class="group-content">
+        <label><input type="checkbox" id="toggleAmenity"> Amenity POIs</label>
+        <label><input type="checkbox" id="toggleTourism"> Tourism POIs</label>
+        <label><input type="checkbox" id="toggleShop"> Shop POIs</label>
+      </div>
+    </div>
+
+    <div class="layer-group">
+      <h3 class="group-header" tabindex="0">Transport </h3>
+      <div class="group-content">
+        <label><input type="checkbox" id="togglePROW"> PROW (footpaths)</label>
+        <label><input type="checkbox" id="toggleRoads"> Roads</label>
+      </div>
+    </div>
+
   </div>
+</div>
+
 
   <div id="map"></div>
 

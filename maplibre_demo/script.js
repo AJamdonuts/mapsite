@@ -44,10 +44,12 @@ map.on('load', () => {
   map.addLayer({
     id: 'listed-fill',
     type: 'fill',
+    layout: { visibility: 'none' },
     source: 'listed-buildings',
     paint: {
       'fill-color': '#1f77b4',
       'fill-opacity': 0.5,
+      
     },
   });
 
@@ -84,6 +86,7 @@ map.on('load', () => {
   map.addLayer({
     id: 'landuse-fill',
     type: 'fill',
+    layout: { visibility: 'none' },
     source: 'landuse',
     paint: {
       'fill-color': [
@@ -100,6 +103,7 @@ map.on('load', () => {
   map.addLayer({
     id: 'landuse-outline',
     type: 'line',
+    layout: { visibility: 'none' },
     source: 'landuse',
     paint: {
       'line-color': [
@@ -124,8 +128,9 @@ map.on('load', () => {
     map.addLayer({
       id: `pois-${category}`,
       type: 'circle',
+      layout: { visibility: 'none' },
       source: 'pois',
-      filter: ['has', category],  // show features that have this tag
+      filter: ['all', ['has', category], ['has', 'name']],
       paint: {
         'circle-radius': 6,
         'circle-color': poiColors[category],
@@ -141,6 +146,7 @@ map.on('load', () => {
   map.addLayer({
   id: 'ntow-trees',
   type: 'fill',
+  layout: { visibility: 'none' },
   source: 'ntow-trees',
   paint: {
     'fill-color': [
@@ -161,6 +167,7 @@ map.on('load', () => {
   map.addLayer({
   id: 'ward-canopy',
   type: 'fill',
+  layout: { visibility: 'none' },
   source: 'canopy',
   paint: {
     'fill-color': [
@@ -363,7 +370,7 @@ for (const category of ['amenity', 'tourism', 'shop']) {
         id: 'prow-lines',
         type: 'line',
         source: 'prow',
-        layout: { 'line-join': 'round', 'line-cap': 'round' },
+        layout: { 'visibility': 'none' , 'line-join': 'round', 'line-cap': 'round' },
         paint: {
           'line-color': [
             'match',
@@ -406,7 +413,7 @@ for (const category of ['amenity', 'tourism', 'shop']) {
         id: 'road-lines',
         type: 'line',
         source: 'roads',
-        layout: { 'line-join': 'round', 'line-cap': 'round' },
+        layout: { 'visibility': 'none' , 'line-join': 'round', 'line-cap': 'round' },
         paint: {
           'line-color': '#6c757d',
           'line-width': 1,
@@ -487,9 +494,9 @@ for (const category of ['amenity', 'tourism', 'shop']) {
 
   document.getElementById('toggleNTOW').addEventListener('change', function () {
   const visibility = this.checked ? 'visible' : 'none';
-  if (map.getLayer('ntow-tree-points')) map.setLayoutProperty('ntow-tree-points', 'visibility', visibility);
-  if (map.getLayer('ntow-tree-polygons')) map.setLayoutProperty('ntow-tree-polygons', 'visibility', visibility);
-  });
+  if (map.getLayer('ntow-trees')) map.setLayoutProperty('ntow-trees', 'visibility', visibility);
+});
+
 
   document.getElementById('toggleCanopy').addEventListener('change', (e) => {
   const visibility = e.target.checked ? 'visible' : 'none';
@@ -507,3 +514,18 @@ for (const category of ['amenity', 'tourism', 'shop']) {
 document.querySelector('.toggle-button').addEventListener('click', () => {
   document.querySelector('.layer-controls').classList.toggle('collapsed');
 });
+document.querySelectorAll('.group-header').forEach(header => {
+  header.addEventListener('click', () => {
+    const content = header.nextElementSibling;
+    const isCollapsed = content.classList.toggle('collapsed');
+    header.classList.toggle('expanded', !isCollapsed);
+  });
+
+  header.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      header.click();
+    }
+  });
+});
+

@@ -1,3 +1,4 @@
+
 body, html {
   margin: 0;
   padding: 0;
@@ -20,6 +21,7 @@ body, html {
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   font-family: sans-serif;
   overflow: hidden;
+  font-size: 0.6rem; /* smaller font size */
 }
 
 .toggle-button {
@@ -35,11 +37,60 @@ body, html {
 
 .layer-options {
   display: flex;
-  flex-direction: column; /* ← This makes checkboxes go downwards */
+  flex-direction: column; /* checkboxes stack vertically */
   padding: 8px 12px;
-  gap: 6px; /* Optional: spacing between checkboxes */
+  gap: 6px;
 }
 
 .layer-controls.collapsed .layer-options {
   display: none;
+}
+
+/* New styles for groups */
+
+.layer-group {
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 8px;
+}
+
+.group-header {
+  font-weight: bold;
+  cursor: pointer;
+  background-color: #eee;
+  padding: 6px 8px;
+  margin: 0;
+  user-select: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.6rem;
+  border-radius: 4px;
+}
+
+.group-header:focus {
+  outline: 2px solid #007acc;
+}
+
+.group-content {
+  padding-left: 12px;
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.group-content.collapsed {
+  display: none;
+}
+
+/* Arrow styling in header: using pseudo element */
+
+.group-header::after {
+  content: '▸'; /* default collapsed arrow */
+  font-size: 0.6rem;
+  transition: transform 0.2s ease;
+}
+
+.group-header.expanded::after {
+  content: '▾'; /* expanded arrow */
 }
