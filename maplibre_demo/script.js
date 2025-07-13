@@ -39,7 +39,17 @@ map.on('load', () => {
   map.addSource('pois', {
   type: 'geojson',
   data: 'datasets/pois_osm.geojson',
+  });
+
+  map.addSource('ntow-trees', {
+  type: 'geojson',
+  data: 'datasets/ntow_trees.json',
 });
+
+
+
+
+
 
 
   // --- LAYERS ---
@@ -227,6 +237,32 @@ map.on('load', () => {
     });
   }
 
+  
+  // National Tree Register (NTOW) trees
+
+  map.addLayer({
+  id: 'ntow-trees',
+  type: 'fill',
+  source: 'ntow-trees',
+  paint: {
+    'fill-color': [
+      'match',
+      ['get', 'woodland_type'], 
+      'Lone Tree', '#00a884',
+      'Group of Trees', '#4ae700',
+      'NFI OHC', '#6fa803',
+      'Small Woodland', '#0ae6a9',
+      /* fallback */ '#cccccc'
+    ],
+    'fill-opacity': 0.6,
+    'fill-outline-color': '#000000'
+  }
+});
+
+
+
+
+
   // --- POPUPS & INTERACTION ---
 
   // Land use popup
@@ -324,6 +360,39 @@ for (const category of ['amenity', 'tourism', 'shop']) {
   map.on('mouseleave', 'osm-tree-points', () => {
     map.getCanvas().style.cursor = '';
   });
+
+
+  // Tree polygons 
+  map.on('click', 'ntow-trees', (e) => {
+    const feature = e.features[0];
+    const props = feature.properties;
+
+    const popupContent = `
+      <strong>TOW ID:</strong> ${props.tow_id || 'N/A'}<br>
+      <strong>Woodland Type:</strong> ${props.woodland_type || 'N/A'}<br>
+      <strong>Survey Year:</strong> ${props.lidar_survey_year || 'N/A'}<br>
+      <strong>Mean Height:</strong> ${props.meanht ? props.meanht.toFixed(1) + ' m' : 'N/A'}<br>
+      <strong>Height Range:</strong> ${props.minht && props.maxht ? 
+        `${props.minht.toFixed(1)} – ${props.maxht.toFixed(1)} m` : 'N/A'}<br>
+      <strong>Area:</strong> ${props.tow_area_m ? 
+        props.tow_area_m.toLocaleString() + ' m²' : 'N/A'}
+    `;
+
+    new maplibregl.Popup()
+      .setLngLat(e.lngLat)
+      .setHTML(popupContent)
+      .addTo(map);
+  });
+
+  map.on('mouseenter', 'ntow-trees', () => {
+  map.getCanvas().style.cursor = 'pointer';
+  });
+  map.on('mouseleave', 'ntow-trees', () => {
+    map.getCanvas().style.cursor = '';
+  });
+
+
+
 
   // --- OVERPASS API PROW and Roads ---
 
@@ -538,6 +607,12 @@ for (const category of ['amenity', 'tourism', 'shop']) {
   document.getElementById('toggleShop').addEventListener('change', function () {
   const visibility = this.checked ? 'visible' : 'none';
   if (map.getLayer('pois-shop')) map.setLayoutProperty('pois-shop', 'visibility', visibility);
+  });
+
+  document.getElementById('toggleNTOW').addEventListener('change', function () {
+  const visibility = this.checked ? 'visible' : 'none';
+  if (map.getLayer('ntow-tree-points')) map.setLayoutProperty('ntow-tree-points', 'visibility', visibility);
+  if (map.getLayer('ntow-tree-polygons')) map.setLayoutProperty('ntow-tree-polygons', 'visibility', visibility);
   });
 
 
