@@ -1,0 +1,157 @@
+{
+  "type": "FeatureCollection",
+  "generator": "overpass-turbo",
+  "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+  "timestamp": "2025-06-12T15:44:13Z",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/66573085",
+        "HE_ref": "1259931",
+        "addr:housename": "Beverley Farmhouse",
+        "building": "house",
+        "heritage": "2",
+        "heritage:operator": "Historic England",
+        "listed_status": "Grade II",
+        "name": "Beverley Farmhouse",
+        "ref:GB:nhle": "1259931",
+        "wikidata": "Q26551004"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              1.0655378,
+              51.2928479
+            ],
+            [
+              1.0654411,
+              51.2929454
+            ],
+            [
+              1.0652673,
+              51.2928781
+            ],
+            [
+              1.0652401,
+              51.2929055
+            ],
+            [
+              1.0652884,
+              51.2929242
+            ],
+            [
+              1.0652406,
+              51.2929725
+            ],
+            [
+              1.0650879,
+              51.2929133
+            ],
+            [
+              1.0652453,
+              51.2927546
+            ],
+            [
+              1.0653536,
+              51.2927965
+            ],
+            [
+              1.0653338,
+              51.2928165
+            ],
+            [
+              1.0654321,
+              51.2928546
+            ],
+            [
+              1.0654663,
+              51.2928201
+            ],
+            [
+              1.0655378,
+              51.2928479
+            ]
+          ]
+        ]
+      },
+      "id": "way/66573085"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/151352707",
+        "addr:city": "Canterbury",
+        "addr:country": "GB",
+        "addr:street": "St. Peter's Street",
+        "amenity": "place_of_worship",
+        "building": "church",
+        "denomination": "anglican",
+        "diocese": "Diocese of Canterbury",
+        "heritage": "2",
+        "heritage:operator": "he",
+        "heritage:website": "https://historicengland.org.uk/listing/the-list/list-entry/1242343",
+        "listed_status": "Grade I",
+        "name": "St. Peter's",
+        "ref:GB:nhle": "1242343",
+        "religion": "christian",
+        "source": "Bing",
+        "wikidata": "Q17529580"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              1.0775402,
+              51.2808277
+            ],
+            [
+              1.0775026,
+              51.2807833
+            ],
+            [
+              1.0775795,
+              51.280763
+            ],
+            [
+              1.0778042,
+              51.280685
+            ],
+            [
+              1.077992,
+              51.2808874
+            ],
+            [
+              1.0779041,
+              51.2809182
+            ],
+            [
+              1.0778325,
+              51.2808445
+            ],
+            [
+              1.0777023,
+              51.2808882
+            ],
+            [
+              1.0776506,
+              51.2808624
+            ],
+            [
+              1.0776123,
+              51.280811
+            ],
+            [
+              1.0775402,
+              51.2808277
+            ]
+          ]
+        ]
+      },
+      "id": "way/151352707"
+    }
+  ]
+}
