@@ -24,6 +24,8 @@ NOTES:
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet" />
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/@turf/turf@6.5.0/turf.min.js"></script>
 </head>
 <body>
   <div class="layer-controls collapsed">
@@ -33,7 +35,7 @@ NOTES:
     <div class="layer-group">
       <h3 class="group-header" tabindex="0">Built Environment </h3>
       <div class="group-content">
-        <label><input type="checkbox" id="toggleBuildings"> Listed Buildings</label>
+        <label><input type="checkbox" id="toggleListed"> Listed Buildings</label>
         <label><input type="checkbox" id="toggleLanduse"> Land Use</label>
       </div>
     </div>
@@ -52,6 +54,7 @@ NOTES:
         <label><input type="checkbox" id="toggleAmenity"> Amenity POIs</label>
         <label><input type="checkbox" id="toggleTourism"> Tourism POIs</label>
         <label><input type="checkbox" id="toggleShop"> Shop POIs</label>
+        <label><input type="checkbox" id="toggleBasePOIs" checked />Base Map POIs</label>
       </div>
     </div>
 
@@ -67,16 +70,32 @@ NOTES:
 </div>
 
 <div id="sidebar">
-  <h2>Urban Planning Dashboard</h2>
+  <h2>Viewport Dashboard</h2>
   <div id="sidebar-content">
     <p>Select a feature on the map to view details.</p>
   </div>
+  <div id="landuse-chart-container">
+    <canvas id="landuse-chart" width="300" height="300"></canvas>
+  </div>
+  <div id="ntow-legend" style="display: none; margin-top: 10px;">
+    <strong>NTOW Tree Types:</strong><br>
+    <div><span style="background:#00a884;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Lone Tree</div>
+    <div><span style="background:#4ae700;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Group of Trees</div>
+    <div><span style="background:#6fa803;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>NFI OHC</div>
+    <div><span style="background:#0ae6a9;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Small Woodland</div>
+    <div><span style="background:#cccccc;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Other</div>
+  </div>
 </div>
 
-  <div id="map"></div>
+
+<div id="map"></div>
 
   <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
   <script src="script.js"></script>
-  <script src="https://unpkg.com/@turf/turf@6.5.0/turf.min.js"></script>
+
+
+
+  <button onclick="updateCanopyInView()">Refresh Canopy Stats</button>
+
 </body>
 </html>

@@ -1,50 +1,85 @@
+/**
+ * MapLibre GL JS interactive map for Canterbury.
+ * 
+ * Features:
+ * - Loads multiple GeoJSON sources: listed buildings, building heights, land use, POIs, NTOW trees, canopy cover.
+ * - Adds styled layers for each dataset, including 3D buildings, land use, POIs, trees, canopy, PROW, and roads.
+ * - Interactive popups for map features (buildings, land use, trees, PROW, roads).
+ * - Sidebar displays details for selected features and summary stats (e.g., canopy cover).
+ * - Layer visibility toggles via checkboxes and grouped controls.
+ * - Dynamic land use chart (pie chart) updates with map view.
+ * - Fetches PROW and road data from Overpass API and displays as styled lines.
+ * - Accessibility: keyboard navigation for control groups.
+ * - Uses Turf.js for area calculations and Chart.js for chart rendering.
+ * Listed Buildings from National Historic England NH_Listed_Building_polygons.geojson
+ * Building Heights from OSM data datasets/building_height.geojson
+ * Land Use from OSM data landuse_osm.geojson
+ * Points of Interest (POIs)from OSM data datasets/pois_osm.geojson
+ * National Tree Register (NTOW) Trees from the National Tree Register datasets/ntow_trees.json
+ * UK Ward Canopy Cover datasets/UK_Ward_Canopy_Cover.geojson
+ * Public Rights of Way (PROW) Fetched dynamically from Overpass API (OpenStreetMap) using a custom query.
+ * Roads Fetched dynamically from Overpass API (OpenStreetMap) using a custom query.
+ */
+
+// Initialize the MapLibre GL JS map
 const map = new maplibregl.Map({
-  container: 'map',
+  container: 'map', // HTML element ID where the map will be rendered
   style: 'https://api.maptiler.com/maps/streets/style.json?key=sLTnVyFpuI1axO89l1hV',
-  center: [1.0830, 51.2797],
-  zoom: 13,
+  center: [1.0830, 51.2797], // Initial map center in [longitude, latitude]
+  zoom: 13, // Initial zoom level
 });
 
+
+// Wait for the map to finish loading before adding sources and layers
 map.on('load', () => {
-  // --- SOURCES ---
+
+  // SOURCES 
+
+  // Add GeoJSON source for listed buildings 
   map.addSource('listed-buildings', {
     type: 'geojson',
     data: 'datasets/NH_Listed_Building_polygons.geojson',
   });
 
+  // Add GeoJSON source for building heights
   map.addSource('building_height', {
     type: 'geojson',
     data: 'datasets/building_height.geojson',
   });
 
+  // Add GeoJSON source for land use
   map.addSource('landuse', {
     type: 'geojson',
     data: 'datasets/landuse_osm.geojson',
   });
 
+  // Add GeoJSON source for Points of Interest (POIs)
   map.addSource('pois', {
   type: 'geojson',
   data: 'datasets/pois_osm.geojson',
   });
 
+  // Add GeoJSON source for National Tree Register (NTOW) trees
   map.addSource('ntow-trees', {
   type: 'geojson',
   data: 'datasets/ntow_trees.json',
 });
 
+  // Add GeoJSON source for UK Ward Canopy Cover
   map.addSource('canopy', {
     type: 'geojson',
     data: 'datasets/UK_Ward_Canopy_Cover.geojson'
   });
 
 
-  // --- LAYERS ---
+
+  // LAYERS 
 
   // Listed buildings fill
   map.addLayer({
     id: 'listed-fill',
     type: 'fill',
-    layout: { visibility: 'none' },
+    layout: { visibility: 'none' }, // Hidden by default
     source: 'listed-buildings',
     paint: {
       'fill-color': '#1f77b4',
@@ -61,7 +96,7 @@ map.on('load', () => {
     paint: {
       'fill-extrusion-color': '#1f77b4',
       'fill-extrusion-opacity': 0.7,
-      'fill-extrusion-height': [
+      'fill-extrusion-height': [ // Calculate height based on building levels or height property
         'coalesce',
         ['get', 'height'],
         ['*', ['to-number', ['get', 'building:levels']], 3],
@@ -83,6 +118,7 @@ map.on('load', () => {
     quarry: '#6c757d',
   };
 
+  // Fill layer for land use areas
   map.addLayer({
     id: 'landuse-fill',
     type: 'fill',
@@ -91,15 +127,15 @@ map.on('load', () => {
     paint: {
       'fill-color': [
         'match',
-        ['get', 'landuse'],
+        ['get', 'landuse'], // Get land use type from feature
         ...Object.entries(landUseColors).flat(),
-        '#cccccc',
+        '#cccccc', // Default gray if type not listed
       ],
       'fill-opacity': 0.3,
     },
   });
 
-  // Land use outline
+  // Land use outline for boundaries
   map.addLayer({
     id: 'landuse-outline',
     type: 'line',
@@ -124,18 +160,19 @@ map.on('load', () => {
   shop: '#4daf4a',       // green
   };
 
+  // Create a circle layer for each POI category
   for (const category of ['amenity', 'tourism', 'shop']) {
     map.addLayer({
       id: `pois-${category}`,
       type: 'circle',
       layout: { visibility: 'none' },
       source: 'pois',
-      filter: ['all', ['has', category], ['has', 'name']],
+      filter: ['all', ['has', category], ['has', 'name']], // Only features with category and name
       paint: {
         'circle-radius': 6,
         'circle-color': poiColors[category],
         'circle-stroke-width': 1,
-        'circle-stroke-color': '#ffffff',
+        'circle-stroke-color': '#ffffff', // White border for visibility
       },
     });
   }
@@ -151,7 +188,7 @@ map.on('load', () => {
   paint: {
     'fill-color': [
       'match',
-      ['get', 'woodland_type'], 
+      ['get', 'woodland_type'], // Color by tree group type
       'Lone Tree', '#00a884',
       'Group of Trees', '#4ae700',
       'NFI OHC', '#6fa803',
@@ -171,9 +208,9 @@ map.on('load', () => {
   source: 'canopy',
   paint: {
     'fill-color': [
-      'interpolate',
+      'interpolate', // Gradient fill based on canopy percentage
       ['linear'],
-      ['get', 'percancov'],
+      ['get', 'percancov'], // Percentage canopy cover
       0, '#f7fcf5',
       10, '#bae4b3',
       20, '#74c476',
@@ -193,7 +230,8 @@ map.on('load', () => {
     closeButton: true,
     closeOnClick: true,
   });
-
+ 
+  // Show popup on land use area click
   map.on('click', 'landuse-fill', (e) => {
     const props = e.features[0].properties;
     const landuseType = props.landuse || 'Unknown';
@@ -205,16 +243,19 @@ map.on('load', () => {
       .addTo(map);
   });
 
+  // Change cursor on land use area hover
   map.on('mouseenter', 'landuse-fill', () => {
     map.getCanvas().style.cursor = 'pointer';
   });
 
+  // Remove popup and reset cursor on mouse leave
   map.on('mouseleave', 'landuse-fill', () => {
     map.getCanvas().style.cursor = '';
     landUsePopup.remove();
   });
 
-  // Buildings popup + cursor
+  // Buildings popup
+
   const buildingPopup = new maplibregl.Popup({ closeButton: false, closeOnClick: false });
 
   map.on('mousemove', 'buildings-3d', (e) => {
@@ -223,6 +264,7 @@ map.on('load', () => {
     const props = feature.properties;
     const name = props.Name || 'Unnamed Building';
 
+    // Calculate height if available, otherwise estimate
     let height = 'Unknown';
     if (props.height) height = `${props.height} m`;
     else if (props['building:levels']) {
@@ -241,7 +283,39 @@ map.on('load', () => {
     buildingPopup.remove();
   });
 
+  // Listed buildings popup
+  const listedPopup = new maplibregl.Popup({ closeButton: true, closeOnClick: true });
 
+map.on('click', 'listed-fill', (e) => {
+  const props = e.features[0].properties;
+  const name = props.Name || props.name || 'Listed Building';
+  const grade = props.grade || 'Unknown Grade';
+  const desc = props.description || '';
+  listedPopup
+    .setLngLat(e.lngLat)
+    .setHTML(`<strong>${name}</strong><br>Grade: ${grade}<br>${desc}`)
+    .addTo(map);
+
+  // Highlight the clicked building
+  map.setFilter('listed-highlight', ['==', 'id', e.features[0].id]);
+});
+
+// Remove highlight when clicking elsewhere
+map.on('click', (e) => {
+  const features = map.queryRenderedFeatures(e.point, { layers: ['listed-fill'] });
+  if (!features.length) {
+    map.setFilter('listed-highlight', ['==', 'id', '']);
+  }
+});
+map.on('mouseenter', 'listed-fill', () => {
+  map.getCanvas().style.cursor = 'pointer';
+});
+map.on('mouseleave', 'listed-fill', () => {
+  map.getCanvas().style.cursor = '';
+  listedPopup.remove();
+});
+
+// LAND USE TOGGLE (checkbox)
   document.getElementById('toggleLanduse').addEventListener('change', (e) => {
   const visibility = e.target.checked ? 'visible' : 'none';
   ['landuse-fill', 'landuse-outline'].forEach(layerId => {
@@ -251,6 +325,8 @@ map.on('load', () => {
   });
 });
 
+
+// POI POPUPS FOR AMENITY, TOURISM, SHOP
 const poiPopup = new maplibregl.Popup({ closeButton: true, closeOnClick: true });
 
 for (const category of ['amenity', 'tourism', 'shop']) {
@@ -275,7 +351,8 @@ for (const category of ['amenity', 'tourism', 'shop']) {
   });
 }
 
-  // Tree polygons 
+  // TREE DATA (NTOW) POPUPS
+
   map.on('click', 'ntow-trees', (e) => {
     const feature = e.features[0];
     const props = feature.properties;
@@ -304,7 +381,8 @@ for (const category of ['amenity', 'tourism', 'shop']) {
     map.getCanvas().style.cursor = '';
   });
 
-  // Canopy cover sidebar//
+// CANOPY COVER POPUP TO SIDEBAR
+
   map.on('click', 'ward-canopy', (e) => {
   const props = e.features[0].properties;
   const html = `
@@ -312,18 +390,191 @@ for (const category of ['amenity', 'tourism', 'shop']) {
     <strong>Canopy Cover:</strong> ${props.percancov.toFixed(1)}%<br>
     <strong>Survey Year:</strong> ${props.survyear}<br>
     <strong>Standard Error:</strong> ${props.standerr}%`;
-  document.getElementById('sidebar-content').innerHTML = content;
+    document.getElementById('sidebar-content').innerHTML = html;
+
   });
 
-  map.on('click', (e) => {
-    const features = map.queryRenderedFeatures(e.point, {
-      layers: ['listed-fill', 'ward-canopy', 'ntow-trees', 'buildings-3d'] // add more layers as needed
-    });
+// --- CANOPY COVER SIDEBAR LOGIC ---
 
-    if (features.length === 0) {
-      document.getElementById('sidebar-content').innerHTML = `<p>Select a feature on the map to view details.</p>`;
+// Show ward canopy info in sidebar on click
+map.on('click', 'ward-canopy', (e) => {
+  // Prevent other click events from firing
+  e.preventDefault();
+
+  const props = e.features[0].properties;
+  const html = `
+    <strong>Ward:</strong> ${props.wardname}<br>
+    <strong>Canopy Cover:</strong> ${props.percancov.toFixed(1)}%<br>
+    <strong>Survey Year:</strong> ${props.survyear}<br>
+    <strong>Standard Error:</strong> ${props.standerr}%`;
+  document.getElementById('sidebar-content').innerHTML = html;
+});
+
+// General fallback: show message if no feature is clicked
+map.on('click', (e) => {
+  if (e.defaultPrevented) return; // Skip if feature click already handled
+
+  const features = map.queryRenderedFeatures(e.point, {
+    layers: ['listed-fill', 'ward-canopy', 'ntow-trees', 'buildings-3d']
+  });
+
+  if (features.length === 0) {
+    document.getElementById('sidebar-content').innerHTML = `<p>Select a feature on the map to view details.</p>`;
+  }
+});
+
+
+map.addLayer({
+  id: 'listed-highlight',
+  type: 'line',
+  source: 'listed-buildings',
+  layout: {},
+  paint: {
+    'line-color': '#FFD700', // gold/yellow highlight
+    'line-width': 4,
+    'line-opacity': 1
+  },
+  filter: ['==', 'id', ''] // No feature selected by default
+});
+
+
+// Update sidebar with weighted average canopy cover in view
+function updateCanopyInView() {
+  const features = map.queryRenderedFeatures({ layers: ['ward-canopy'] });
+
+  if (!features.length) {
+    document.getElementById('sidebar-content').innerHTML = 'No canopy data in view.';
+    return;
+  }
+
+  let totalArea = 0;
+  let weightedSum = 0;
+
+  features.forEach(f => {
+    const props = f.properties;
+    const canopyPerc = parseFloat(props.percancov);
+    const area = turf.area(f); // area in square meters using Turf.js
+
+    totalArea += area;
+    weightedSum += canopyPerc * area;
+  });
+
+  const averageCanopy = weightedSum / totalArea;
+
+  document.getElementById('sidebar-content').innerHTML = `
+    <strong>Total Canopy Cover in View:</strong><br>
+    Weighted Average: ${averageCanopy.toFixed(2)}%
+  `;
+}
+
+
+// --- LAND USE CHART ---
+function updateLandUseChart() {
+  // Always reset the container to ensure the canvas exists
+  if (!document.getElementById('landuse-chart')) {
+    document.getElementById('landuse-chart-container').innerHTML =
+      '<canvas id="landuse-chart" width="300" height="300"></canvas>';
+  }
+
+  const features = map.queryRenderedFeatures(
+    [[0, 0], [map.getCanvas().width, map.getCanvas().height]],
+    { layers: ['landuse-fill'] }
+  );
+
+  if (!features.length) {
+    // Instead of replacing the whole container, just hide the chart and show a message
+    document.getElementById('landuse-chart').style.display = 'none';
+    if (!document.getElementById('landuse-chart-message')) {
+      const msg = document.createElement('div');
+      msg.id = 'landuse-chart-message';
+      msg.textContent = 'No land use data in view.';
+      document.getElementById('landuse-chart-container').appendChild(msg);
     }
+    return;
+  } else {
+    // Remove the message and show the chart
+    const msg = document.getElementById('landuse-chart-message');
+    if (msg) msg.remove();
+    document.getElementById('landuse-chart').style.display = '';
+  }
+
+  const areaByType = {};
+
+  const groupLandUseType = (type) => {
+    if (!type) return 'Unknown';
+    const t = type.toLowerCase();
+    if (t.includes('residential')) return 'residential';
+    if (t.includes('industrial')) return 'industrial';
+    if (t.includes('commercial')) return 'commercial';
+    if (t.includes('forest')) return 'forest';
+    if (t.includes('farmland')) return 'farmland';
+    if (t.includes('grass')) return 'grass';
+    if (t.includes('park')) return 'park';
+    if (t.includes('quarry')) return 'quarry';
+    return type;
+  };
+
+  features.forEach(f => {
+    const type = groupLandUseType(f.properties.landuse);
+    const area = turf.area(f);
+    areaByType[type] = (areaByType[type] || 0) + area;
   });
+
+  const totalArea = Object.values(areaByType).reduce((a, b) => a + b, 0);
+const threshold = 0.02; // 2%
+const grouped = {};
+let otherArea = 0;
+
+for (const [type, area] of Object.entries(areaByType)) {
+  if (area / totalArea < threshold) {
+    otherArea += area;
+  } else {
+    grouped[type] = area;
+  }
+}
+if (otherArea > 0) grouped['Other'] = otherArea;
+
+const labels = Object.keys(grouped);
+const data = labels.map(l => grouped[l]);
+const backgroundColors = labels.map(l => landUseColors[l] || '#999');
+
+  const ctx = document.getElementById('landuse-chart')?.getContext('2d');
+  if (!ctx) {
+    console.warn('Chart canvas not found.');
+    return;
+  }
+
+  if (window.landUseChart) {
+    window.landUseChart.data.labels = labels;
+    window.landUseChart.data.datasets[0].data = data;
+    window.landUseChart.data.datasets[0].backgroundColor = backgroundColors;
+    window.landUseChart.update();
+  } else {
+    window.landUseChart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels,
+        datasets: [{
+          label: 'Land Use Area (m²)',
+          data,
+          backgroundColor: backgroundColors
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: 'bottom' },
+          title: { display: true, text: 'Land Use Area in View' }
+        }
+      }
+    });
+  }
+}
+
+// Register the moveend event ONCE, after map load
+map.on('moveend', updateLandUseChart);
+map.on('moveend', updateCanopyInView);
+
 
 
 
@@ -431,6 +682,10 @@ for (const category of ['amenity', 'tourism', 'shop']) {
     })
     .catch(err => console.error('Error fetching roads data:', err));
 
+
+
+
+
   // --- POPUPS for PROW and Roads ---
 
   const prowPopup = new maplibregl.Popup({ closeButton: false, closeOnClick: false });
@@ -471,6 +726,9 @@ for (const category of ['amenity', 'tourism', 'shop']) {
 
  
 
+
+
+
   // --- LAYER VISIBILITY TOGGLES ---
 
   // Toggle layers when checkboxes change
@@ -500,12 +758,6 @@ for (const category of ['amenity', 'tourism', 'shop']) {
   if (map.getLayer('pois-shop')) map.setLayoutProperty('pois-shop', 'visibility', visibility);
   });
 
-  document.getElementById('toggleNTOW').addEventListener('change', function () {
-  const visibility = this.checked ? 'visible' : 'none';
-  if (map.getLayer('ntow-trees')) map.setLayoutProperty('ntow-trees', 'visibility', visibility);
-});
-
-
   document.getElementById('toggleCanopy').addEventListener('change', (e) => {
   const visibility = e.target.checked ? 'visible' : 'none';
   if (map.getLayer('ward-canopy')) {
@@ -513,6 +765,46 @@ for (const category of ['amenity', 'tourism', 'shop']) {
   }
 });
 
+document.getElementById('toggleNTOW').addEventListener('change', (e) => {
+  const visibility = e.target.checked ? 'visible' : 'none';
+
+  // Toggle NTOW map layer visibility
+  if (map.getLayer('ntow-trees')) {
+    map.setLayoutProperty('ntow-trees', 'visibility', visibility);
+  }
+
+  // Show/hide legend in sidebar
+  const legend = document.getElementById('ntow-legend');
+  legend.style.display = visibility === 'visible' ? 'block' : 'none';
+});
+
+document.getElementById('toggleBasePOIs').addEventListener('change', function(e) {
+  const visibility = e.target.checked ? 'visible' : 'none';
+
+  const basePoiLayers = [
+    'poi_z10',
+    'poi_z11',
+    'poi_z12',
+    'poi_z13',
+    'poi_z14',
+    'poi_z15',
+    'poi_z16'
+  ];
+
+  basePoiLayers.forEach(layerId => {
+    if (map.getLayer(layerId)) {
+      map.setLayoutProperty(layerId, 'visibility', visibility);
+    }
+  });
+});
+
+document.getElementById('toggleListed').addEventListener('change', (e) => {
+  const visibility = e.target.checked ? 'visible' : 'none';
+  if (map.getLayer('listed-fill')) {
+    map.setLayoutProperty('listed-fill', 'visibility', visibility);
+    map.setLayoutProperty('listed-highlight', 'visibility', visibility); // Show highlight layer too
+  }
+});
 
 
 }); // end of map.on('load')
