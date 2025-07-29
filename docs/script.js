@@ -26,9 +26,8 @@ const map = new maplibregl.Map({
   container: 'map', // HTML element ID where the map will be rendered
   style: 'https://api.maptiler.com/maps/streets/style.json?key=sLTnVyFpuI1axO89l1hV',
   center: [1.0830, 51.2797], // Initial map center in [longitude, latitude]
-  zoom: 13, // Initial zoom level
-});
-
+  zoom: 13 // Initial zoom level
+}); // <-- Add this line to close the Map constructor
 
 // Wait for the map to finish loading before adding sources and layers
 map.on('load', () => {
@@ -38,7 +37,7 @@ map.on('load', () => {
   // Add GeoJSON source for listed buildings 
   map.addSource('listed-buildings', {
     type: 'geojson',
-    data: 'datasets/NH_Listed_Building_polygons.geojson',
+    data: 'datasets/NH_Listed_Building_points.geojson',
   });
 
   // Add GeoJSON source for building heights
@@ -75,17 +74,20 @@ map.on('load', () => {
 
   // LAYERS 
 
-  // Listed buildings fill
   map.addLayer({
-    id: 'listed-fill',
-    type: 'fill',
-    layout: { visibility: 'none' }, // Hidden by default
+    id: 'listed-point',
+    type: 'circle',
     source: 'listed-buildings',
-    paint: {
-      'fill-color': '#1f77b4',
-      'fill-opacity': 0.5,
-      
+    layout: {
+      visibility: 'visible'
     },
+    paint: {
+      'circle-radius': 5,
+      'circle-color': '#CC5500',        // Orange fill
+      'circle-stroke-color': '#5C2E00', // Brown outline
+      'circle-stroke-width': 2,
+      'circle-opacity': 0.7
+    }
   });
 
   // 3D Buildings
@@ -284,36 +286,136 @@ map.on('load', () => {
   });
 
   // Listed buildings popup
-  const listedPopup = new maplibregl.Popup({ closeButton: true, closeOnClick: true });
+const listedPopup = new maplibregl.Popup({ closeButton: false, closeOnClick: false });
 
-map.on('click', 'listed-fill', (e) => {
+map.on('click', 'listed-point', (e) => {
   const props = e.features[0].properties;
-  const name = props.Name || props.name || 'Listed Building';
-  const grade = props.grade || 'Unknown Grade';
-  const desc = props.description || '';
-  listedPopup
-    .setLngLat(e.lngLat)
-    .setHTML(`<strong>${name}</strong><br>Grade: ${grade}<br>${desc}`)
-    .addTo(map);
+  const listDate = props.ListDate ? new Date(props.ListDate).toLocaleDateString() : '';
+  const amendDate = props.AmendDate ? new Date(props.AmendDate).toLocaleDateString() : '';
 
-  // Highlight the clicked building
+  const template = document.getElementById('listed-popup-template');
+  const clone = template.content.cloneNode(true);
+
+  const name = props.Name || props.name || 'Listed Building';
+
+  clone.querySelector('.popup-title').textContent = name;
+  clone.querySelector('.entry-number').textContent = props.ListEntry || '';
+  clone.querySelector('.grade').textContent = props.grade || props.Grade || 'Unknown Grade';
+  clone.querySelector('.list-date').textContent = listDate;
+  clone.querySelector('.amend-date').textContent = amendDate;
+  clone.querySelector('.capture-scale').textContent = props.CaptureScale || '';
+  clone.querySelector('.hyperlink').innerHTML = `<a href="${props.hyperlink || '#'}" target="_blank">Open</a>`;
+
+  const container = document.createElement('div');
+  container.appendChild(clone);
+
+  listedPopup.setLngLat(e.lngLat).setDOMContent(container).addTo(map);
+  const popupEl = listedPopup.getElement();
+  popupEl.classList.remove('popup-panel');
+  popupEl.style.display = '';
+
+// Add a close button to the popup (on map)
+if (!popupEl.querySelector('#popup-close-btn')) {
+  const closeBtn = document.createElement('button');
+  closeBtn.id = 'popup-close-btn';
+  closeBtn.textContent = 'X';
+  closeBtn.classList.add('popup-close-btn');
+  closeBtn.onclick = () => {
+    listedPopup.remove();
+    map.setFilter('listed-highlight', ['==', 'id', '']);
+  };
+  // Insert at the top of the popup
+  popupEl.querySelector('.popup-title')?.parentNode.insertBefore(closeBtn, popupEl.querySelector('.popup-title'));
+}
+
   map.setFilter('listed-highlight', ['==', 'id', e.features[0].id]);
+
+  setTimeout(() => {
+    const btn = popupEl.querySelector('#move-popup-btn');
+    const toggleBtn = popupEl.querySelector('#toggle-table-btn');
+    const tableEl = popupEl.querySelector('#popup-table');
+
+    if (toggleBtn && tableEl) {
+      toggleBtn.onclick = () => {
+        tableEl.classList.toggle('hidden');
+        toggleBtn.textContent = tableEl.classList.contains('hidden') ? '▼' : '▲';
+      };
+    }
+
+    if (btn) {
+      btn.onclick = () => {
+        listedPopup.remove(); // Remove from map
+
+        const sidebar = document.getElementById('sidebar-content');
+        if (sidebar) {
+          sidebar.innerHTML = '';
+
+          const sidebarContent = container.cloneNode(true);
+
+          // Remove the dropdown button and always show the table
+          const toggleBtn = sidebarContent.querySelector('#toggle-table-btn');
+          if (toggleBtn) toggleBtn.remove();
+
+          const tableEl = sidebarContent.querySelector('#popup-table');
+          if (tableEl) tableEl.classList.remove('hidden');
+
+          // Change the move button to "Move popup to map"
+          const moveBtn = sidebarContent.querySelector('#move-popup-btn');
+          if (moveBtn) {
+            moveBtn.textContent = 'Move popup to map';
+            moveBtn.onclick = () => {
+              sidebar.innerHTML = '';
+              listedPopup.setDOMContent(container).addTo(map);
+            };
+          }
+
+          // Remove any existing close button first to avoid duplicates
+          const oldCloseBtn = sidebarContent.querySelector('#popup-close-btn');
+          if (oldCloseBtn) oldCloseBtn.remove();
+
+          // Add a close button INSIDE the header of the info panel
+          const closeBtn = document.createElement('button');
+          closeBtn.id = 'popup-close-btn';
+          closeBtn.textContent = 'X';
+          closeBtn.classList.add('popup-close-btn');
+          closeBtn.onclick = () => {
+            sidebar.innerHTML = '<p>Select a feature on the map to view details.</p>';
+            map.setFilter('listed-highlight', ['==', 'id', '']);
+          };
+          const header = sidebarContent.querySelector('.popup-header');
+          if (header) {
+            header.appendChild(closeBtn);
+          }
+
+          sidebar.appendChild(sidebarContent);
+        }
+      };
+    }
+  }, 50);
+
 });
+
+  
+
+
 
 // Remove highlight when clicking elsewhere
 map.on('click', (e) => {
-  const features = map.queryRenderedFeatures(e.point, { layers: ['listed-fill'] });
+  const features = map.queryRenderedFeatures(e.point, { layers: ['listed-point'] });
   if (!features.length) {
     map.setFilter('listed-highlight', ['==', 'id', '']);
+    listedPopup.remove(); // also close popup on outside click
   }
 });
-map.on('mouseenter', 'listed-fill', () => {
+
+map.on('mouseenter', 'listed-point', () => {
   map.getCanvas().style.cursor = 'pointer';
 });
-map.on('mouseleave', 'listed-fill', () => {
+
+map.on('mouseleave', 'listed-point', () => {
   map.getCanvas().style.cursor = '';
-  listedPopup.remove();
 });
+
 
 // LAND USE TOGGLE (checkbox)
   document.getElementById('toggleLanduse').addEventListener('change', (e) => {
@@ -394,6 +496,7 @@ for (const category of ['amenity', 'tourism', 'shop']) {
 
   });
 
+
 // --- CANOPY COVER SIDEBAR LOGIC ---
 
 // Show ward canopy info in sidebar on click
@@ -423,7 +526,7 @@ map.on('click', (e) => {
   }
 });
 
-
+// Highlight layer for listed buildings
 map.addLayer({
   id: 'listed-highlight',
   type: 'line',
@@ -617,7 +720,7 @@ map.on('moveend', updateCanopyInView);
 
   fetch('https://overpass-api.de/api/interpreter', {
     method: 'POST',
-    body: prowQuery,
+    body: 'data=' + encodeURIComponent(prowQuery),
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
   })
     .then(res => res.json())
@@ -660,7 +763,7 @@ map.on('moveend', updateCanopyInView);
 
   fetch('https://overpass-api.de/api/interpreter', {
     method: 'POST',
-    body: roadsQuery,
+    body: 'data=' + encodeURIComponent(roadsQuery),
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
   })
     .then(res => res.json())
@@ -807,7 +910,6 @@ document.getElementById('toggleListed').addEventListener('change', (e) => {
 });
 
 
-}); // end of map.on('load')
 
 // --- TOGGLE BUTTON for collapsing controls ---
 
@@ -827,5 +929,7 @@ document.querySelectorAll('.group-header').forEach(header => {
       header.click();
     }
   });
+}); 
+
 });
 

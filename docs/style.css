@@ -123,3 +123,133 @@ body, html {
   font-size: 0.95em;
   line-height: 1.4em;
 }
+
+
+/* When popup is shown inside the sidebar */
+.listed-popup-content.in-sidebar {
+  position: static;
+  width: 100%;
+  max-height: none;
+  overflow: visible;
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  margin-bottom: 20px; /* Optional spacing between multiple entries */
+}
+
+/* Optional close button style */
+.popup-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Optional: tidy up the toggle button and table */
+#toggle-table-btn {
+  margin-left: 10px;
+  font-size: 0.9em;
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 2px 6px;
+}
+
+#popup-table {
+  margin-top: 10px;
+  font-size: 0.85em;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#popup-table td {
+  padding: 4px 6px;
+  vertical-align: top;
+}
+
+.hidden {
+  display: none;
+}
+
+/* popup listed buildings */
+
+.listed-popup-content {
+  font-size: 12px;
+}
+
+.listed-popup-content table {
+  margin-bottom: 6px;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.listed-popup-content td {
+  padding: 2px 4px;
+  vertical-align: top;
+}
+
+.listed-popup-content a {
+  color: #0066cc;
+  text-decoration: underline;
+}
+
+#move-popup-btn {
+  cursor: pointer;
+  padding: 4px 8px;
+  margin-top: 6px;
+  background: #f0f0f0;
+  border: 1px solid #ccc;
+}
+
+.popup-panel {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 320px;
+  max-height: 300px;
+  overflow: auto;
+  background: white;
+  border: 1px solid #999;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  padding: 10px;
+  z-index: 1000;
+}
+
+#popup-close-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.toggle-btn {
+  font-size: 14px;
+  cursor: pointer;
+  padding: 2px 6px;
+  border: none;
+  background: #ddd;
+  border-radius: 3px;
+}
+
+.popup-table.hidden {
+  display: none;
+}
+

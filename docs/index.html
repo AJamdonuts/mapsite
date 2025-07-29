@@ -72,8 +72,9 @@ NOTES:
 <div id="sidebar">
   <h2>Viewport Dashboard</h2>
   <div id="sidebar-content">
-    <p>Select a feature on the map to view details.</p>
+      <p>Select a feature on the map to view details.</p>
   </div>
+
   <div id="landuse-chart-container">
     <canvas id="landuse-chart" width="300" height="300"></canvas>
   </div>
@@ -84,6 +85,10 @@ NOTES:
     <div><span style="background:#6fa803;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>NFI OHC</div>
     <div><span style="background:#0ae6a9;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Small Woodland</div>
     <div><span style="background:#cccccc;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Other</div>
+  </div>
+   <div id="listed-building-panel" style="display:none; position: relative;">
+    <button id="listed-close-btn" class="sidebar-close-btn">X</button>
+    <div id="listed-building-info"></div>
   </div>
 </div>
 
@@ -96,6 +101,27 @@ NOTES:
 
 
   <button onclick="updateCanopyInView()">Refresh Canopy Stats</button>
+
+<template id="listed-popup-template">
+  <div class="listed-popup-content">
+    <div class="popup-header">
+      <span class="popup-title"></span>
+      <button id="toggle-table-btn" class="toggle-btn">▼</button>
+    </div>
+    <div id="popup-table" class="popup-table hidden">
+      <table>
+        <tr><td><strong>List entry number</strong></td><td class="entry-number"></td></tr>
+        <tr><td><strong>Grade</strong></td><td class="grade"></td></tr>
+        <tr><td><strong>Listing date</strong></td><td class="list-date"></td></tr>
+        <tr><td><strong>Amendment date</strong></td><td class="amend-date"></td></tr>
+        <tr><td><strong>Capture scale</strong></td><td class="capture-scale"></td></tr>
+        <tr><td><strong>NHLE link</strong></td><td class="hyperlink"></td></tr>
+      </table>
+    </div>
+    <button id="move-popup-btn">Move popup to panel</button>
+  </div>
+</template>
+
 
 </body>
 </html>
