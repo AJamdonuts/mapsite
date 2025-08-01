@@ -1,17 +1,35 @@
 
+
+#main-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+#sidebar {
+  position: relative; /* Remove absolute */
+  width: 300px;
+  min-width: 250px;
+  background-color: #ffffff;
+  border-right: 1px solid #ccc;
+  overflow-y: auto;
+  z-index: 1000;
+  font-family: sans-serif;
+  padding: 20px;
+}
+
+#map {
+  position: relative; /* Remove absolute */
+  flex: 1;
+  width: 100%;
+  height: 100%;
+}
+
 body, html {
   margin: 0;
   padding: 0;
   height: 100%;
   font-family: sans-serif;
-}
-
-#map {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0; /* leave space for sidebar */
 }
 
 .layer-controls {
@@ -101,17 +119,15 @@ body, html {
 /* Sidebar styles */
 
 #sidebar {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
+  position: relative; /* Remove absolute */
   width: 300px;
-  padding: 20px;
+  min-width: 250px;
   background-color: #ffffff;
   border-right: 1px solid #ccc;
   overflow-y: auto;
   z-index: 1000;
   font-family: sans-serif;
+  padding: 20px;
 }
 
 #sidebar h2 {
@@ -140,14 +156,11 @@ body, html {
 
 /* Optional close button style */
 .popup-close-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: transparent;
-  border: none;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
+  position: static;
+  top: auto;
+  right: auto;
+  margin-left: 10px;
+  font-size: 1.2em;
 }
 
 /* Optional: tidy up the toggle button and table */
@@ -231,13 +244,39 @@ body, html {
   font-size: 16px;
 }
 
+/* Only absolutely position the close button when in the popup (not in sidebar) */
+.maplibregl-popup #popup-close-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+/* In the sidebar, use static positioning */
+#sidebar-content .popup-close-btn {
+  position: static;
+  top: auto;
+  right: auto;
+  margin-left: 10px;
+  font-size: 1.2em;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
 .popup-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  font-size: 14px;
+  justify-content: space-between;
+}
+
+.popup-title {
   font-weight: bold;
-  margin-bottom: 6px;
+  font-size: 1.1em;
 }
 
 .toggle-btn {
@@ -252,4 +291,3 @@ body, html {
 .popup-table.hidden {
   display: none;
 }
-
