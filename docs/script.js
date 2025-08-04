@@ -27,6 +27,7 @@ const map = new maplibregl.Map({
   style: 'https://api.maptiler.com/maps/streets/style.json?key=sLTnVyFpuI1axO89l1hV',
   center: [1.0830, 51.2797], // Initial map center in [longitude, latitude]
   zoom: 13 // Initial zoom level
+
 }); // <-- Add this line to close the Map constructor
 
 // Wait for the map to finish loading before adding sources and layers
@@ -74,17 +75,43 @@ map.on('load', () => {
 
   // LAYERS 
 
+map.setPaintProperty('landcover_wood', 'fill-color', '#aaaaaa'); // light grey
+map.setPaintProperty('landcover_grass', 'fill-color', '#cccccc'); // slightly different grey
+map.setPaintProperty('landuse_cemetery', 'fill-color', '#bbbbbb');
+map.setPaintProperty('landuse_hospital', 'fill-color', '#bbbbbb');
+map.setPaintProperty('landuse_school', 'fill-color', '#bbbbbb');
+map.setPaintProperty('landuse_stadium', 'fill-color', '#bbbbbb');
+
+
+const originalLandcoverStyles = {
+  wood: {
+    'fill-color': '#228B22', // forest green
+  },
+  grass: {
+    'fill-color': '#7CFC00', // lawn green
+  },
+};
+
+const originalLanduseStyles = {
+  cemetery: { 'fill-color': '#a9a9a9' },   // dark grey
+  hospital: { 'fill-color': '#f28cb1' },   // light pink
+  school:   { 'fill-color': '#ffe699' },   // light yellow
+  stadium:  { 'fill-color': '#a1d99b' },   // soft green
+};
+
+
+
   map.addLayer({
     id: 'listed-point',
     type: 'circle',
     source: 'listed-buildings',
     layout: {
-      visibility: 'visible'
+      visibility: 'none' // <--- Change this to 'none'
     },
     paint: {
       'circle-radius': 5,
-      'circle-color': '#CC5500',        // Orange fill
-      'circle-stroke-color': '#5C2E00', // Brown outline
+      'circle-color': '#CC5500',
+      'circle-stroke-color': '#5C2E00',
       'circle-stroke-width': 2,
       'circle-opacity': 0.7
     }
@@ -416,16 +443,6 @@ map.on('mouseleave', 'listed-point', () => {
   map.getCanvas().style.cursor = '';
 });
 
-
-// LAND USE TOGGLE (checkbox)
-  document.getElementById('toggleLanduse').addEventListener('change', (e) => {
-  const visibility = e.target.checked ? 'visible' : 'none';
-  ['landuse-fill', 'landuse-outline'].forEach(layerId => {
-    if (map.getLayer(layerId)) {
-      map.setLayoutProperty(layerId, 'visibility', visibility);
-    }
-  });
-});
 
 
 // POI POPUPS FOR AMENITY, TOURISM, SHOP
@@ -868,6 +885,29 @@ map.on('moveend', updateCanopyInView);
   }
 });
 
+  document.getElementById('toggleWoodland').addEventListener('change', function (e) {
+  const visible = e.target.checked;
+
+  if (visible) {
+    map.setPaintProperty('landcover_wood', 'fill-color', originalLandcoverStyles.wood['fill-color']);
+  } else {
+    map.setPaintProperty('landcover_wood', 'fill-color', '#aaaaaa');
+  }
+});
+
+
+  document.getElementById('toggleGrassArea').addEventListener('change', function (e) {
+  const visible = e.target.checked;
+
+  if (visible) {
+    map.setPaintProperty('landcover_grass', 'fill-color', originalLandcoverStyles.grass['fill-color']);
+  } else {
+    map.setPaintProperty('landcover_grass', 'fill-color', '#cccccc');
+  }
+});
+
+
+
 document.getElementById('toggleNTOW').addEventListener('change', (e) => {
   const visibility = e.target.checked ? 'visible' : 'none';
 
@@ -903,11 +943,30 @@ document.getElementById('toggleBasePOIs').addEventListener('change', function(e)
 
 document.getElementById('toggleListed').addEventListener('change', (e) => {
   const visibility = e.target.checked ? 'visible' : 'none';
-  if (map.getLayer('listed-fill')) {
-    map.setLayoutProperty('listed-fill', 'visibility', visibility);
+  if (map.getLayer('listed-point')) {
+    map.setLayoutProperty('listed-point', 'visibility', visibility);
     map.setLayoutProperty('listed-highlight', 'visibility', visibility); // Show highlight layer too
   }
 });
+
+document.getElementById('toggleLanduse').addEventListener('change', (e) => {
+  const visible = e.target.checked;
+  const visibility = visible ? 'visible' : 'none';
+
+  // Toggle visibility of the general landuse layers
+  ['landuse-fill', 'landuse-outline'].forEach(layerId => {
+    if (map.getLayer(layerId)) {
+      map.setLayoutProperty(layerId, 'visibility', visibility);
+    }
+  });
+
+  // Toggle colors of specific landuse types
+  map.setPaintProperty('landuse_cemetery', 'fill-color', visible ? originalLanduseStyles.cemetery['fill-color'] : '#bbbbbb');
+  map.setPaintProperty('landuse_hospital', 'fill-color', visible ? originalLanduseStyles.hospital['fill-color'] : '#bbbbbb');
+  map.setPaintProperty('landuse_school',   'fill-color', visible ? originalLanduseStyles.school['fill-color']   : '#bbbbbb');
+  map.setPaintProperty('landuse_stadium',  'fill-color', visible ? originalLanduseStyles.stadium['fill-color']  : '#bbbbbb');
+});
+
 
 
 
@@ -932,4 +991,3 @@ document.querySelectorAll('.group-header').forEach(header => {
 }); 
 
 });
-

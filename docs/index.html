@@ -22,46 +22,75 @@ NOTES:
   <meta charset="utf-8" />
   <title>MapLibre GL JS Demo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
   <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet" />
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://unpkg.com/@turf/turf@6.5.0/turf.min.js"></script>
 </head>
 <body>
+
   <div class="layer-controls collapsed">
   <button class="toggle-button">Layers ▾</button>
   <div class="layer-options">
 
     <div class="layer-group">
-      <h3 class="group-header" tabindex="0">Built Environment </h3>
+      <h3 class="group-header" tabindex="0">Heritage & Designation</h3>
       <div class="group-content">
+        <label><input type="checkbox" id="toggleArticle4"> Article 4 Direction Areas</label>
+        <label><input type="checkbox" id="toggleConservationAreas"> Conservation Areas</label>
+        <label><input type="checkbox" id="toggleHeritageParks"> Heritage Parks and Gardens</label>
         <label><input type="checkbox" id="toggleListed"> Listed Buildings</label>
+        <label><input type="checkbox" id="toggleSMonuments"> Scheduled Monuments</label>
+        <label><input type="checkbox" id="toggleWorldHeritage"> World Heritage Sites</label>
+
+      </div>
+    </div>
+
+
+    <div class="layer-group">
+      <h3 class="group-header" tabindex="0">Land Use & Planning</h3>
+      <div class="group-content">
+        <label><input type="checkbox" id="toggleAgricultural"> Agricultural Land</label>
+        <label><input type="checkbox" id="toggleBuiltUpAreas"> Built Up Areas</label>
         <label><input type="checkbox" id="toggleLanduse"> Land Use</label>
+        <label><input type="checkbox" id="toggleLPB"> Local Plan Boundaries</label>
+
+
       </div>
     </div>
 
     <div class="layer-group">
-      <h3 class="group-header" tabindex="0">Natural Features </h3>
+      <h3 class="group-header" tabindex="0">Natural Environment</h3>
       <div class="group-content">
+        <label><input type="checkbox" id="toggleAncientWoodland"> Ancient Woodland</label>
+        <label><input type="checkbox" id="toggleAONB"> Area of Outstanding Natural Beauty</label>
+        <label><input type="checkbox" id="toggleGrassArea"> Grass Area</label>
+        <label><input type="checkbox" id="toggleLNR"> Local Nature Reserves</label>
+        <label><input type="checkbox" id="toggleNNR"> National Nature Reserves</label>
         <label><input type="checkbox" id="toggleNTOW"> NTOW Trees</label>
         <label><input type="checkbox" id="toggleCanopy"> Tree Canopy Cover</label>
+        <label><input type="checkbox" id="toggleTPZ"> Tree Preservation Zones</label>
+        <label><input type="checkbox" id="toggleWoodland"> Woodland</label>
       </div>
     </div>
 
     <div class="layer-group">
-      <h3 class="group-header" tabindex="0">Points of Interest </h3>
+      <h3 class="group-header" tabindex="0">Social Infrastructure</h3>
       <div class="group-content">
         <label><input type="checkbox" id="toggleAmenity"> Amenity POIs</label>
-        <label><input type="checkbox" id="toggleTourism"> Tourism POIs</label>
+        <label><input type="checkbox" id="toggleBasePOIs" checked /> Base Map POIs</label>
+        <label><input type="checkbox" id="toggleEducational"> Educational Establishments</label>
         <label><input type="checkbox" id="toggleShop"> Shop POIs</label>
-        <label><input type="checkbox" id="toggleBasePOIs" checked />Base Map POIs</label>
+        <label><input type="checkbox" id="toggleTourism"> Tourism POIs</label>
       </div>
     </div>
 
     <div class="layer-group">
-      <h3 class="group-header" tabindex="0">Transport </h3>
+      <h3 class="group-header" tabindex="0">Transport and Accessibility</h3>
       <div class="group-content">
         <label><input type="checkbox" id="togglePROW"> PROW (footpaths)</label>
+        <label><input type="checkbox" id="toggleTransportAccess"> Public Transport Access</label>
         <label><input type="checkbox" id="toggleRoads"> Roads</label>
       </div>
     </div>
@@ -69,34 +98,55 @@ NOTES:
   </div>
 </div>
 
-<div id="sidebar">
-  <h2>Viewport Dashboard</h2>
-  <div id="sidebar-content">
-      <p>Select a feature on the map to view details.</p>
+<div id="main-container">
+  <div id="map"></div>
+  <div id="sidebar">
+    <h2>Viewport Dashboard</h2>
+    <div id="sidebar-content">
+        <p>Select a feature on the map to view details.</p>
+    </div>
+
+    <div id="landuse-chart-container">
+      <canvas id="landuse-chart" width="300" height="300"></canvas>
+    </div>
+    <div id="ntow-legend" style="display: none; margin-top: 10px;">
+      <strong>NTOW Tree Types:</strong><br>
+      <div><span style="background:#00a884;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Lone Tree</div>
+      <div><span style="background:#4ae700;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Group of Trees</div>
+      <div><span style="background:#6fa803;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>NFI OHC</div>
+      <div><span style="background:#0ae6a9;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Small Woodland</div>
+      <div><span style="background:#cccccc;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Other</div>
+    </div>
+    <div id="listed-building-panel" style="display:none; position: relative;">
+      <button id="listed-close-btn" class="sidebar-close-btn">X</button>
+      <div id="listed-building-info"></div>
+    </div>
+
+    <div id="historic-legend" style="display: none; margin-top: 10px;">
+      <strong>Heritage & Designation Key:</strong><br>
+      <div>
+        <span style="background:#FFC300;width:12px;height:12px;display:inline-block;margin-right:5px;border:1px solid #B8860B;"></span>
+        WHS Core Area
+      </div>
+      <div>
+        <span style="background: url('images/gold-hatch.png'); width:12px; height:12px; display:inline-block; margin-right:5px; border:1px solid #FFD700;"></span>
+        WHS Buffer Zone
+      </div>
+      <div>
+        <span style="background:#f06a6c;width:12px;height:12px;display:inline-block;margin-right:5px;border:1px solid #a94442;"></span>
+        Scheduled Monument
+      </div>
+      <div>
+        <span style="background:#c1f7a1;width:12px;height:12px;display:inline-block;margin-right:5px;border:1px solid #598145;"></span>
+        Heritage Park/Garden
+      </div>
+    </div>
   </div>
 
-  <div id="landuse-chart-container">
-    <canvas id="landuse-chart" width="300" height="300"></canvas>
-  </div>
-  <div id="ntow-legend" style="display: none; margin-top: 10px;">
-    <strong>NTOW Tree Types:</strong><br>
-    <div><span style="background:#00a884;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Lone Tree</div>
-    <div><span style="background:#4ae700;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Group of Trees</div>
-    <div><span style="background:#6fa803;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>NFI OHC</div>
-    <div><span style="background:#0ae6a9;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Small Woodland</div>
-    <div><span style="background:#cccccc;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Other</div>
-  </div>
-   <div id="listed-building-panel" style="display:none; position: relative;">
-    <button id="listed-close-btn" class="sidebar-close-btn">X</button>
-    <div id="listed-building-info"></div>
-  </div>
 </div>
 
 
-<div id="map"></div>
 
-  <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
-  <script src="script.js"></script>
 
 
 
@@ -121,7 +171,14 @@ NOTES:
     <button id="move-popup-btn">Move popup to panel</button>
   </div>
 </template>
-
+<script src="sources.js"></script>
+<script src="layers.js"></script>
+<script src="popups.js"></script>
+<script src="chart.js"></script>
+<script src="overpass.js"></script>
+<script src="sidebar.js"></script>
+<script src="toggles.js"></script>
+<script src="main.js"></script>
 
 </body>
 </html>
