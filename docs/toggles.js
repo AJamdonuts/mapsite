@@ -1,96 +1,238 @@
 function setupToggles(map) {
   
     // All checkbox event listeners for toggling layers
+
     // --- LAYER VISIBILITY TOGGLES ---
 
+  // Function to update Heritage legend visibility
   function updateHistoricLegendVisibility() {
-      const listed = document.getElementById('toggleListed').checked;
-      const smonuments = document.getElementById('toggleSMonuments').checked;
-      const parks = document.getElementById('toggleHeritageParks').checked;
-      const whs = document.getElementById('toggleWorldHeritage').checked;
+      const listed = document.getElementById('toggleListed')?.checked || false;
+      const smonuments = document.getElementById('toggleSMonuments')?.checked || false;
+      const parks = document.getElementById('toggleHeritageParks')?.checked || false;
+      const whs = document.getElementById('toggleWorldHeritage')?.checked || false;
+      const conservation = document.getElementById('toggleConservationAreas')?.checked || false;
+      const article4 = document.getElementById('toggleArticle4')?.checked || false;
 
-      const showLegend = listed || smonuments || parks || whs;
+      const showLegend = listed || smonuments || parks || whs || conservation || article4;
       document.getElementById('historic-legend').style.display = showLegend ? 'block' : 'none';
   }
 
+  function toggleLandUseType(type, color) {
+      map.setPaintProperty(`landuse_${type}`, 'fill-color', color);
+  }
 
-    // Toggle layers when checkboxes change
+  function updateLandUseLayer() {
+      // Update fill layer
+      if (map.getLayer('landuse-fill')) {
+          map.setPaintProperty('landuse-fill', 'fill-color', [
+              'case',
+              ['in', ['get', 'landuse'], ['literal', window.activeLandUseTypes]],
+              [
+                  'match',
+                  ['get', 'landuse'],
+                  ...Object.entries(window.landUseColors || {}).flat(),
+                  window.inactiveColor || '#cccccc'
+              ],
+              window.inactiveColor || '#cccccc'
+          ]);
+      }
 
-    document.getElementById('togglePROW').addEventListener('change', (e) => {
-      const visibility = e.target.checked ? 'visible' : 'none';
-      if (map.getLayer('prow-lines')) map.setLayoutProperty('prow-lines', 'visibility', visibility);
-    });
+      // Update outline layer with darker colors or just black
+      if (map.getLayer('landuse-outline')) {
+        map.setPaintProperty('landuse-outline', 'line-color', '#000000'); // Black outline
+    }
+  }
 
+  function updateGeneralLandUseLegendVisibility() {
+      const residential = document.getElementById('toggleResidential')?.checked || false;
+      const commercial = document.getElementById('toggleCommercial')?.checked || false;
+      const industrial = document.getElementById('toggleIndustrial')?.checked || false;
+      const farmland = document.getElementById('toggleFarmland')?.checked || false;
+      const park = document.getElementById('togglePark')?.checked || false;
+
+      const showLegend = residential || commercial || industrial || farmland || park;
+      const generalLanduseLegend = document.getElementById('general-landuse-legend');
+      if (generalLanduseLegend) {
+          generalLanduseLegend.style.display = showLegend ? 'block' : 'none';
+      }
+  }
+  
+
+  // Function to update land use legend visibility
+  function updateLandUseLegendVisibility() {
+      const residential = document.getElementById('toggleResidential')?.checked || false;
+      const builtUpAreas = document.getElementById('toggleBuiltUpAreas')?.checked || false;
+      const agricultural = document.getElementById('toggleAgricultural')?.checked || false;
+      const lpb = document.getElementById('toggleLPB')?.checked || false;
+
+      const showLegend = residential || builtUpAreas || agricultural || lpb;
+      document.getElementById('landuse-legend').style.display = showLegend ? 'block' : 'none';
+  }
+  // Function to update land use legend visibility
+  function updateSocialInfrastructureLegendVisibility() {
+      const hospitals = document.getElementById('toggleHospitals')?.checked || false;
+      const schools = document.getElementById('toggleSchools')?.checked || false;
+      const stadiums = document.getElementById('toggleStadiums')?.checked || false;
+      const cemeteries = document.getElementById('toggleCemeteries')?.checked || false;
+      const educational = document.getElementById('toggleEducational')?.checked || false;
+      const amenity = document.getElementById('toggleAmenity')?.checked || false;
+      const tourism = document.getElementById('toggleTourism')?.checked || false;
+      const shop = document.getElementById('toggleShop')?.checked || false;
+
+      const showLegend = hospitals || schools || stadiums || cemeteries || educational || amenity || tourism || shop;
+      document.getElementById('social-infrastructure-legend').style.display = showLegend ? 'block' : 'none';
+  }
+
+
+// Hospitals
+  document.getElementById('toggleHospitals').addEventListener('change', function(e) {
+      toggleLandUseType('hospital', e.target.checked ? '#f28cb1' : '#cccccc');
+      map.setLayoutProperty('hospital-outline', 'visibility', e.target.checked ? 'visible' : 'none');
+      updateSocialInfrastructureLegendVisibility(); // Keep this
+  });
+
+  // Schools
+  document.getElementById('toggleSchools').addEventListener('change', function(e) {
+      toggleLandUseType('school', e.target.checked ? '#e6cc00' : '#cccccc');
+      map.setLayoutProperty('school-outline', 'visibility', e.target.checked ? 'visible' : 'none');
+      updateSocialInfrastructureLegendVisibility(); // Keep this
+  });
+
+  // Stadiums
+  document.getElementById('toggleStadiums').addEventListener('change', function(e) {
+      toggleLandUseType('stadium', e.target.checked ? '#a1d99b' : '#cccccc');
+      map.setLayoutProperty('stadium-outline', 'visibility', e.target.checked ? 'visible' : 'none');
+      updateSocialInfrastructureLegendVisibility(); // Keep this
+  });
+
+  // Cemeteries
+  document.getElementById('toggleCemeteries').addEventListener('change', function(e) {
+      if (e.target.checked) {
+          map.setPaintProperty('landuse_cemetery', 'fill-pattern', 'blackHatch');
+          map.setPaintProperty('landuse_cemetery', 'fill-opacity', 0.7);
+          map.setLayoutProperty('cemetery-outline', 'visibility', 'visible');
+      } else {
+          map.setPaintProperty('landuse_cemetery', 'fill-pattern', undefined);
+          map.setPaintProperty('landuse_cemetery', 'fill-color', '#cccccc');
+          map.setPaintProperty('landuse_cemetery', 'fill-opacity', 0.3);
+          map.setLayoutProperty('cemetery-outline', 'visibility', 'none');
+      }
+      updateSocialInfrastructureLegendVisibility(); // Keep this
+  });
+
+  // Individual toggles for general land use types
+document.getElementById('toggleResidential')?.addEventListener('change', (e) => {
+    toggleLandUseType('residential', e.target.checked ? '#f4a261' : '#cccccc');
+    updateGeneralLandUseLegendVisibility();
+    updateLandUseLegendVisibility();
+});
+
+// Toggle Land Use 
+  document.getElementById('toggleLanduse')?.addEventListener('change', (e) => {
+    const visibility = e.target.checked ? 'visible' : 'none';
+    
+    if (map.getLayer('landuse-fill')) {
+        map.setLayoutProperty('landuse-fill', 'visibility', visibility);
+    }
+    if (map.getLayer('landuse-outline')) {
+        map.setLayoutProperty('landuse-outline', 'visibility', visibility);
+    }
+    
+    // If turning on, enable all land use types by default
+    if (e.target.checked) {
+        window.activeLandUseTypes = ['residential', 'commercial', 'industrial', 'farmland', 'park'];
+        // Check all individual checkboxes
+        document.getElementById('toggleResidential').checked = true;
+        document.getElementById('toggleCommercial').checked = true;
+        document.getElementById('toggleIndustrial').checked = true;
+        document.getElementById('toggleFarmland').checked = true;
+        document.getElementById('togglePark').checked = true;
+    } else {
+        // If turning off, clear all active types
+        window.activeLandUseTypes = [];
+        // Uncheck all individual checkboxes
+        document.getElementById('toggleResidential').checked = false;
+        document.getElementById('toggleCommercial').checked = false;
+        document.getElementById('toggleIndustrial').checked = false;
+        document.getElementById('toggleFarmland').checked = false;
+        document.getElementById('togglePark').checked = false;
+    }
+    
+    updateLandUseLayer();
+    updateLandUseLegendVisibility();
+    updateGeneralLandUseLegendVisibility();
+  });
+
+
+  // Update Local Plan Boundaries toggle to include legend update
+  document.getElementById('toggleLPB').addEventListener('change', (e) => {
+    const visibility = e.target.checked ? 'visible' : 'none';
+    if (map.getLayer('local-plan-boundaries')) {
+      map.setLayoutProperty('local-plan-boundaries', 'visibility', visibility);
+    }
+    updateLandUseLegendVisibility();
+  });
+
+    // Toggle Built Up Areas layer
+  document.getElementById('toggleBuiltUpAreas').addEventListener('change', (e) => {
+    const visibility = e.target.checked ? 'visible' : 'none';
+    if (map.getLayer('built-up-areas')) {
+      map.setLayoutProperty('built-up-areas', 'visibility', visibility);
+    }
+    updateLandUseLegendVisibility();
+  });
+
+    // Toggle Educational Establishments layer
+  document.getElementById('toggleEducational').addEventListener('change', (e) => {
+    const visibility = e.target.checked ? 'visible' : 'none';
+    if (map.getLayer('educational-establishments')) {
+      map.setLayoutProperty('educational-establishments', 'visibility', visibility);
+      const legend = document.getElementById('social-infrastructure-legend');
+      legend.style.display = visibility === 'visible' ? 'block' : 'none';
+    }
+  });
+
+  // Toggle Agricultural Land layer
+  document.getElementById('toggleAgricultural').addEventListener('change', (e) => {
+    const visibility = e.target.checked ? 'visible' : 'none';
+    if (map.getLayer('agricultural-land')) {
+      map.setLayoutProperty('agricultural-land', 'visibility', visibility);
+    }
+    updateLandUseLegendVisibility();
+  });
+
+
+    // Toggle Roads layer
     document.getElementById('toggleRoads').addEventListener('change', (e) => {
       const visibility = e.target.checked ? 'visible' : 'none';
       if (map.getLayer('road-lines')) map.setLayoutProperty('road-lines', 'visibility', visibility);
     });
 
+    // Toggle Amenity layer
     document.getElementById('toggleAmenity').addEventListener('change', function () {
     const visibility = this.checked ? 'visible' : 'none';
     if (map.getLayer('pois-amenity')) map.setLayoutProperty('pois-amenity', 'visibility', visibility);
+    const legend = document.getElementById('social-infrastructure-legend');
+    legend.style.display = visibility === 'visible' ? 'block' : 'none';
     });
 
+    // Toggle Tourism layer
     document.getElementById('toggleTourism').addEventListener('change', function () {
     const visibility = this.checked ? 'visible' : 'none';
     if (map.getLayer('pois-tourism')) map.setLayoutProperty('pois-tourism', 'visibility', visibility);
+    const legend = document.getElementById('social-infrastructure-legend');
+    legend.style.display = visibility === 'visible' ? 'block' : 'none';
     });
 
+    // Toggle Shop layer
     document.getElementById('toggleShop').addEventListener('change', function () {
     const visibility = this.checked ? 'visible' : 'none';
     if (map.getLayer('pois-shop')) map.setLayoutProperty('pois-shop', 'visibility', visibility);
+    const legend = document.getElementById('social-infrastructure-legend');
+    legend.style.display = visibility === 'visible' ? 'block' : 'none';
     });
 
-    document.getElementById('toggleCanopy').addEventListener('change', (e) => {
-    const visibility = e.target.checked ? 'visible' : 'none';
-    if (map.getLayer('ward-canopy')) {
-      map.setLayoutProperty('ward-canopy', 'visibility', visibility);
-    }
-  });
-
-    document.getElementById('toggleWoodland').addEventListener('change', function (e) {
-    const visible = e.target.checked;
-
-    if (visible) {
-      map.setPaintProperty('landcover_wood', 'fill-color', originalLandcoverStyles.wood['fill-color']);
-    } else {
-      map.setPaintProperty('landcover_wood', 'fill-color', '#aaaaaa');
-    }
-  });
-
-
-    document.getElementById('toggleGrassArea').addEventListener('change', function (e) {
-    const visible = e.target.checked;
-
-    if (visible) {
-      map.setPaintProperty('landcover_grass', 'fill-color', originalLandcoverStyles.grass['fill-color']);
-    } else {
-      map.setPaintProperty('landcover_grass', 'fill-color', '#cccccc');
-    }
-  });
-
-  // Toggle Tree Preservation Zones
-  document.getElementById('toggleTPZ').addEventListener('change', (e) => {
-    const visibility = e.target.checked ? 'visible' : 'none';
-    if (map.getLayer('tree-preservation-zones')) {
-      map.setLayoutProperty('tree-preservation-zones', 'visibility', visibility);
-    }
-  });
-
-
-  document.getElementById('toggleNTOW').addEventListener('change', (e) => {
-    const visibility = e.target.checked ? 'visible' : 'none';
-
-    // Toggle NTOW map layer visibility
-    if (map.getLayer('ntow-trees')) {
-      map.setLayoutProperty('ntow-trees', 'visibility', visibility);
-    }
-
-    // Show/hide legend in sidebar
-    const legend = document.getElementById('ntow-legend');
-    legend.style.display = visibility === 'visible' ? 'block' : 'none';
-  });
-
+  // Toggle base POIs
   document.getElementById('toggleBasePOIs').addEventListener('change', function(e) {
     const visibility = e.target.checked ? 'visible' : 'none';
 
@@ -157,21 +299,38 @@ function setupToggles(map) {
     updateHistoricLegendVisibility();
   });
 
-
-
-  // Toggle Agricultural Land layer
-  document.getElementById('toggleAgricultural').addEventListener('change', (e) => {
+  // Toggle Conservation Areas layer
+  document.getElementById('toggleConservationAreas').addEventListener('change', (e) => {
     const visibility = e.target.checked ? 'visible' : 'none';
-    if (map.getLayer('agricultural-land')) {
-      map.setLayoutProperty('agricultural-land', 'visibility', visibility);
+    if (map.getLayer('conservation-areas')) {
+      map.setLayoutProperty('conservation-areas', 'visibility', visibility);
+      map.setLayoutProperty('conservation-areas-outline', 'visibility', visibility);
     }
+    updateHistoricLegendVisibility();
+
   });
+
+  // Replace the Article 4 toggle with this standard format:
+  document.getElementById('toggleArticle4').addEventListener('change', (e) => {
+    const visibility = e.target.checked ? 'visible' : 'none';
+    if (map.getLayer('article-4-direction')) {
+      map.setLayoutProperty('article-4-direction', 'visibility', visibility);
+    }
+    if (map.getLayer('article-4-direction-outline')) {
+      map.setLayoutProperty('article-4-direction-outline', 'visibility', visibility);
+    }
+    updateHistoricLegendVisibility();
+  });
+
 
   // Toggle Ancient Woodland layer
   document.getElementById('toggleAncientWoodland').addEventListener('change', (e) => {
     const visibility = e.target.checked ? 'visible' : 'none';
     if (map.getLayer('ancient-woodland')) {
       map.setLayoutProperty('ancient-woodland', 'visibility', visibility);
+    }
+    if (map.getLayer('ancient-woodland-outline')) {
+      map.setLayoutProperty('ancient-woodland-outline', 'visibility', visibility);
     }
   });
 
@@ -181,68 +340,80 @@ function setupToggles(map) {
     if (map.getLayer('aonb-fill')) {
       map.setLayoutProperty('aonb-fill', 'visibility', visibility);
     }
-  });
-
-  // Toggle Built Up Areas layer
-  document.getElementById('toggleBuiltUpAreas').addEventListener('change', (e) => {
-    const visibility = e.target.checked ? 'visible' : 'none';
-    if (map.getLayer('built-up-areas')) {
-      map.setLayoutProperty('built-up-areas', 'visibility', visibility);
+    if (map.getLayer('aonb-outline')) {
+      map.setLayoutProperty('aonb-outline', 'visibility', visibility);
     }
   });
 
-  // Toggle Conservation Areas layer
-  document.getElementById('toggleConservationAreas').addEventListener('change', (e) => {
-    const visibility = e.target.checked ? 'visible' : 'none';
-    if (map.getLayer('conservation-areas')) {
-      map.setLayoutProperty('conservation-areas', 'visibility', visibility);
-    }
-
-  });
-
-  // Conservation Areas toggle (update this)
-  const toggleConservationAreas = document.getElementById('toggleConservationAreas');
-  if (toggleConservationAreas) {
-    toggleConservationAreas.addEventListener('change', () => {
-      const visibility = toggleConservationAreas.checked ? 'visible' : 'none';
-      map.setLayoutProperty('conservation-areas', 'visibility', visibility);
-      map.setLayoutProperty('conservation-areas-outline', 'visibility', visibility); // Add this line
-    });
-  }
-
-  // Toggle Local Nature Reserves (LNR) layer
+   // Toggle Local Nature Reserves (LNR) layer
   document.getElementById('toggleLNR').addEventListener('change', (e) => {
     const visibility = e.target.checked ? 'visible' : 'none';
     if (map.getLayer('local-nature-reserves')) {
       map.setLayoutProperty('local-nature-reserves', 'visibility', visibility);
     }
+    if (map.getLayer('local-nature-reserves-outline')) {
+      map.setLayoutProperty('local-nature-reserves-outline', 'visibility', visibility);
+    }
   });
 
-  // Toggle National Nature Reserves (NNR) layer
+    // Toggle National Nature Reserves (NNR) layer
   document.getElementById('toggleNNR').addEventListener('change', (e) => {
     const visibility = e.target.checked ? 'visible' : 'none';
     if (map.getLayer('national-nature-reserves')) {
       map.setLayoutProperty('national-nature-reserves', 'visibility', visibility);
     }
-  });
-
-
-  // Toggle Local Plan Boundaries layer
-  document.getElementById('toggleLPB').addEventListener('change', (e) => {
-    const visibility = e.target.checked ? 'visible' : 'none';
-    if (map.getLayer('local-plan-boundaries'))   {
-      map.setLayoutProperty('local-plan-boundaries', 'visibility', visibility);
+    if (map.getLayer('national-nature-reserves-outline')) {
+      map.setLayoutProperty('national-nature-reserves-outline', 'visibility', visibility);
     }
   });
 
- 
-  // Toggle Educational Establishments layer
-  document.getElementById('toggleEducational').addEventListener('change', (e) => {
+      // Toggle Canopy layer
+    document.getElementById('toggleCanopy').addEventListener('change', (e) => {
     const visibility = e.target.checked ? 'visible' : 'none';
-    if (map.getLayer('educational-establishments')) {
-      map.setLayoutProperty('educational-establishments', 'visibility', visibility);
+    if (map.getLayer('ward-canopy')) {
+      map.setLayoutProperty('ward-canopy', 'visibility', visibility);
     }
   });
+
+    // Toggle Woodland
+    document.getElementById('toggleWoodland').addEventListener('change', function (e) {
+    const visible = e.target.checked;
+    if (visible) {
+      map.setPaintProperty('landcover_wood', 'fill-color', originalLandcoverStyles.wood['fill-color']);
+    } else {
+      map.setPaintProperty('landcover_wood', 'fill-color', '#aaaaaa');
+    }
+  });
+
+  // Toggle Grass Area
+    document.getElementById('toggleGrassArea').addEventListener('change', function (e) {
+    const visible = e.target.checked;
+    if (visible) {
+      map.setPaintProperty('landcover_grass', 'fill-color', originalLandcoverStyles.grass['fill-color']);
+    } else {
+      map.setPaintProperty('landcover_grass', 'fill-color', '#cccccc');
+    }
+  });
+
+  // Toggle Tree Preservation Zones
+  document.getElementById('toggleTPZ').addEventListener('change', (e) => {
+    const visibility = e.target.checked ? 'visible' : 'none';
+    if (map.getLayer('tree-preservation-zones')) {
+      map.setLayoutProperty('tree-preservation-zones', 'visibility', visibility);
+    }
+  });
+
+  // Toggle NTOW (National Trust Open Woodland)
+  document.getElementById('toggleNTOW').addEventListener('change', (e) => {
+    const visibility = e.target.checked ? 'visible' : 'none';
+    if (map.getLayer('ntow-trees')) {
+      map.setLayoutProperty('ntow-trees', 'visibility', visibility);
+    }
+    const legend = document.getElementById('ntow-legend');
+    legend.style.display = visibility === 'visible' ? 'block' : 'none';
+  });
+
+
 
   // Toggle Transport Access layer
   document.getElementById('toggleTransportAccess').addEventListener('change', (e) => {
@@ -252,45 +423,9 @@ function setupToggles(map) {
     }
   });
 
-
-  // Article 4 Direction Areas toggle
-const safeGetElement = (id) => {
-  const element = document.getElementById(id);
-  if (!element) {
-    console.warn(`Element with id '${id}' not found`);
-  }
-  return element;
-};
-
-const toggleArticle4 = safeGetElement('toggleArticle4');
-if (toggleArticle4) {
-  toggleArticle4.addEventListener('change', () => {
-    const visibility = toggleArticle4.checked ? 'visible' : 'none';
-    map.setLayoutProperty('article-4-direction', 'visibility', visibility);
-    map.setLayoutProperty('article-4-direction-outline', 'visibility', visibility);
-  });
-}
   
 
-  document.getElementById('toggleLanduse').addEventListener('change', (e) => {
-    const visible = e.target.checked;
-    const visibility = visible ? 'visible' : 'none';
-
-    // Toggle visibility of the general landuse layers
-    ['landuse-fill', 'landuse-outline'].forEach(layerId => {
-      if (map.getLayer(layerId)) {
-        map.setLayoutProperty(layerId, 'visibility', visibility);
-      }
-    });
-
-    // Toggle colors of specific landuse types
-    map.setPaintProperty('landuse_cemetery', 'fill-color', visible ? originalLanduseStyles.cemetery['fill-color'] : '#bbbbbb');
-    map.setPaintProperty('landuse_hospital', 'fill-color', visible ? originalLanduseStyles.hospital['fill-color'] : '#bbbbbb');
-    map.setPaintProperty('landuse_school',   'fill-color', visible ? originalLanduseStyles.school['fill-color']   : '#bbbbbb');
-    map.setPaintProperty('landuse_stadium',  'fill-color', visible ? originalLanduseStyles.stadium['fill-color']  : '#bbbbbb');
-  });
-
-  // --- TOGGLE BUTTON for collapsing controls ---
+  // TOGGLE BUTTON for collapsing controls
   const btn = document.querySelector('.toggle-button');
   const controls = document.querySelector('.layer-controls');
   if (btn && controls) {
@@ -299,7 +434,7 @@ if (toggleArticle4) {
     });
   }
 
-  // --- GROUP HEADER COLLAPSE ---
+  // GROUP HEADER COLLAPSE
   document.querySelectorAll('.group-header').forEach(header => {
     // Collapse all groups by default
     const content = header.nextElementSibling;
@@ -318,5 +453,36 @@ if (toggleArticle4) {
       }
     });
   }); 
-}
+
+  // Add the debug code here where map is available
+  // Add this temporarily to see what values you have
+  map.on('click', 'landuse-fill', (e) => {
+      console.log('Land use value:', e.features[0].properties.landuse);
+      console.log('All properties:', e.features[0].properties);
+  });
+
+} 
+
 window.setupToggles = setupToggles;
+// Remove this test code - don't keep it permanently:
+window.landUseColors = {
+  residential:        '#f4a261',  // warm orange (used in OSM and Mapbox)
+  commercial:        '#e34a33',  // muted red-orange
+  industrial:        '#b30000',  // dark red (machinery/industry)
+  farmland:          '#fdd49e',  // warm beige/yellow
+  park:              '#a1d99b',  // soft green (used in OSM and Mapbox)
+  retail:            '#fc9272',  // soft coral (distinguishable from commercial)
+  landfill:          '#756bb1',  // purple (uncommon use)
+  grass:             '#c7e9c0',  // light green
+  meadow:            '#74c476',  // richer green
+  recreation_ground: '#41ab5d',  // medium green (more vibrant for sport fields)
+  railway:           '#9e9ac8',  // gray-violet (infrastructure)
+  allotments:        '#fdae6b',  // orange (growing/agriculture)
+  construction:      '#fdd0a2',  // pale orange (under construction)
+  orchard:           '#c6dbef',  // light blue (cultivation)
+  military:          '#cb181d'   // deep red (warning/secure)
+};
+
+window.activeLandUseTypes = ['residential', 'commercial', 'industrial', 'farmland', 'park', 'retail', 'landfill', 'grass', 'meadow', 'recreation_ground', 'railway', 'allotments', 'construction', 'orchard', 'military'];
+window.inactiveColor = '#cccccc';
+updateLandUseLayer();

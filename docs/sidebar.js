@@ -17,12 +17,8 @@ map.on('click', 'ward-canopy', (e) => {
   document.getElementById('sidebar-content').innerHTML = html;
 });
 
-// Remove the individual click handlers and replace with a combined one
-// Remove these:
-// map.on('click', 'article-4-direction', (e) => { ... });
-// map.on('click', 'conservation-areas', (e) => { ... });
 
-// Add this combined click handler instead:
+// Handle clicks on Article 4 Directions and Conservation Areas
 map.on('click', (e) => {
   if (e.defaultPrevented) return;
 
@@ -173,6 +169,23 @@ map.on('mouseleave', 'conservation-areas', () => {
   map.getCanvas().style.cursor = '';
 });
 
+// Add the LNR and NNR hover effects here:
+map.on('mouseenter', 'local-nature-reserves', () => {
+  map.getCanvas().style.cursor = 'pointer';
+});
+
+map.on('mouseleave', 'local-nature-reserves', () => {
+  map.getCanvas().style.cursor = '';
+});
+
+map.on('mouseenter', 'national-nature-reserves', () => {
+  map.getCanvas().style.cursor = 'pointer';
+});
+
+map.on('mouseleave', 'national-nature-reserves', () => {
+  map.getCanvas().style.cursor = '';
+});
+
 // Modified: Only clear when clicking on empty space, not on zoom/move
 map.on('click', (e) => {
   if (e.defaultPrevented) return; // Skip if feature click already handled
@@ -226,13 +239,183 @@ function updateCanopyInView() {
   `;
 }
 
-// Modified: Only register moveend events for content that should update on movement
-// Remove these automatic updates:
-// map.on('moveend', updateLandUseChart);
-// map.on('moveend', updateCanopyInView);
+// Add Local Nature Reserves (LNR)
+map.on('click', (e) => {
+  if (e.defaultPrevented) return;
 
-// Instead, only update these when explicitly requested or when showing that specific content
-// You can add a button to manually refresh canopy data if needed:
-// <button onclick="updateCanopyInView()">Refresh Canopy Stats</button>
+  const lnrFeatures = map.queryRenderedFeatures(e.point, {
+    layers: ['local-nature-reserves']
+  });
+
+  const nnrFeatures = map.queryRenderedFeatures(e.point, {
+    layers: ['national-nature-reserves']
+  });
+
+  if (lnrFeatures.length > 0 || nnrFeatures.length > 0) {
+    e.preventDefault();
+
+    let html = `<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">`;
+    html += `<h3>${lnrFeatures.length > 0 ? 'Local Nature Reserve' : 'National Nature Reserve'}</h3>`;
+    html += `<button id="clear-nature-reserve" class="sidebar-close-btn">✕</button></div>`;
+
+    const feature = lnrFeatures[0] || nnrFeatures[0];
+    const props = feature.properties;
+
+    html += `<div style="border-left: 4px solid ${lnrFeatures.length > 0 ? '#045a8d' : '#99000d'}; padding-left: 10px; margin-bottom: 15px;">`;
+
+    if (props.name) {
+      html += `<p><strong>Site Name:</strong> ${props.name}</p>`;
+    }
+
+    if (props['nature-reserve-status']) {
+      html += `<p><strong>Status:</strong> ${props['nature-reserve-status']}</p>`;
+    }
+
+    if (props['entry-date']) {
+      html += `<p><strong>Entry Date:</strong> ${props['entry-date']}</p>`;
+    }
+
+    if (props['start-date']) {
+      html += `<p><strong>Designation Start Date:</strong> ${props['start-date']}</p>`;
+    }
+
+    if (props['end-date']) {
+      html += `<p><strong>Designation End Date:</strong> ${props['end-date']}</p>`;
+    }
+
+    if (props['reference']) {
+      html += `<p><strong>Grid Reference:</strong> ${props['reference']}</p>`;
+    }
+
+    html += '</div>';
+
+    document.getElementById('sidebar-content').innerHTML = html;
+
+    document.getElementById('clear-nature-reserve').addEventListener('click', () => {
+      document.getElementById('sidebar-content').innerHTML = `<p>Select a feature on the map to view details.</p>`;
+    });
+
+    return; 
+  }
+
+
+  // --- NTOW TREES SIDEBAR LOGIC WITH POPUP/SIDEBAR TOGGLE ---
+map.on('click', 'ntow-trees', (e) => {
+  e.preventDefault();
+  
+  const props = e.features[0].properties;
+  const coordinates = e.lngLat;
+  
+  // Create popup content with toggle button
+  let popupContent = '<div style="font-size: 12px; max-width: 250px;">';
+  popupContent += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">';
+  popupContent += '<strong style="font-size: 14px;">Tree of Woodland</strong>';
+  popupContent += '<button id="switch-to-sidebar" style="background: #2E8B57; color: white; border: none; padding: 2px 6px; border-radius: 3px; cursor: pointer; font-size: 10px;">View in Sidebar</button>';
+  popupContent += '</div>';
+  
+  if (props.tow_id) {
+    popupContent += `<strong>Tree ID:</strong> ${props.tow_id}<br>`;
+  }
+  if (props.woodland_type) {
+    popupContent += `<strong>Type:</strong> ${props.woodland_type}<br>`;
+  }
+  if (props.meanht) {
+    popupContent += `<strong>Mean Height:</strong> ${props.meanht.toFixed(2)}m<br>`;
+  }
+  if (props.tow_area_m) {
+    popupContent += `<strong>Area:</strong> ${props.tow_area_m} m²<br>`;
+  }
+  if (props.lidar_survey_year) {
+    popupContent += `<strong>Survey Year:</strong> ${props.lidar_survey_year}`;
+  }
+  
+  popupContent += '</div>';
+  
+  // Create and show popup
+  const ntowPopup = new mapboxgl.Popup({ closeOnClick: true })
+    .setLngLat(coordinates)
+    .setHTML(popupContent)
+    .addTo(map);
+  
+  // Add event listener for the toggle button after popup is added
+  setTimeout(() => {
+    const switchButton = document.getElementById('switch-to-sidebar');
+    if (switchButton) {
+      switchButton.addEventListener('click', (event) => {
+        event.stopPropagation();
+        
+        // Close popup
+        ntowPopup.remove();
+        
+        // Show in sidebar
+        showNTOWInSidebar(props);
+      });
+    }
+  }, 100);
+});
+
+// Function to show NTOW tree details in sidebar
+function showNTOWInSidebar(props) {
+  let html = '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">';
+  html += '<h3>Tree of Woodland</h3>';
+  html += '<div>';
+  html += '<button id="switch-to-popup" style="background: #2E8B57; color: white; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer; font-size: 12px; margin-right: 5px;">Popup View</button>';
+  html += '<button id="clear-ntow-selection" class="sidebar-close-btn">✕</button>';
+  html += '</div>';
+  html += '</div>';
+  
+  html += '<div style="border-left: 4px solid #2E8B57; padding-left: 10px; margin-bottom: 15px;">';
+  
+  if (props.tow_id) {
+    html += `<p><strong>Tree ID:</strong> ${props.tow_id}</p>`;
+  }
+  if (props.woodland_type) {
+    html += `<p><strong>Woodland Type:</strong> ${props.woodland_type}</p>`;
+  }
+  if (props.meanht || props.minht || props.maxht) {
+    html += `<p><strong>Height (m):</strong> 
+      Mean: ${props.meanht?.toFixed(2) || 'N/A'}, 
+      Min: ${props.minht?.toFixed(2) || 'N/A'}, 
+      Max: ${props.maxht?.toFixed(2) || 'N/A'}</p>`;
+  }
+  if (props.stdvht) {
+    html += `<p><strong>Height Variation (Std Dev):</strong> ${props.stdvht.toFixed(2)}</p>`;
+  }
+  if (props.tow_area_m) {
+    html += `<p><strong>Canopy Area:</strong> ${props.tow_area_m} m²</p>`;
+  }
+  if (props.lidar_survey_year) {
+    html += `<p><strong>LiDAR Survey Year:</strong> ${props.lidar_survey_year}</p>`;
+  }
+  if (props.km1_tile || props.km10_tile) {
+    html += `<p><strong>Map Tile:</strong> 1km: ${props.km1_tile}, 10km: ${props.km10_tile}</p>`;
+  }
+  
+  html += '</div>';
+  
+  document.getElementById('sidebar-content').innerHTML = html;
+  
+  // Add click handlers for buttons
+  document.getElementById('clear-ntow-selection').addEventListener('click', () => {
+    document.getElementById('sidebar-content').innerHTML = `<p>Select a feature on the map to view details.</p>`;
+  });
+  
+  document.getElementById('switch-to-popup').addEventListener('click', () => {
+    // Clear sidebar
+    document.getElementById('sidebar-content').innerHTML = `<p>Select a feature on the map to view details.</p>`;
+  });
+}
+
+map.on('mouseenter', 'ntow-trees', () => {
+  map.getCanvas().style.cursor = 'pointer';
+});
+
+map.on('mouseleave', 'ntow-trees', () => {
+  map.getCanvas().style.cursor = '';
+});
+});
+
+
+
 
 }

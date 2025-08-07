@@ -361,3 +361,140 @@ body, html {
   display: block;
   font-size: 1.1em;
 }
+
+/* New map legend styles */
+.map-legend {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    max-width: 200px;
+    z-index: 1000;
+}
+
+.map-legend h3 {
+    margin: 0 0 10px 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+.map-legend h4 {
+    margin: 10px 0 5px 0;
+    font-size: 14px;
+    font-weight: bold;
+    color: #555;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 3px;
+}
+
+.legend-section:first-child h4 {
+    margin-top: 0;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+    gap: 10px;
+}
+
+.legend-color {
+    width: 20px;
+    height: 15px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.legend-pattern {
+    width: 20px;
+    height: 15px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-repeat: repeat;
+}
+
+.legend-line {
+    width: 20px;
+    height: 3px;
+    border-radius: 1px;
+}
+
+.legend-item span {
+    color: #333;
+    font-size: 13px;
+}
+
+/* Optional: Hide legend on mobile */
+@media (max-width: 768px) {
+    .map-legend {
+        bottom: 10px;
+        right: 10px;
+        font-size: 12px;
+        padding: 10px;
+        max-width: 150px;
+    }
+    
+    .legend-item span {
+        font-size: 11px;
+    }
+}
+
+/* Add these styles after the existing heritage legend styles: */
+
+/* Standardize all legend styling to match heritage legend */
+#ntow-legend, #social-infrastructure-legend, #landuse-legend {
+  margin-top: 10px;
+}
+
+#ntow-legend > div, 
+#social-infrastructure-legend > div, 
+#landuse-legend > div {
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  line-height: 1.5;
+}
+
+#ntow-legend span, 
+#social-infrastructure-legend span, 
+#landuse-legend span {
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+#ntow-legend strong, 
+#social-infrastructure-legend strong, 
+#landuse-legend strong {
+  margin-bottom: 2px;
+  display: block;
+  font-size: 1.1em;
+}
+
+/* Specific legend symbol styling */
+.legend-symbol {
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  margin-right: 10px;
+  border: 1px solid;
+  flex-shrink: 0;
+}
+
+.legend-line-symbol {
+  width: 12px;
+  height: 2px;
+  display: inline-block;
+  margin-right: 10px;
+  border: 1px solid;
+  flex-shrink: 0;
+}
+
+.legend-circle {
+  border-radius: 50%;
+}

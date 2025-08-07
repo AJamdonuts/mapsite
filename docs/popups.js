@@ -31,15 +31,17 @@ function setupPopups(map) {
     landUsePopup.remove();
   });
 
-  // Buildings popup
-
-  const buildingPopup = new maplibregl.Popup({ closeButton: false, closeOnClick: false });
-
-  map.on('mousemove', 'buildings-3d', (e) => {
-    map.getCanvas().style.cursor = 'pointer';
+  // Buildings popup - MODIFIED to show in sidebar instead of hover popup
+  map.on('click', 'buildings-3d', (e) => {
     const feature = e.features[0];
     const props = feature.properties;
     const name = props.Name || 'Unnamed Building';
+
+    // Visual feedback for click - change cursor temporarily
+    map.getCanvas().style.cursor = 'wait';
+    setTimeout(() => {
+      map.getCanvas().style.cursor = 'pointer';
+    }, 200);
 
     // Calculate height if available, otherwise estimate
     let height = 'Unknown';
@@ -49,15 +51,36 @@ function setupPopups(map) {
       height = `${levels * 3} m (approx from ${levels} levels)`;
     }
 
-    buildingPopup
-      .setLngLat(e.lngLat)
-      .setHTML(`<strong>${name}</strong><br>Height: ${height}`)
-      .addTo(map);
+    // Show building height panel in sidebar
+    document.getElementById('building-height-panel').style.display = 'block';
+    
+    // Populate the panel with building height data
+    const heightInfo = document.getElementById('building-height-info');
+    heightInfo.innerHTML = `
+      <table>
+        <tr><td><strong>Building Name:</strong></td><td>${name}</td></tr>
+        <tr><td><strong>Height:</strong></td><td>${height}</td></tr>
+        <tr><td><strong>Building Type:</strong></td><td>${props.building || props['building:type'] || 'N/A'}</td></tr>
+        <tr><td><strong>Levels:</strong></td><td>${props['building:levels'] || 'N/A'}</td></tr>
+        <tr><td><strong>Material:</strong></td><td>${props['building:material'] || 'N/A'}</td></tr>
+        <tr><td><strong>Use:</strong></td><td>${props['building:use'] || 'N/A'}</td></tr>
+      </table>
+    `;
+
+    // Hide other panels if they're open
+    document.getElementById('listed-building-panel').style.display = 'none';
+    
+    // Clear the main sidebar content or show a message
+    document.getElementById('sidebar-content').innerHTML = '<p>Building height information shown below.</p>';
+  });
+
+  // Change cursor on hover (optional)
+  map.on('mouseenter', 'buildings-3d', () => {
+    map.getCanvas().style.cursor = 'pointer';
   });
 
   map.on('mouseleave', 'buildings-3d', () => {
     map.getCanvas().style.cursor = '';
-    buildingPopup.remove();
   });
 
   // Listed buildings popup
@@ -216,7 +239,50 @@ for (const category of ['amenity', 'tourism', 'shop']) {
   });
 }
 
-  // TREE DATA (NTOW) POPUPS
+// EDUCATIONAL ESTABLISHMENT POPUPS
+map.on('click', 'educational-establishments', (e) => {
+  const props = e.features[0].properties;
+
+  const statusLookup = {
+    '1': 'Open',
+    '2': 'Closed',
+    '3': 'Proposed'
+  };
+
+  const typeLookup = {
+    '14': 'Community School',
+    '15': 'Voluntary Aided School',
+    '16': 'Voluntary Controlled School',
+    '17': 'Foundation School'
+  };
+
+  const popupHtml = `
+    <strong>School Name:</strong> ${props.name || 'Unknown'}<br>
+    <strong>Status:</strong> ${statusLookup[props['educational-establishment-status']] || 'N/A'}<br>
+    <strong>Type:</strong> ${typeLookup[props['educational-establishment-type']] || 'N/A'}<br>
+    <strong>Local Authority:</strong> ${props['local-authority-district'] || 'N/A'}<br>
+    <strong>Ward:</strong> ${props.ward || 'N/A'}<br>
+    <strong>Entry Date:</strong> ${props['entry-date'] || 'N/A'}<br>
+    <strong>Reference No.:</strong> ${props.reference || 'N/A'}
+    ${props['website-url'] ? `<br><strong>Website:</strong> <a href="${props['website-url']}" target="_blank">Visit</a>` : ''}
+  `;
+
+  new maplibregl.Popup()
+    .setLngLat(e.lngLat)
+    .setHTML(popupHtml)
+    .addTo(map);
+});
+
+// Add hover effects for educational establishments
+map.on('mouseenter', 'educational-establishments', () => {
+  map.getCanvas().style.cursor = 'pointer';
+});
+
+map.on('mouseleave', 'educational-establishments', () => {
+  map.getCanvas().style.cursor = '';
+});
+
+// TREE DATA (NTOW) POPUPS
 
   map.on('click', 'ntow-trees', (e) => {
     const feature = e.features[0];
@@ -247,15 +313,21 @@ for (const category of ['amenity', 'tourism', 'shop']) {
   });
 
 // CANOPY COVER POPUP TO SIDEBAR
-
-  map.on('click', 'ward-canopy', (e) => {
+map.on('click', 'ward-canopy', (e) => {
+  e.preventDefault(); // Prevent other click handlers from firing
+  
   const props = e.features[0].properties;
   const html = `
-    <strong>Ward:</strong> ${props.wardname}<br>
-    <strong>Canopy Cover:</strong> ${props.percancov.toFixed(1)}%<br>
-    <strong>Survey Year:</strong> ${props.survyear}<br>
-    <strong>Standard Error:</strong> ${props.standerr}%`;
-  document.getElementById('canopy-info').innerHTML = html;
+    <div style="border-left: 4px solid #4CAF50; padding-left: 10px; margin-bottom: 15px;">
+      <h3>Ward Canopy Cover</h3>
+      <p><strong>Ward:</strong> ${props.wardname}</p>
+      <p><strong>Canopy Cover:</strong> ${props.percancov.toFixed(1)}%</p>
+      <p><strong>Survey Year:</strong> ${props.survyear}</p>
+      <p><strong>Standard Error:</strong> ${props.standerr}%</p>
+    </div>`;
+  
+  // Update the correct element
+  document.getElementById('sidebar-content').innerHTML = html;
 });
 
 // Heritage popups for Scheduled Monuments and Heritage Parks/Gardens
@@ -329,6 +401,12 @@ map.on('click', (e) => {
       }
     }
   }, 100);
+});
+
+// Add close button functionality for building height panel
+document.getElementById('height-close-btn').addEventListener('click', () => {
+  document.getElementById('building-height-panel').style.display = 'none';
+  document.getElementById('sidebar-content').innerHTML = '<p>Select a feature on the map to view details.</p>';
 });
 }
 window.setupPopups = setupPopups; // Export function for use in main.js

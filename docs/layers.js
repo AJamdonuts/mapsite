@@ -16,20 +16,99 @@ window.originalLanduseStyles = {
     stadium:  { 'fill-color': '#a1d99b' },   // soft green
 };
 
+// Add these global variables if they don't exist
+window.activeLandUseTypes = ['residential', 'commercial', 'industrial', 'forest', 'farmland', 'grass', 'park', 'retail', 'landfill']; // Initialize with all types
+window.inactiveColor = '#cccccc';
+
+// Update the landUseColors object to match your desired colors:
+window.landUseColors = {
+    'residential': '#00FF00',     // Green (changed from orange)
+    'commercial': '#FF0000',      // Red (changed from pink)
+    'industrial': '#0000FF',      // Blue (changed from dark green)
+    'farmland': '#FFFF00',        // Yellow (changed from orange)
+    'park': '#800080',             // Purple (changed from dark green)
+    'retail': '#FFA500',           // Orange
+    'landfill': '#808080'
+};
+
 
 function addLayers(map) {
     
-    map.setPaintProperty('landcover_wood', 'fill-color', '#aaaaaa'); // light grey
-    map.setPaintProperty('landcover_grass', 'fill-color', '#cccccc'); // slightly different grey
-    map.setPaintProperty('landuse_cemetery', 'fill-color', '#bbbbbb');
-    map.setPaintProperty('landuse_hospital', 'fill-color', '#bbbbbb');
-    map.setPaintProperty('landuse_school', 'fill-color', '#bbbbbb');
-    map.setPaintProperty('landuse_stadium', 'fill-color', '#bbbbbb');
+    // Article 4 Direction Areas layer
+    map.addLayer({
+        id: 'article-4-direction',
+        type: 'fill',
+        source: 'article-4-direction',
+        layout: { visibility: 'none' },
+        paint: {
+            'fill-color': '#f0e68c', // khaki
+            'fill-opacity': 0.15,
+            'fill-outline-color': '#000000'
+        }
+    });
+
+     // Highlight layer for Article 4 Direction Areas
+    map.addLayer({
+        id: 'article-4-highlight',
+        type: 'line',
+        source: 'article-4-direction',
+        layout: {},
+        paint: {
+            'line-color': '#FF4500', // orange-red highlight
+            'line-width': 4,
+            'line-opacity': 1
+        },
+        filter: ['==', 'fid', 0] // No feature selected by default
+    });
 
 
-    
+    // Article 4 Direction Areas dashed outline
+    map.addLayer({
+        id: 'article-4-direction-outline',
+        type: 'line',
+        source: 'article-4-direction',
+        layout: { visibility: 'none' },
+        paint: {
+            'line-color': '#000000', // black
+            'line-width': [
+                'interpolate',
+                ['exponential', 1.5],
+                ['zoom'],
+                8, 0.5,   // At zoom 8: 0.5px width
+                12, 1,    // At zoom 12: 1px width
+                16, 2,    // At zoom 16: 2px width
+                20, 3     // At zoom 20: 3px width
+            ],
+            'line-opacity': 0.8,
+            'line-dasharray': [3, 3] // Creates dashed line pattern
+        }
+    });
 
-// Listed buildings layer
+
+    //Heritage Parks and Gardens layer
+    map.addLayer({
+        id: 'heritage-parks-fill',
+        type: 'fill',
+        source: 'heritage_parks',
+        layout: { visibility: 'none' },
+        paint: {
+            'fill-color': ' #c1f7a1', 
+            'fill-opacity': 0.3,
+        }
+    });
+
+    map.addLayer({
+        id: 'heritage-parks-outline',
+        type: 'line',
+        source: 'heritage_parks',
+        layout: { visibility: 'none' },
+        paint: {
+            'line-color': '#598145',
+            'line-width': 1.5
+        }
+    });
+
+    // Listed buildings layer
     map.addLayer({
         id: 'listed-point',
         type: 'circle',
@@ -38,15 +117,39 @@ function addLayers(map) {
         visibility: 'none' 
         },
         paint: {
-        'circle-radius': 5,
-        'circle-color': '#CC5500',
-        'circle-stroke-color': '#5C2E00',
-        'circle-stroke-width': 2,
-        'circle-opacity': 0.7
+        'circle-radius': 4,
+        'circle-color': 'rgba(179, 205, 224, 0.9)',
+        'circle-stroke-color': '#6495ed',
+        'circle-stroke-width': 1.2,
         }
     });
 
-// Scheduled Monuments layer
+    // Listed buildings fill layer (for polygons)
+    map.addLayer({
+        id: 'listed-fill',
+        type: 'fill',
+        source: 'listed-buildings',
+        layout: { visibility: 'none' },
+        paint: {
+            'fill-color': '#3388ff',
+            'fill-opacity': 0.3
+        }
+    });
+
+    // Listed buildings highlight layer (for selection highlighting)
+    map.addLayer({
+        id: 'listed-highlight',
+        type: 'fill',
+        source: 'listed-buildings',
+        layout: { visibility: 'none' },
+        paint: {
+            'fill-color': '#ff0000',
+            'fill-opacity': 0.6
+        },
+        filter: ['==', 'fid', 0] // No feature selected by default
+    });
+
+    // Scheduled Monuments layer
     map.addLayer({
         id: 'smonuments-fill',
         type: 'fill',
@@ -69,29 +172,6 @@ function addLayers(map) {
         }
     });
 
-
-//Heritage Parks and Gardens layer
-    map.addLayer({
-        id: 'heritage-parks-fill',
-        type: 'fill',
-        source: 'heritage_parks',
-        layout: { visibility: 'none' },
-        paint: {
-            'fill-color': ' #c1f7a1', 
-            'fill-opacity': 0.3,
-        }
-    });
-
-    map.addLayer({
-        id: 'heritage-parks-outline',
-        type: 'line',
-        source: 'heritage_parks',
-        layout: { visibility: 'none' },
-        paint: {
-            'line-color': '#598145',
-            'line-width': 1.5
-        }
-    });
 
 // World Heritage Sites layer
 
@@ -118,104 +198,6 @@ function addLayers(map) {
       paint: {
         'fill-pattern': 'goldHatch'
       }
-    });
-
-
-
-
-    // 3D Buildings
-    map.addLayer({
-        id: 'buildings-3d',
-        type: 'fill-extrusion',
-        source: 'building_height',
-        paint: {
-        'fill-extrusion-color': '#1f77b4',
-        'fill-extrusion-opacity': 0.7,
-        'fill-extrusion-height': [ // Calculate height based on building levels or height property
-            'coalesce',
-            ['get', 'height'],
-            ['*', ['to-number', ['get', 'building:levels']], 3],
-            10,
-        ],
-        'fill-extrusion-base': 0,
-        },
-    });
-
-
-    // Agricultural Land Classification
-    map.addLayer({
-        id: 'agricultural-land',
-        type: 'fill',
-        source: 'agricultural_land',
-        layout: { visibility: 'none' },
-        paint: {
-            'fill-color': [
-                'match',
-                ['get', 'agricultural-land-classification-grade'],
-                'Grade 1', '#f7fcb9', // Grade 1
-                'Grade 2', '#addd8e', // Grade 2
-                'Grade 3', '#31a354', // Grade 3
-                'Grade 4', '#006d2c', // Grade 4
-                'Grade 5', '#00441b', // Grade 5
-                'Urban', '#b65555', // Urban
-                'Non Agricultural', '#b8ae1e', // Non Agricultural
-                '#cccccc' // Default gray for unknown classes
-            ],
-            'fill-opacity': 0.5,
-            'fill-outline-color': '#000000'
-        }
-    });
-
-    // Ancient Woodland layer
-    map.addLayer({
-        id: 'ancient-woodland',
-        type: 'fill',
-        source: 'ancient-woodland',
-        layout: { visibility: 'none' },
-        paint: {
-            'fill-color': '#228B22', // forest green
-            'fill-opacity': 0.5,
-            'fill-outline-color': '#000000'
-        }
-    });
-
-    // Area of Outstanding Natural Beauty (AONB) layer
-    map.addLayer({
-        id: 'aonb-fill',
-        type: 'fill',
-        source: 'aonb',
-        layout: { visibility: 'none' },
-        paint: {
-            'fill-color': '#d0e1f9', // light blue
-            'fill-opacity': 0.4,
-            'fill-outline-color': '#000000'
-        }
-    });
-
-    // Built up Areas layer
-    map.addLayer({
-        id: 'built-up-areas',
-        type: 'fill',
-        source: 'built-up-areas',
-        layout: { visibility: 'none' },
-        paint: {
-            'fill-color': '#efe05b', // khaki
-            'fill-opacity': 0.5,
-            'fill-outline-color': '#000000'
-        }
-    });
-
-    // Conservation Areas layer - Updated styling
-    map.addLayer({
-        id: 'conservation-areas',
-        type: 'fill',
-        source: 'conservation-areas',
-        layout: { visibility: 'none' },
-        paint: {
-            'fill-color': '#90caf9', // light blue
-            'fill-opacity': 0.3 // 30% opacity
-            // Remove fill-outline-color since we'll use a separate line layer
-        }
     });
 
     // Conservation Areas outline - Separate line layer for visible outline
@@ -245,6 +227,88 @@ function addLayers(map) {
         filter: ['==', 'fid', 0] // Use 'fid' and 0, same as Article 4
     });
 
+    // Conservation Areas layer - Updated styling
+    map.addLayer({
+        id: 'conservation-areas',
+        type: 'fill',
+        source: 'conservation-areas',
+        layout: { visibility: 'none' },
+        paint: {
+            'fill-color': '#90caf9', // light blue
+            'fill-opacity': 0.3 // 30% opacity
+            // Remove fill-outline-color since we'll use a separate line layer
+        }
+    });
+
+    // 3D Buildings
+    map.addLayer({
+        id: 'buildings-3d',
+        type: 'fill-extrusion',
+        source: 'building_height',
+        paint: {
+        'fill-extrusion-color': 'transparent', // Use transparent color for fill
+        'fill-extrusion-opacity': 0.1,
+        'fill-extrusion-height': [ // Calculate height based on building levels or height property
+            'coalesce',
+            ['get', 'height'],
+            ['*', ['to-number', ['get', 'building:levels']], 3],
+            10,
+        ],
+        'fill-extrusion-base': 0,
+        },
+    });
+
+    // Ancient Woodland layer
+    map.addLayer({
+        id: 'ancient-woodland',
+        type: 'fill',
+        source: 'ancient-woodland',
+        layout: { visibility: 'none' },
+        paint: {
+            'fill-color': '#3a743a',
+            'fill-opacity': 0.5,
+        }
+    });
+
+    // Ancient Woodland outline layer
+        map.addLayer({
+        id: 'ancient-woodland-outline',
+        type: 'line',
+        source: 'ancient-woodland',
+        layout: { visibility: 'none' },
+        paint: {
+            'line-color': '#006d2c', 
+            'line-width': 2,
+            'line-opacity': 1,
+        },
+    });
+
+    // Area of Outstanding Natural Beauty (AONB) layer
+    map.addLayer({
+        id: 'aonb-fill',
+        type: 'fill',
+        source: 'aonb',
+        layout: { visibility: 'none' },
+        paint: {
+            'fill-color': '#ccebc5',  
+            'fill-opacity': 0.3  
+        },
+    });
+
+    // AONB outline layer with dashed line
+    map.addLayer({
+        id: 'aonb-outline',
+        type: 'line',
+        source: 'aonb',
+        layout: { visibility: 'none' },
+        paint: {
+            'line-color': '#006d2c', 
+            'line-width': 2,
+            'line-opacity': 1,
+            'line-dasharray': [3, 3] 
+        },
+    });
+
     // Local Nature Reserves layer
     map.addLayer({
         id: 'local-nature-reserves',
@@ -252,9 +316,21 @@ function addLayers(map) {
         source: 'local-nature-reserves',
         layout: { visibility: 'none' },
         paint: {
-            'fill-color': '#b2df8a', // light green
+            'fill-color': '#b3cde3', 
             'fill-opacity': 0.4,
-            'fill-outline-color': '#000000'
+        }
+    });
+
+    // Local Nature Reserves outline layer
+    map.addLayer({
+        id: 'local-nature-reserves-outline',
+        type: 'line',
+        source: 'local-nature-reserves',
+        layout: { visibility: 'none' },
+        paint: {
+            'line-color': '#045a8d', 
+            'line-width': 2,
+            'line-opacity': 1
         }
     });
 
@@ -266,179 +342,25 @@ function addLayers(map) {
         source: 'national-nature-reserves',
         layout: { visibility: 'none' },
         paint: {
-            'fill-color': '#a8d5ba', // light green
+            'fill-color': '#fbb4ae', 
             'fill-opacity': 0.4,
-            'fill-outline-color': '#000000'
         }
     });
 
-   // Local Plan Boundaries layer
+    // National Nature Reserves outline layer
     map.addLayer({
-        id: 'local-plan-boundaries',
+        id: 'national-nature-reserves-outline',
         type: 'line',
-        source: 'local-plan-boundaries',
+        source: 'national-nature-reserves',
         layout: { visibility: 'none' },
         paint: {
-            'line-color': '#ff7f0e', // orange
+            'line-color': '#99000d', 
             'line-width': 2,
-            'line-opacity': 0.8
-        }
-    });
-
-    // Article 4 Direction Areas layer
-    map.addLayer({
-        id: 'article-4-direction',
-        type: 'fill',
-        source: 'article-4-direction',
-        layout: { visibility: 'none' },
-        paint: {
-            'fill-color': '#f0e68c', // khaki
-            'fill-opacity': 0.15,
-            'fill-outline-color': '#000000'
-        }
-    });
-
-    // Highlight layer for Article 4 Direction Areas
-    map.addLayer({
-        id: 'article-4-highlight',
-        type: 'line',
-        source: 'article-4-direction',
-        layout: {},
-        paint: {
-            'line-color': '#FF4500', // orange-red highlight
-            'line-width': 4,
             'line-opacity': 1
-        },
-        filter: ['==', 'fid', 0] // No feature selected by default
-    });
-
-    // Article 4 Direction Areas dashed outline
-    map.addLayer({
-        id: 'article-4-direction-outline',
-        type: 'line',
-        source: 'article-4-direction',
-        layout: { visibility: 'none' },
-        paint: {
-            'line-color': '#000000', // black
-            'line-width': [
-                'interpolate',
-                ['exponential', 1.5],
-                ['zoom'],
-                8, 0.5,   // At zoom 8: 0.5px width
-                12, 1,    // At zoom 12: 1px width
-                16, 2,    // At zoom 16: 2px width
-                20, 3     // At zoom 20: 3px width
-            ],
-            'line-opacity': 0.8,
-            'line-dasharray': [3, 3] // Creates dashed line pattern
         }
     });
 
-    // Educational Establishments layer
-    map.addLayer({
-        id: 'educational-establishments',
-        type: 'circle',
-        source: 'educational-establishments',
-        layout: { visibility: 'none' },
-        paint: {
-            'circle-radius': 6,
-            'circle-color': '#b220ba',
-            'circle-stroke-color': '#000000',
-            'circle-stroke-width': 1,
-            'circle-opacity': 0.8
-        }
-    });
-
-
-    // Transport Access Nodes layer
-    map.addLayer({
-        id: 'public-transport-nodes',
-        type: 'circle',
-        source: 'public-transport-nodes',
-        layout: { visibility: 'none' },
-        paint: {
-            'circle-radius': 4,
-            'circle-color': '#ff7f0e', // orange
-            'circle-stroke-color': '#000000',
-            'circle-stroke-width': 1,
-            'circle-opacity': 0.8
-        }
-    });
-
-    
-    // Land use fill
-    window.landUseColors = {
-        residential: '#f4a261',
-        commercial: '#2a9d8f',
-        industrial: '#e76f51',
-        forest: '#264653',
-        farmland: '#e9c46a',
-        grass: '#a8dadc',
-        park: '#81b29a',
-        quarry: '#6c757d',
-    };
-
-    // Fill layer for land use areas
-    map.addLayer({
-        id: 'landuse-fill',
-        type: 'fill',
-        layout: { visibility: 'none' },
-        source: 'landuse',
-        paint: {
-        'fill-color': [
-            'match',
-            ['get', 'landuse'], // Get land use type from feature
-            ...Object.entries(landUseColors).flat(),
-            '#cccccc', // Default gray if type not listed
-        ],
-        'fill-opacity': 0.3,
-        },
-    });
-
-    // Land use outline for boundaries
-    map.addLayer({
-        id: 'landuse-outline',
-        type: 'line',
-        layout: { visibility: 'none' },
-        source: 'landuse',
-        paint: {
-        'line-color': [
-            'match',
-            ['get', 'landuse'],
-            ...Object.entries(landUseColors).flat(),
-            '#555555'  // fallback color
-        ],
-        'line-width': 1,
-        'line-opacity': 0.8,
-        },
-    });
-
-    // Points of Interest (POIs) layer
-    const poiColors = {
-    amenity: '#e41a1c',    // red
-    tourism: '#377eb8',    // blue
-    shop: '#4daf4a',       // green
-    };
-
-    // Create a circle layer for each POI category
-    for (const category of ['amenity', 'tourism', 'shop']) {
-        map.addLayer({
-        id: `pois-${category}`,
-        type: 'circle',
-        layout: { visibility: 'none' },
-        source: 'pois',
-        filter: ['all', ['has', category], ['has', 'name']], // Only features with category and name
-        paint: {
-            'circle-radius': 6,
-            'circle-color': poiColors[category],
-            'circle-stroke-width': 1,
-            'circle-stroke-color': '#ffffff', // White border for visibility
-        },
-        });
-    }
-
-    
-    // National Tree Register (NTOW) trees
+        // National Tree Register (NTOW) trees
 
     map.addLayer({
     id: 'ntow-trees',
@@ -482,11 +404,6 @@ function addLayers(map) {
     }
     });
 
-    map.loadImage('images/gold-hatch.png', (error, image) => {
-      if (error) throw error;
-      map.addImage('goldHatch', image, { pixelRatio: 2 });
-    });
-
 
     // Tree Preservation Zones layer
     map.addLayer({
@@ -500,5 +417,229 @@ function addLayers(map) {
             'fill-outline-color': '#000000'
         }
     });
-}
-window.addLayers = addLayers; // Export function for use in main.js
+
+
+    // Transport Access Nodes layer
+    map.addLayer({
+        id: 'public-transport-nodes',
+        type: 'circle',
+        source: 'public-transport-nodes',
+        layout: { visibility: 'none' },
+        paint: {
+            'circle-radius': 4,
+            'circle-color': '#ff7f0e', // orange
+            'circle-stroke-color': '#000000',
+            'circle-stroke-width': 1,
+            'circle-opacity': 0.8
+        }
+    });
+
+     // Agricultural Land Classification
+    map.addLayer({
+        id: 'agricultural-land',
+        type: 'fill',
+        source: 'agricultural_land',
+        layout: { visibility: 'none' },
+        paint: {
+            'fill-color': [
+                'match',
+                ['get', 'agricultural-land-classification-grade'],
+                'Grade 1', '#228B22', // Grade 1
+                'Grade 2', '#32CD32', // Grade 2
+                'Grade 3', '#9ACD32', // Grade 3
+                'Grade 3a', '#9ACD32', // Grade 3a
+                'Grade 3b', '#ADFF2F', // Grade 3b
+                'Grade 4', '#FFFF99', // Grade 4
+                'Grade 5', '#DDDDDD', // Grade 5
+
+                'rgba(0,0,0,0)' // Completely transparent for unknown classes
+            ],
+            'fill-opacity': 0.5,
+            'fill-outline-color': '#000000'
+        },
+    });
+
+    // Built up Areas layer
+    map.addLayer({
+        id: 'built-up-areas',
+        type: 'fill',
+        source: 'built-up-areas',
+        layout: { visibility: 'none' },
+        paint: {
+            'fill-color': '#FF6B6B', // khaki
+            'fill-opacity': 0.4,
+            'fill-outline-color': '#CC5555'
+        }
+    });
+
+    // Land use fill layer - ADD THIS BEFORE the outline layer
+    map.addLayer({
+        id: 'landuse-fill',
+        type: 'fill',
+        layout: { visibility: 'none' },
+        source: 'landuse',
+        paint: {
+            'fill-color': [
+                'case',
+                ['in', ['get', 'landuse'], ['literal', window.activeLandUseTypes]],
+                [
+                    'match',
+                    ['get', 'landuse'],
+                    ...Object.entries(window.landUseColors).flat(),
+                    window.inactiveColor
+                ],
+                '#000000'  // fallback color
+                
+            ],
+            'fill-opacity': 0.6,
+        },
+        // Add this filter to exclude cemeteries completely
+        filter: ['!=', ['get', 'landuse'], 'cemetery']
+    });
+
+    // Land use outline for boundaries
+    map.addLayer({
+        id: 'landuse-outline',
+        type: 'line',
+        layout: { visibility: 'none' },
+        source: 'landuse',
+        paint: {
+        'line-color': '#000000',
+        'line-width': 1,
+        'line-opacity': 0.8,
+        },
+        // Add this filter to exclude cemeteries completely
+        filter: ['!=', ['get', 'landuse'], 'cemetery', 'hospital', 'school', 'stadium', 'military', 'forest', 'grass']
+    });
+
+       // Local Plan Boundaries layer
+    map.addLayer({
+        id: 'local-plan-boundaries',
+        type: 'line',
+        source: 'local-plan-boundaries',
+        layout: { visibility: 'none' },
+        paint: {
+            'line-color': '#ff7f0e', // orange
+            'line-width': 2,
+            'line-opacity': 0.8
+        }
+    });
+
+
+        map.loadImage('images/gold-hatch.png', (error, image) => {
+      if (error) throw error;
+      map.addImage('goldHatch', image, { pixelRatio: 2 });
+    });
+
+    // Load the black hatch image
+    map.loadImage('images/black-hatch.png', (error, image) => {
+        if (error) throw error;
+        map.addImage('blackHatch', image, { pixelRatio: 4 });
+    });
+
+    // Land use cemetery
+    map.addLayer({
+    id: 'cemetery-outline',
+    type: 'line',
+    source: 'openmaptiles',
+    'source-layer': 'landuse',
+    layout: { visibility: 'none' },
+    filter: ['==', ['get', 'class'], 'cemetery'],
+    paint: {
+        'line-color': '#000000',
+        'line-width': 2,
+        'line-opacity': 1
+    }
+    });
+
+    // Land use hospital
+    map.addLayer({
+    id: 'hospital-outline',
+    type: 'line',
+    source: 'openmaptiles',
+    'source-layer': 'landuse',
+    layout: { visibility: 'none' },
+    filter: ['==', ['get', 'class'], 'hospital'],
+    paint: {
+        'line-color': '#d63384',
+        'line-width': 2,
+        'line-opacity': 1
+    }
+    });
+
+    // Land use school
+    map.addLayer({
+    id: 'school-outline',
+    type: 'line',
+    source: 'openmaptiles',
+    'source-layer': 'landuse',
+    layout: { visibility: 'none' },
+    filter: ['==', ['get', 'class'], 'school'],
+    paint: {
+        'line-color': '#e6cc00',
+        'line-width': 2,
+        'line-opacity': 1
+    }
+    });
+
+    // Land use stadium
+    map.addLayer({
+    id: 'stadium-outline',
+    type: 'line',
+    source: 'openmaptiles',
+    'source-layer': 'landuse',
+    layout: { visibility: 'none' },
+    filter: ['==', ['get', 'class'], 'stadium'],
+    paint: {
+        'line-color': '#d63384',
+        'line-width': 2,
+        'line-opacity': 1
+    }
+    });
+
+  // Points of Interest (POIs) layer
+    const poiColors = {
+    amenity: '#f8bbd0',    // red
+    tourism: '#81d4fa',    // blue
+    shop: '#ce93d8',      
+    };
+
+    // Create a circle layer for each POI category
+    for (const category of ['amenity', 'tourism', 'shop']) {
+        map.addLayer({
+        id: `pois-${category}`,
+        type: 'circle',
+        layout: { visibility: 'none' },
+        source: 'pois',
+        filter: ['all', ['has', category], ['has', 'name']], // Only features with category and name
+        paint: {
+            'circle-radius': 5,
+            'circle-color': poiColors[category],
+            'circle-stroke-width': 1,
+            'circle-stroke-color': '#ffffff', // White border for visibility
+        },
+        });
+    }
+
+    // Educational Establishments layer
+    map.addLayer({
+        id: 'educational-establishments',
+        type: 'circle',
+        source: 'educational-establishments',
+        layout: { visibility: 'none' },
+        paint: {
+            'circle-radius': 6,
+            'circle-color': '#fff176',
+            'circle-stroke-color': '#666',
+            'circle-stroke-width': 1,
+        }
+    });
+    
+
+} // End of addLayers function
+
+window.addLayers = addLayers;
+
+
+
+

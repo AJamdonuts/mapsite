@@ -53,7 +53,8 @@ NOTES:
       <div class="group-content">
         <label><input type="checkbox" id="toggleAgricultural"> Agricultural Land</label>
         <label><input type="checkbox" id="toggleBuiltUpAreas"> Built Up Areas</label>
-        <label><input type="checkbox" id="toggleLanduse"> Land Use</label>
+        <label><input type="checkbox" id="toggleLanduse"> General Land Use</label>
+        <label><input type="checkbox" id="toggleResidential"> Residential Areas</label>
         <label><input type="checkbox" id="toggleLPB"> Local Plan Boundaries</label>
 
 
@@ -80,8 +81,12 @@ NOTES:
       <div class="group-content">
         <label><input type="checkbox" id="toggleAmenity"> Amenity POIs</label>
         <label><input type="checkbox" id="toggleBasePOIs" checked /> Base Map POIs</label>
+        <label><input type="checkbox" id="toggleCemeteries"> Cemeteries</label>
         <label><input type="checkbox" id="toggleEducational"> Educational Establishments</label>
+        <label><input type="checkbox" id="toggleHospitals"> Hospitals</label>
         <label><input type="checkbox" id="toggleShop"> Shop POIs</label>
+        <label><input type="checkbox" id="toggleSchools"> Schools</label>
+        <label><input type="checkbox" id="toggleStadiums"> Stadiums</label>
         <label><input type="checkbox" id="toggleTourism"> Tourism POIs</label>
       </div>
     </div>
@@ -109,37 +114,63 @@ NOTES:
     <div id="landuse-chart-container">
       <canvas id="landuse-chart" width="300" height="300"></canvas>
     </div>
-    <div id="ntow-legend" style="display: none; margin-top: 10px;">
+    <div id="ntow-legend" style="display: none;">
       <strong>NTOW Tree Types:</strong><br>
-      <div><span style="background:#00a884;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Lone Tree</div>
-      <div><span style="background:#4ae700;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Group of Trees</div>
-      <div><span style="background:#6fa803;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>NFI OHC</div>
-      <div><span style="background:#0ae6a9;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Small Woodland</div>
-      <div><span style="background:#cccccc;width:12px;height:12px;display:inline-block;margin-right:5px;"></span>Other</div>
+      <div><span class="legend-symbol" style="background:#00a884; border-color:#006d2c;"></span>Lone Tree</div>
+      <div><span class="legend-symbol" style="background:#4ae700; border-color:#2d5016;"></span>Group of Trees</div>
+      <div><span class="legend-symbol" style="background:#6fa803; border-color:#4a7002;"></span>NFI OHC</div>
+      <div><span class="legend-symbol" style="background:#0ae6a9; border-color:#087a5c;"></span>Small Woodland</div>
+      <div><span class="legend-symbol" style="background:#cccccc; border-color:#999999;"></span>Other</div>
     </div>
+    
+    <div id="social-infrastructure-legend" style="display: none;">
+      <strong>Social Infrastructure Key:</strong><br>
+      <div><span class="legend-symbol legend-circle" style="background:#f8bbd0; border-color:#ffffff;"></span>Amenity POIs</div>
+      <div><span class="legend-symbol" style="background: url('images/black-hatch.png'); background-size: 20px 20px; background-repeat: repeat; border-color:#000;"></span>Cemeteries</div>
+      <div><span class="legend-symbol legend-circle" style="background:#fff176; border-color:#666;"></span>Educational Establishments</div>
+      <div><span class="legend-symbol" style="background:#f28cb1; border-color:#d63384;"></span>Hospitals</div>
+      <div><span class="legend-symbol" style="background:#ce93d8; border-color:#ffffff;"></span>Shop POIs</div>
+      <div><span class="legend-symbol" style="background:#ffe699; border-color:#e6cc00;"></span>Schools</div>
+      <div><span class="legend-symbol" style="background:#a1d99b; border-color:#4a854a;"></span>Stadiums</div>
+      <div><span class="legend-symbol legend-circle" style="background:#81d4fa; border-color:#ffffff;"></span>Tourism POIs</div>
+    </div>
+
     <div id="listed-building-panel" style="display:none; position: relative;">
       <button id="listed-close-btn" class="sidebar-close-btn">X</button>
       <div id="listed-building-info"></div>
     </div>
 
+    <div id="building-height-panel" style="display:none; position: relative;">
+      <button id="height-close-btn" class="sidebar-close-btn">X</button>
+      <h3>Building Height Information</h3>
+      <div id="building-height-info"></div>
+    </div>
+
     <div id="historic-legend" style="display: none; margin-top: 10px;">
       <strong>Heritage & Designation Key:</strong><br>
-      <div>
-        <span style="background:#FFC300;width:12px;height:12px;display:inline-block;margin-right:5px;border:1px solid #B8860B;"></span>
-        WHS Core Area
-      </div>
-      <div>
-        <span style="background: url('images/gold-hatch.png'); width:12px; height:12px; display:inline-block; margin-right:5px; border:1px solid #FFD700;"></span>
-        WHS Buffer Zone
-      </div>
-      <div>
-        <span style="background:#f06a6c;width:12px;height:12px;display:inline-block;margin-right:5px;border:1px solid #a94442;"></span>
-        Scheduled Monument
-      </div>
-      <div>
-        <span style="background:#c1f7a1;width:12px;height:12px;display:inline-block;margin-right:5px;border:1px solid #598145;"></span>
-        Heritage Park/Garden
-      </div>
+      <div><span style="background:rgba(240, 230, 140, 0.15);width:12px;height:12px;display:inline-block;margin-right:5px;border:1px solid #000000;"></span>Article 4 Direction Areas</div>
+      <div><span style="background:#e6f3ff;width:12px;height:12px;display:inline-block;margin-right:5px;border:1px solid #0066cc;"></span>Conservation Areas</div>
+      <div><span style="background:#c1f7a1;width:12px;height:12px;display:inline-block;margin-right:5px;border:1px solid #598145;"></span>Heritage Park/Garden</div>
+      <div><span style="background:#b3cde0;width:12px;height:12px;display:inline-block;margin-right:5px;border:1px solid #6495ed;border-radius:50%;"></span>Listed Building</div>
+      <div><span style="background:#f06a6c;width:12px;height:12px;display:inline-block;margin-right:5px;border:1px solid #a94442;"></span>Scheduled Monument</div>
+      <div><span style="background: url('images/gold-hatch.png'); width:12px; height:12px; display:inline-block; margin-right:5px; border:1px solid #FFD700;"></span>WHS Buffer Zone</div>
+      <div><span style="background:#FFC300;width:12px;height:12px;display:inline-block;margin-right:5px;border:1px solid #B8860B;"></span>WHS Core Area</div>
+    </div>
+
+    <div id="landuse-legend" style="display: none; margin-top: 10px;">
+      <strong>Land Use Key:</strong><br>
+      <div><span style="background:#FF6B6B;width:12px;height:12px;display:inline-block;margin-right:5px;border:1px solid #CC5555;"></span>Built Up Areas</div>
+      <div><span style="background:#f4a261;width:12px;height:12px;display:inline-block;margin-right:5px;border:1px solid #f4a261;"></span>Residential Areas</div>
+      <div><span style="background:#ff7f0e;width:16px;height:2px;display:inline-block;margin-right:5px;border:1px solid #cc5500;"></span>Local Plan Boundaries</div>
+      
+      <!-- Agricultural Land with sub-grades -->
+      <div style="margin-top: 8px; font-size: 0.9em;"><strong>Agricultural Land:</strong></div>
+      <div style="margin-left: 15px;"><span style="background:#228B22;width:12px;height:12px;display:inline-block;margin-right:5px;border:1px solid #006400;"></span>Grade 1 (Excellent)</div>
+      <div style="margin-left: 15px;"><span style="background:#32CD32;width:12px;height:12px;display:inline-block;margin-right:5px;border:1px solid #228B22;"></span>Grade 2 (Very Good)</div>
+      <div style="margin-left: 15px;"><span style="background:#9ACD32;width:12px;height:12px;display:inline-block;margin-right:5px;border:1px solid #6B8E23;"></span>Grade 3a (Good)</div>
+      <div style="margin-left: 15px;"><span style="background:#ADFF2F;width:12px;height:12px;display:inline-block;margin-right:5px;border:1px solid #9ACD32;"></span>Grade 3b (Moderate)</div>
+      <div style="margin-left: 15px;"><span style="background:#FFFF99;width:12px;height:12px;display:inline-block;margin-right:5px;border:1px solid #CCCC00;"></span>Grade 4 (Poor)</div>
+      <div style="margin-left: 15px;"><span style="background:#DDD;width:12px;height:12px;display:inline-block;margin-right:5px;border:1px solid #999;"></span>Grade 5 (Very Poor)</div>
     </div>
   </div>
 

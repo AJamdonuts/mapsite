@@ -1,20 +1,29 @@
-
 // Land use chart and canopy stats logic
 
+// Use the expanded color palette from toggles.js
 window.landUseColors = {
-  residential: '#fbb03b',
-  industrial: '#223b53',
-  commercial: '#e55e5e',
-  forest: '#228B22',
-  farmland: '#a0522d',
-  grass: '#7cfc00',
-  park: '#76c893',
-  quarry: '#6e6e6e',
-  Unknown: '#cccccc',
-  Other: '#999999'
+  residential:        '#f4a261',  // warm orange (used in OSM and Mapbox)
+  commercial:        '#e34a33',  // muted red-orange
+  industrial:        '#b30000',  // dark red (machinery/industry)
+  farmland:          '#fdd49e',  // warm beige/yellow
+  park:              '#a1d99b',  // soft green (used in OSM and Mapbox)
+  retail:            '#fc9272',  // soft coral (distinguishable from commercial)
+  landfill:          '#756bb1',  // purple (uncommon use)
+  grass:             '#c7e9c0',  // light green
+  meadow:            '#74c476',  // richer green
+  recreation_ground: '#41ab5d',  // medium green (more vibrant for sport fields)
+  railway:           '#9e9ac8',  // gray-violet (infrastructure)
+  allotments:        '#fdae6b',  // orange (growing/agriculture)
+  construction:      '#fdd0a2',  // pale orange (under construction)
+  orchard:           '#c6dbef',  // light blue (cultivation)
+  military:          '#cb181d',   // deep red (warning/secure)
+  Unknown:           '#cccccc',
+  Other:             '#999999'
 };
-    // --- LAND USE CHART ---
-    function updateLandUseChart() {
+
+function setupCharts(map) {
+  // Move the updateLandUseChart function inside setupCharts so it has access to map
+  function updateLandUseChart() {
     // Always reset the container to ensure the canvas exists
     if (!document.getElementById('landuse-chart')) {
         document.getElementById('landuse-chart-container').innerHTML =
@@ -48,15 +57,26 @@ window.landUseColors = {
     const groupLandUseType = (type) => {
         if (!type) return 'Unknown';
         const t = type.toLowerCase();
+        
+        // Direct matches for the expanded color palette
         if (t.includes('residential')) return 'residential';
-        if (t.includes('industrial')) return 'industrial';
         if (t.includes('commercial')) return 'commercial';
-        if (t.includes('forest')) return 'forest';
-        if (t.includes('farmland')) return 'farmland';
-        if (t.includes('grass')) return 'grass';
+        if (t.includes('industrial')) return 'industrial';
+        if (t.includes('farmland') || t.includes('farm')) return 'farmland';
         if (t.includes('park')) return 'park';
-        if (t.includes('quarry')) return 'quarry';
-        return type;
+        if (t.includes('retail')) return 'retail';
+        if (t.includes('landfill')) return 'landfill';
+        if (t.includes('grass')) return 'grass';
+        if (t.includes('meadow')) return 'meadow';
+        if (t.includes('recreation') || t.includes('recreation_ground')) return 'recreation_ground';
+        if (t.includes('railway')) return 'railway';
+        if (t.includes('allotments') || t.includes('allotment')) return 'allotments';
+        if (t.includes('construction')) return 'construction';
+        if (t.includes('orchard')) return 'orchard';
+        if (t.includes('military')) return 'military';
+        
+        // If no match found, return the original type (it might be exactly one of our types)
+        return window.landUseColors[type] ? type : 'Unknown';
     };
 
     features.forEach(f => {
@@ -81,7 +101,7 @@ window.landUseColors = {
 
     const labels = Object.keys(grouped);
     const data = labels.map(l => grouped[l]);
-    const backgroundColors = labels.map(l => landUseColors[l] || '#999');
+    const backgroundColors = labels.map(l => window.landUseColors[l] || '#999');
 
     const ctx = document.getElementById('landuse-chart')?.getContext('2d');
     if (!ctx) {
@@ -114,9 +134,14 @@ window.landUseColors = {
         }
         });
     }
-    }
+  }
 
-function setupCharts(map) {
+  // Make updateLandUseChart available globally
+  window.updateLandUseChart = updateLandUseChart;
+  
+  // Set up the chart update events
+  map.on('moveend', updateLandUseChart);
+  map.on('load', updateLandUseChart);
 }
+
 window.setupCharts = setupCharts; // Export function for use in main.js
-window.updateLandUseChart = updateLandUseChart; // Export function for use in main.js
