@@ -408,5 +408,73 @@ document.getElementById('height-close-btn').addEventListener('click', () => {
   document.getElementById('building-height-panel').style.display = 'none';
   document.getElementById('sidebar-content').innerHTML = '<p>Select a feature on the map to view details.</p>';
 });
+
+// Flood Risk popup
+map.on('click', 'flood-risk', (e) => {
+    const props = e.features[0].properties;
+    const popupContent = `
+        <strong>Flood Risk Zone</strong><br>
+        Risk Level: ${props['flood-risk-level']}<br>
+        Type: ${props['flood-risk-type']}<br>
+        Reference: ${props['reference']}
+    `;
+
+    new maplibregl.Popup()
+        .setLngLat(e.lngLat)
+        .setHTML(popupContent)
+        .addTo(map);
+});
+
+map.on('mouseenter', 'flood-risk', () => {
+    map.getCanvas().style.cursor = 'pointer';
+});
+map.on('mouseleave', 'flood-risk', () => {
+    map.getCanvas().style.cursor = '';
+});
+
+// BOREHOLES POPUP
+map.on('click', 'boreholes', (e) => {
+  map.getCanvas().style.cursor = 'wait';
+  setTimeout(() => {
+    map.getCanvas().style.cursor = 'pointer';
+  }, 200);
+
+  const properties = e.features[0].properties;
+  const coordinates = e.features[0].geometry.coordinates.slice();
+
+  const html = `
+    <strong>${properties.NAME || 'Unnamed Borehole'}</strong><br>
+    Reference: ${properties.REFERENCE || 'N/A'}<br>
+    Year Known: ${properties.YEAR_KNOWN || 'N/A'}<br>
+    Length: ${properties.LENGTH ? properties.LENGTH + ' meters' : 'N/A'}<br>
+    Precision: ${properties.PRECISION || 'N/A'}<br>
+    ${properties.SCAN_URL ? `<a href="${properties.SCAN_URL}" target="_blank">Scan Link</a>` : ''}
+  `;
+
+  new maplibregl.Popup()
+    .setLngLat(coordinates)
+    .setHTML(html)
+    .addTo(map);
+});
+
+// Contour Points hover popup
+const contourPointPopup = new maplibregl.Popup({
+  closeButton: false,
+  closeOnClick: false
+});
+
+map.on('mouseenter', 'contour-points', (e) => {
+  const elev = e.features[0].properties.PROP_VALUE;
+  contourPointPopup
+    .setLngLat(e.lngLat)
+    .setHTML(`<strong>Elevation:</strong> ${elev} m`)
+    .addTo(map);
+  map.getCanvas().style.cursor = 'pointer';
+});
+
+map.on('mouseleave', 'contour-points', () => {
+  contourPointPopup.remove();
+  map.getCanvas().style.cursor = '';
+});
 }
 window.setupPopups = setupPopups; // Export function for use in main.js

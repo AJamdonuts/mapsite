@@ -18,5 +18,8 @@ map.on('load', () => {
   setupToggles(map);
   setupCharts(map);
   fetchOverpassData(map);
+
+  setupSearch(map, ['schools-layer', 'monuments-layer']);
+  
 });
 

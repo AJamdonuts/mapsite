@@ -147,7 +147,7 @@ function addSources(map) {
   
 
   // Add GeoJSON source for Public transport Access Nodes (PTAN)
-  // Source: The Nationsl Public Transport Access Nodes (NaPTAN) dataset
+  // Source: The National Public Transport Access Nodes (NaPTAN) dataset
   // Date collected: 2025-08-02
   map.addSource('public-transport-nodes', {
     type: 'geojson',
@@ -173,6 +173,54 @@ function addSources(map) {
     data: 'datasets/LPA_article-4-direction-area.geojson'
   });
 
+  // Add GeoJSON source for Flood Risk Data
+  // Source: Environment Agency, Flood Risk dataset
+  // Date collected: 2023-08-24
+  // Note: This dataset is large, and has been filtered to only include relevant areas
+  map.addSource('flood-risk', {
+    type: 'geojson',
+    data: 'datasets/flood_risk_kent_filtered.geojson'
+  });
+
+  // Add GeoJSON source for Borehole scans
+  // Source: British Geological Survey, Borehole scans dataset
+  // Date collected: 2024-10-01
+  map.addSource('boreholes', {
+    type: 'geojson',
+    data: 'datasets/Borehole_scans.geojson'
+  });
+
+  // Add GeoJSON source for Hydrogelogy Features
+  // Source: British Geological Survey, Hydrogelogy Features dataset
+  // Date collected: 2024-10-01
+  map.addSource('Hydrogelogy-features', {
+    type: 'geojson',
+    data: 'datasets/Hydrogelogy_625000_scale.geojson'
+  });
+
+  //Add GeoJSON source for PROW
+  // Source: rowmaps- Kent County Council, PROW dataset
+  // Date collected: 2025-05-14
+  map.addSource('PROW', {
+    type: 'geojson',
+    data: 'datasets/rowmaps_Kent_PROW.geojson'
+  });
+
+  //Add GeoJSON source for contour points
+  // Source: Ordnance Survey, Contour Points dataset
+  // Date collected: 2025-05-14
+  map.addSource('contour-points', {
+    type: 'geojson',
+    data: 'datasets/contourpoints.geojson'
+  });
+
+  // Add GeoJSON source for contour lines
+  // Source: Ordnance Survey, Contour Lines dataset
+  // Date collected: 2025-05-14
+  map.addSource('contour-lines', {
+    type: 'geojson',
+    data: 'datasets/contourlines.geojson'
+  });
 
 }
 window.addSources = addSources; // Export function for use in main.js

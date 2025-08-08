@@ -297,9 +297,9 @@ map.on('click', (e) => {
 
     return; 
   }
+});
 
-
-  // --- NTOW TREES SIDEBAR LOGIC WITH POPUP/SIDEBAR TOGGLE ---
+// --- NTOW TREES SIDEBAR LOGIC WITH POPUP/SIDEBAR TOGGLE ---
 map.on('click', 'ntow-trees', (e) => {
   e.preventDefault();
   
@@ -413,9 +413,80 @@ map.on('mouseenter', 'ntow-trees', () => {
 map.on('mouseleave', 'ntow-trees', () => {
   map.getCanvas().style.cursor = '';
 });
+
+// --- BOREHOLE SCAN KEY LOGIC ---
+
+function showBoreholeScanKey() {
+  if (!document.getElementById('borehole-scan-key')) {
+    document.getElementById('sidebar-content').innerHTML += `
+      <div id="borehole-scan-key" style="margin: 16px 0;">
+        <div style="display: flex; align-items: center;">
+          <span style="font-size: 12px; margin-right: 8px;">Low Intensity</span>
+          <div style="
+            height: 16px;
+            width: 120px;
+            background: linear-gradient(to right, #222 0%, #eee 100%);
+            border-radius: 8px;
+            margin: 0 8px;
+            border: 1px solid #aaa;
+          "></div>
+          <span style="font-size: 12px; margin-left: 8px;">High Intensity</span>
+        </div>
+        <div style="font-size: 11px; color: #666; margin-top: 4px;">
+          Borehole scan intensity (dark = low, light = high)
+        </div>
+      </div>
+    `;
+  }
+}
+
+function hideBoreholeScanKey() {
+  const key = document.getElementById('borehole-scan-key');
+  if (key) key.remove();
+}
+
+// Attach to checkbox (adjust ID as needed) after DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+  const boreholeCheckbox = document.getElementById('boreholes-checkbox');
+  if (boreholeCheckbox) {
+    boreholeCheckbox.addEventListener('change', function() {
+      if (this.checked) {
+        showBoreholeScanKey();
+      } else {
+        hideBoreholeScanKey();
+      }
+    });
+    // Show key if already checked on load
+    if (boreholeCheckbox.checked) {
+      showBoreholeScanKey();
+    }
+  }
 });
 
+map.on('click', 'hydrogelogy', function(e) {
+  e.preventDefault();
+  const feature = e.features && e.features[0];
+  if (feature) {
+    const props = feature.properties;
+    const html = `
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <h3>Hydrogeology</h3>
+        <button id="clear-hydro-selection" class="sidebar-close-btn">✕</button>
+      </div>
+      <div style="border-left: 4px solid #1f78b4; padding-left: 10px; margin-bottom: 15px;">
+        <p><strong>Rock Unit:</strong> ${props.ROCK_UNIT || ''}</p>
+        <p><strong>Class:</strong> ${props.CLASS || ''}</p>
+        <p><strong>Character:</strong> ${props.CHARACTER || ''}</p>
+        <p><strong>Description:</strong> ${props.SUMMARY || ''}</p>
+      </div>
+    `;
+    document.getElementById('sidebar-content').innerHTML = html;
 
-
+    // Add close button handler
+    document.getElementById('clear-hydro-selection').addEventListener('click', () => {
+      document.getElementById('sidebar-content').innerHTML = `<p>Select a feature on the map to view details.</p>`;
+    });
+  }
+});
 
 }

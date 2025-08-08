@@ -634,7 +634,218 @@ function addLayers(map) {
             'circle-stroke-width': 1,
         }
     });
+
+    // Flood Risk Areas layer
+    map.addLayer({
+        id: 'flood-risk',
+        type: 'fill',
+        source: 'flood-risk',
+        layout: { visibility: 'none' },
+        paint: {
+            'fill-color': [
+                'match',
+                ['get', 'flood-risk-level'],
+                '1', '#d0e9c6',   // Low
+                '2', '#f4a582',   // Medium
+                '3', '#ca0020',   // High
+                '#cccccc'         // Default fallback
+            ],
+            'fill-opacity': 0.5,
+            'fill-outline-color': '#000000'
+        }
+    });
+
+    // Boreholes layer
+    map.addLayer({
+        id: 'boreholes',
+        type: 'circle',
+        source: 'boreholes',
+        layout: { visibility: 'none' },
+        paint: {
+        'circle-radius': 6,
+        'circle-color': [
+            'interpolate',
+            ['linear'],
+            ['to-number', ['get', 'YEAR_KNOWN']],
+            1900, '#a6cee3',
+            2000, '#1f78b4',
+            2023, '#08306b'
+        ],
+        'circle-stroke-color': '#fff',
+        'circle-stroke-width': 1
+        }
+    });
+
+    // Hydrogelogy layer
+    map.addLayer({
+        id: 'hydrogelogy',
+        type: 'fill',
+        source: 'Hydrogelogy-features',
+        layout: { visibility: 'none' },
+        paint: {
+            'fill-color': [
+              'match',
+              ['get', 'CLASS'],
+              '1B', '#a6cee3',
+              '2A', '#1f78b4',
+              '1C', '#b2df8a',
+              '3', '#fdbf6f',
+              /* fallback */ '#cccccc'
+            ],
+            'fill-opacity': 0.6
+          }
+    });
+
+    // PROW: Public Footpath
+map.addLayer({
+  id: 'prow-footpath',
+  type: 'line',
+  source: 'PROW',
+  layout: { visibility: 'none' },
+  filter: ['==', ['get', 'StatusDesc'], 'Public Footpath'],
+  paint: {
+    'line-color': '#E400FF',
+    'line-width': 2,
+    'line-opacity': 0.9,
+    'line-dasharray': [2, 2]
+  }
+});
+
+// PROW: Bridleway
+map.addLayer({
+  id: 'prow-bridleway',
+  type: 'line',
+  source: 'PROW',
+  layout: { visibility: 'none' },
+  filter: ['==', ['get', 'StatusDesc'], 'Public Bridleway'],
+  paint: {
+    'line-color': '#0000FF',
+    'line-width': 2,
+    'line-opacity': 0.9,
+    'line-dasharray': [6, 4]
+  }
+});
+
+// PROW: Restricted Byway
+map.addLayer({
+  id: 'prow-restricted-byway',
+  type: 'line',
+  source: 'PROW',
+  layout: { visibility: 'none' },
+  filter: ['==', ['get', 'StatusDesc'], 'Restricted Byway'],
+  paint: {
+    'line-color': '#800080',
+    'line-width': 2,
+    'line-opacity': 0.9,
+    'line-dasharray': [1, 3]
+  }
+});
+
+// PROW: Byway Open to All Traffic (solid)
+map.addLayer({
+  id: 'prow-byway-open',
+  type: 'line',
+  source: 'PROW',
+  layout: { visibility: 'none' },
+  filter: ['==', ['get', 'StatusDesc'], 'Byway open to all traffic'],
+  paint: {
+    'line-color': '#FF0000',
+    'line-width': 2,
+    'line-opacity': 0.9
+    // No line-dasharray for solid
+  }
+});
+
+// Contour Lines layer
+map.addLayer({
+    id: 'contour-lines',
+    type: 'line',
+    source: 'contour-lines',
+    layout: { visibility: 'none' },
+    paint: {
+        'line-color': [
+            'interpolate',
+            ['linear'],
+            ['get', 'PROP_VALUE'],
+            0, '#9ecae1',
+            50, '#6baed6',
+            100, '#3182bd',
+            150, '#08519c',
+            200, '#08306b'
+        ],
+        'line-width': [
+          'case',
+          ['==', ['%', ['get', 'PROP_VALUE'], 50], 0], 2,
+          1
+        ],
+        'line-opacity': 0.9,
+        'line-dasharray': [2, 2]
+    }
+});
+
+// Contour Points layer
+map.addLayer({
+    id: 'contour-points',
+    type: 'circle',
+    source: 'contour-points',
+    layout: { visibility: 'none' },
+    paint: {
+        'circle-radius': 3,
+        'circle-color': '#8B4513', // brown
+        'circle-stroke-color': '#ffffff', // white outline
+        'circle-stroke-width': 0.5,
+        'circle-opacity': 0.8
+    }
+});
+
+// Contour Labels layer
+map.addLayer({
+  id: 'contour-labels',
+  type: 'symbol',
+  source: 'contour-lines',
+  layout: {
+    'symbol-placement': 'line',
+    'text-field': ['to-string', ['get', 'PROP_VALUE']],
+    'text-font': ['Open Sans Regular'],
+    'text-size': 10,
+    'visibility': 'none'
+  },
+  paint: {
+    'text-color': '#333',
+    'text-halo-color': '#fff',
+    'text-halo-width': 1
+  }
+});
     
+// Contour Lines Index layer
+map.addLayer({
+  id: 'contour-lines-index',
+  type: 'line',
+  source: 'contour-lines',
+  layout: { visibility: 'none' },
+  filter: ['==', ['%', ['get', 'PROP_VALUE'], 50], 0],
+  paint: {
+    'line-color': '#8B4513',
+    'line-width': 2,
+    'line-opacity': 0.7
+    // No line-dasharray for solid
+  }
+});
+
+// Contour Lines Ordinary layer
+map.addLayer({
+  id: 'contour-lines-ordinary',
+  type: 'line',
+  source: 'contour-lines',
+  layout: { visibility: 'none' },
+  filter: ['!=', ['%', ['get', 'PROP_VALUE'], 50], 0],
+  paint: {
+    'line-color': '#8B4513',
+    'line-width': 1,
+    'line-opacity': 0.7,
+    'line-dasharray': [2, 2]
+  }
+});
 
 } // End of addLayers function
 

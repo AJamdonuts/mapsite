@@ -28,7 +28,24 @@ NOTES:
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://unpkg.com/@turf/turf@6.5.0/turf.min.js"></script>
 </head>
+
 <body>
+  <header id="site-header">
+  <h1 id="site-title">InsightMap</h1>
+  <nav>
+    <a href="index.html" class="active">Map</a>
+    <a href="about.html">About & Data</a>
+  </nav>
+  <div id="search-container">
+    <input type="text" id="search-input" placeholder="Search location or feature..." />
+    <button id="search-button">🔍</button>
+  </div>
+</header>
+  <div id="map"></div>
+  <div id="sidebar"></div>
+
+  
+
 
   <div class="layer-controls collapsed">
   <button class="toggle-button">Layers ▾</button>
@@ -71,6 +88,7 @@ NOTES:
         <label><input type="checkbox" id="toggleNNR"> National Nature Reserves</label>
         <label><input type="checkbox" id="toggleNTOW"> NTOW Trees</label>
         <label><input type="checkbox" id="toggleCanopy"> Tree Canopy Cover</label>
+        
         <label><input type="checkbox" id="toggleTPZ"> Tree Preservation Zones</label>
         <label><input type="checkbox" id="toggleWoodland"> Woodland</label>
       </div>
@@ -92,11 +110,22 @@ NOTES:
     </div>
 
     <div class="layer-group">
+      <h3 class="group-header" tabindex="0">Environmental Features</h3>
+      <div class="group-content">
+        <label><input type="checkbox" id="toggleFloodRisk"> Flood Risk Areas</label>
+        <label><input type="checkbox" id="toggleBoreholes"> Borehole Scans</label>
+        <label><input type="checkbox" id="togglehydrogelogy"> Hydrogelogy Features</label>
+        <label><input type="checkbox" id="toggleContours"> Contour Data </label>
+      </div>
+    </div>
+
+    <div class="layer-group">
       <h3 class="group-header" tabindex="0">Transport and Accessibility</h3>
       <div class="group-content">
-        <label><input type="checkbox" id="togglePROW"> PROW (footpaths)</label>
+        <label><input type="checkbox" id="toggleprow"> PROW (footpaths)</label>
         <label><input type="checkbox" id="toggleTransportAccess"> Public Transport Access</label>
         <label><input type="checkbox" id="toggleRoads"> Roads</label>
+        
       </div>
     </div>
 
@@ -110,6 +139,7 @@ NOTES:
     <div id="sidebar-content">
         <p>Select a feature on the map to view details.</p>
     </div>
+    <button id="refresh-canopy-btn" style="display:none;">Refresh Canopy Stats</button>
 
     <div id="landuse-chart-container">
       <canvas id="landuse-chart" width="300" height="300"></canvas>
@@ -172,16 +202,37 @@ NOTES:
       <div style="margin-left: 15px;"><span style="background:#FFFF99;width:12px;height:12px;display:inline-block;margin-right:5px;border:1px solid #CCCC00;"></span>Grade 4 (Poor)</div>
       <div style="margin-left: 15px;"><span style="background:#DDD;width:12px;height:12px;display:inline-block;margin-right:5px;border:1px solid #999;"></span>Grade 5 (Very Poor)</div>
     </div>
-  </div>
 
-</div>
+    <div id="hydrogeology-legend" style="display:none; margin-top: 10px;">
+      <strong>Hydrogeology Key:</strong><br>
+      <div style="margin-bottom:6px;"><span class="legend-symbol" style="background:#a6cee3; border-color:#888;"></span>1B: Moderately productive aquifer</div>
+      <div style="margin-bottom:6px;"><span class="legend-symbol" style="background:#1f78b4; border-color:#888;"></span>2A: Highly productive aquifer</div>
+      <div style="margin-bottom:6px;"><span class="legend-symbol" style="background:#b2df8a; border-color:#888;"></span>1C: Low productivity aquifer</div>
+      <div style="margin-bottom:6px;"><span class="legend-symbol" style="background:#fdbf6f; border-color:#888;"></span>3: Rocks with essentially no groundwater</div>
+      <div><span class="legend-symbol" style="background:#cccccc; border-color:#888;"></span>Other: Not classified</div>
+    </div>
+
+    <div id="prow-legend" style="display:none; margin-top: 10px;">
+      <strong>Public Rights of Way Key:</strong><br>
+      <div style="margin-bottom:6px;">
+        <span class="legend-symbol" style="width:18px;height:6px;background:#E400FF; border-color:#E400FF; border-radius:2px; display:inline-block; margin-right:6px; vertical-align:middle;"></span>
+        Public Footpath
+      </div>
+      <div style="margin-bottom:6px;">
+        <span class="legend-symbol" style="width:18px;height:6px;background:#0000FF; border-color:#0000FF; border-radius:2px; display:inline-block; margin-right:6px; vertical-align:middle;"></span>
+        Bridleway
+      </div>
+      <div style="margin-bottom:6px;">
+        <span class="legend-symbol" style="width:18px;height:6px;background:#800080; border-color:#800080; border-radius:2px; display:inline-block; margin-right:6px; vertical-align:middle;"></span>
+        Restricted Byway
+      </div>
+      <div>
+        <span class="legend-symbol" style="width:18px;height:6px;background:#FF0000; border-color:#FF0000; border-radius:2px; display:inline-block; margin-right:6px; vertical-align:middle;"></span>
+        Byway Open to All Traffic
+      </div>
+    </div>
 
 
-
-
-
-
-  <button onclick="updateCanopyInView()">Refresh Canopy Stats</button>
 
 <template id="listed-popup-template">
   <div class="listed-popup-content">
@@ -201,15 +252,31 @@ NOTES:
     </div>
     <button id="move-popup-btn">Move popup to panel</button>
   </div>
+
 </template>
+
+
 <script src="sources.js"></script>
 <script src="layers.js"></script>
+<script src="search.js"></script>
 <script src="popups.js"></script>
 <script src="chart.js"></script>
 <script src="overpass.js"></script>
 <script src="sidebar.js"></script>
 <script src="toggles.js"></script>
 <script src="main.js"></script>
+<script>
+function positionLayerControls() {
+  var header = document.getElementById('site-header');
+  var layers = document.querySelector('.layer-controls');
+  if (header && layers) {
+    var rect = header.getBoundingClientRect();
+    layers.style.top = rect.height + 'px';
+  }
+}
+window.addEventListener('resize', positionLayerControls);
+window.addEventListener('DOMContentLoaded', positionLayerControls);
+</script>
 
 </body>
 </html>

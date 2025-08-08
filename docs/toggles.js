@@ -373,6 +373,11 @@ document.getElementById('toggleResidential')?.addEventListener('change', (e) => 
     if (map.getLayer('ward-canopy')) {
       map.setLayoutProperty('ward-canopy', 'visibility', visibility);
     }
+    // Show/hide the refresh button
+    const refreshBtn = document.getElementById('refresh-canopy-btn');
+    if (refreshBtn) {
+      refreshBtn.style.display = e.target.checked ? 'block' : 'none';
+    }
   });
 
     // Toggle Woodland
@@ -423,9 +428,64 @@ document.getElementById('toggleResidential')?.addEventListener('change', (e) => 
     }
   });
 
-  
+  // Toggle PROW (Public Rights of Way) layer
+  document.getElementById('toggleprow').addEventListener('change', (e) => {
+    const visibility = e.target.checked ? 'visible' : 'none';
+    for (const id of [
+      'prow-footpath',
+      'prow-bridleway',
+      'prow-restricted-byway',
+      'prow-byway-open'
+    ]) {
+      if (map.getLayer(id)) {
+        map.setLayoutProperty(id, 'visibility', visibility);
+      }
+    }
+    // Toggle the legend display
+    const legend = document.getElementById('prow-legend');
+    if (legend) legend.style.display = visibility === 'visible' ? 'block' : 'none';
+  });
 
-  // TOGGLE BUTTON for collapsing controls
+
+  // Toggle Flood Risk layer
+  document.getElementById('toggleFloodRisk').addEventListener('change', (e) => {
+    const visibility = e.target.checked ? 'visible' : 'none';
+    if (map.getLayer('flood-risk')) {
+      map.setLayoutProperty('flood-risk', 'visibility', visibility);
+    }
+  });
+
+  // Toggle Hydrogelogy layer
+  document.getElementById('togglehydrogelogy').addEventListener('change', (e) => {
+    const visible = e.target.checked;
+    if (map.getLayer('hydrogelogy')) {
+      map.setLayoutProperty('hydrogelogy', 'visibility', visible ? 'visible' : 'none');
+    }
+    const legend = document.getElementById('hydrogeology-legend');
+    if (legend) legend.style.display = visible ? 'block' : 'none';
+  });
+
+  // Toggle Contour layer
+  document.getElementById('toggleContours').addEventListener('change', (e) => {
+    const visibility = e.target.checked ? 'visible' : 'none';
+    if (map.getLayer('contour-lines-index')) {
+      map.setLayoutProperty('contour-lines-index', 'visibility', visibility);
+    }
+    if (map.getLayer('contour-lines-ordinary')) {
+      map.setLayoutProperty('contour-lines-ordinary', 'visibility', visibility);
+    }
+    if (map.getLayer('contour-points')) {
+      map.setLayoutProperty('contour-points', 'visibility', visibility);
+    }
+    if (map.getLayer('contour-labels')) {
+      map.setLayoutProperty('contour-labels', 'visibility', visibility);
+    }
+
+  });
+
+
+
+// TOGGLE BUTTON for collapsing controls
   const btn = document.querySelector('.toggle-button');
   const controls = document.querySelector('.layer-controls');
   if (btn && controls) {
@@ -461,6 +521,62 @@ document.getElementById('toggleResidential')?.addEventListener('change', (e) => 
       console.log('All properties:', e.features[0].properties);
   });
 
+  function hideBoreholeScanKey() {
+  const key = document.getElementById('borehole-scan-key');
+  if (key) key.remove();
+}
+
+// Toggle Boreholes layer and scan key
+document.getElementById('toggleBoreholes').addEventListener('change', (e) => {
+  const visibility = e.target.checked ? 'visible' : 'none';
+  if (map.getLayer('boreholes')) {
+    map.setLayoutProperty('boreholes', 'visibility', visibility);
+  }
+  if (e.target.checked) {
+    showBoreholeScanKey();
+  } else {
+    hideBoreholeScanKey();
+  }
+});
+function showBoreholeScanKey() {
+  if (!document.getElementById('borehole-scan-key')) {
+    document.getElementById('sidebar-content').innerHTML += `
+      <div id="borehole-scan-key" style="margin: 16px 0;">
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <!-- Gradient bar -->
+          <div style="
+            height: 16px;
+            width: 160px;
+            background: linear-gradient(to right, #a6cee3 0%, #1f78b4 50%, #08306b 100%);
+            border-radius: 8px;
+            border: 1px solid #aaa;
+            margin-bottom: 8px;
+            position: relative;
+          "></div>
+          <!-- Arrows and labels -->
+          <div style="display: flex; width: 160px; justify-content: space-between; position: relative;">
+            <div style="display: flex; flex-direction: column; align-items: center; width: 0;">
+              <span style="font-size: 16px; color: #333;">&#8593;</span>
+              <span style="font-size: 12px; margin-top: 2px;">1900</span>
+            </div>
+            <div style="display: flex; flex-direction: column; align-items: center; width: 0;">
+              <span style="font-size: 16px; color: #333;">&#8593;</span>
+              <span style="font-size: 12px; margin-top: 2px;">2000</span>
+            </div>
+            <div style="display: flex; flex-direction: column; align-items: center; width: 0;">
+              <span style="font-size: 16px; color: #333;">&#8593;</span>
+              <span style="font-size: 12px; margin-top: 2px;">2023</span>
+            </div>
+          </div>
+          <!-- Description -->
+          <div style="font-size: 11px; color: #666; margin-top: 18px;">
+            Borehole scan year (lighter = older, darker = newer)
+          </div>
+        </div>
+      </div>
+    `;
+  }
+}
 } 
 
 window.setupToggles = setupToggles;
@@ -486,3 +602,4 @@ window.landUseColors = {
 window.activeLandUseTypes = ['residential', 'commercial', 'industrial', 'farmland', 'park', 'retail', 'landfill', 'grass', 'meadow', 'recreation_ground', 'railway', 'allotments', 'construction', 'orchard', 'military'];
 window.inactiveColor = '#cccccc';
 updateLandUseLayer();
+
