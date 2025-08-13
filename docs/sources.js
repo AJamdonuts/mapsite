@@ -222,5 +222,31 @@ function addSources(map) {
     data: 'datasets/contourlines.geojson'
   });
 
+  // Add GeoJSON source for Streetlighting
+  // Source: Kent County Council, Streetlighting dataset
+  // Date collected: 2025-05-14
+  map.addSource('streetlighting', {
+    type: 'geojson',
+    data: 'datasets/Streetlighting_Kent.geojson'
+  });
+
+  // Add GeoJSON source for Streetlighting buffer
+  // Source: Kent County Council, Streetlighting Buffer dataset
+  // Date collected: 2025-05-14
+  map.addSource('streetlighting-buffer', {
+    type: 'geojson',
+    data: 'datasets/bufferlighting.geojson'
+  });
+
+  // Add GeoJSON source for Streetlighting shadows
+  // Source: Kent County Council, Streetlighting Shadows dataset
+  // Date collected: 2025-05-14
+  map.addSource('streetlighting-shadows', {
+    type: 'geojson',
+    data: 'datasets/streetlightshadows.geojson'
+  });
+
+
+
 }
 window.addSources = addSources; // Export function for use in main.js

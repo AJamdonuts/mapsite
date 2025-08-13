@@ -47,10 +47,11 @@
 
 
 #main-container {
-  display: flex;
-  height: calc(100vh - 50px);
+  height: calc(100vh - 44px); /* match header height */
   width: 100vw;
-  margin-top: 44px; /* match header height */
+  margin-top: 44px;
+  display: flex;
+  overflow: visible; /* Allow map to receive scroll/pan events */
 }
 
 #sidebar {
@@ -63,13 +64,124 @@
   z-index: 950;
   overflow-y: auto;
   box-shadow: -2px 0 6px rgba(0, 0, 0, 0.1);
+  pointer-events: auto; /* needed for sidebar itself */
+}
+
+.hidden {
+  display: none;
 }
 
 #map {
-  position: relative; /* Remove absolute */
-  flex: 1;
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  top: 44px; /* height of your header */
+  left: 0;
+  width: 100vw;
+  height: calc(100vh - 44px); /* fills below header */
+  z-index: 1;
+  pointer-events: auto; /* map needs this to receive events */
+}
+
+/* Export panel styling */
+#exportPanel {
+  position: absolute;
+  top: 44px; /* exactly matches header height */
+  right: 20px;
+  background: white;
+  padding: 10px;
+  z-index: 2100;
+  border-radius: 7px;
+  box-shadow: 0px 2px 8px rgba(0,0,0,0.12);
+  pointer-events: auto;
+}
+
+#exportPanel.hidden,
+#sidebar.hidden,
+.layer-controls.hidden {
+  display: none;
+  pointer-events: none;
+}
+
+/* Grid for categories */
+#layerCheckboxes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+#layerCheckboxes {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Each category dropdown */
+#layerCheckboxes details {
+  margin-bottom: 0;
+  border-radius: 5px;
+  background: #f7f7f7;
+  border: 1px solid #eaeaea;
+  padding: 2px 0 2px 0;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  min-width: 0;
+}
+
+/* Category summary */
+#layerCheckboxes summary {
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.98rem;
+  padding: 4px 8px;
+  border-radius: 5px;
+  background: #e9ecef;
+  outline: none;
+  transition: background 0.2s;
+  margin-bottom: 2px;
+}
+
+#layerCheckboxes summary:focus {
+  background: #d0e6fa;
+}
+
+/* Layer checkbox row */
+#layerCheckboxes div {
+  margin-bottom: 2px;
+  padding-left: 8px;
+  display: flex;
+  align-items: center;
+}
+
+/* Layer label */
+#layerCheckboxes label {
+  margin-left: 6px;
+  font-size: 0.93rem;
+  color: #222;
+}
+
+/* Checkbox */
+#layerCheckboxes input[type="checkbox"] {
+  accent-color: #0074d9;
+  width: 15px;
+  height: 15px;
+}
+
+/* Export buttons */
+#exportPanel button {
+  margin-top: 8px;
+  margin-right: 6px;
+  padding: 5px 12px;
+  font-size: 0.97rem;
+  border-radius: 4px;
+  border: 1px solid #0074d9;
+  background: #f4faff;
+  color: #0074d9;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  align-self: flex-start;
+}
+
+#exportPanel button:hover {
+  background: #0074d9;
+  color: #fff;
 }
 
 body, html {
@@ -77,9 +189,8 @@ body, html {
   padding: 0;
   height: 100%;
   font-family: sans-serif;
-  overflow: hidden;
+  overflow: hidden; /* Prevents website scroll */
 }
-
 
 /* Responsive: adjust top for taller mobile header */
 @media (max-width: 700px) {

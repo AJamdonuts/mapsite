@@ -483,6 +483,37 @@ document.getElementById('toggleResidential')?.addEventListener('change', (e) => 
 
   });
 
+  // Toggle Streetlighting layer
+  document.getElementById('toggleStreetlighting')?.addEventListener('change', (e) => {
+  const visibility = e.target.checked ? 'visible' : 'none';
+
+  // Toggle all streetlighting point types
+  if (map.getLayer('streetlighting-signs')) {
+    map.setLayoutProperty('streetlighting-signs', 'visibility', visibility);
+  }
+  if (map.getLayer('streetlighting-columns')) {
+    map.setLayoutProperty('streetlighting-columns', 'visibility', visibility);
+  }
+  if (map.getLayer('streetlighting-others')) {
+    map.setLayoutProperty('streetlighting-others', 'visibility', visibility);
+  }
+
+  // Toggle buffer and shadow layers
+  if (map.getLayer('streetlighting-buffer')) {
+    map.setLayoutProperty('streetlighting-buffer', 'visibility', visibility);
+  }
+  if (map.getLayer('streetlighting-buffer-outline')) {
+    map.setLayoutProperty('streetlighting-buffer-outline', 'visibility', visibility);
+  }
+  if (map.getLayer('streetlighting-shadows')) {
+    map.setLayoutProperty('streetlighting-shadows', 'visibility', visibility);
+  }
+
+  // Show/hide the legend
+  document.getElementById('streetlighting-legend').style.display = e.target.checked ? 'block' : 'none';
+});
+
+
 
 
 // TOGGLE BUTTON for collapsing controls
@@ -601,5 +632,4 @@ window.landUseColors = {
 
 window.activeLandUseTypes = ['residential', 'commercial', 'industrial', 'farmland', 'park', 'retail', 'landfill', 'grass', 'meadow', 'recreation_ground', 'railway', 'allotments', 'construction', 'orchard', 'military'];
 window.inactiveColor = '#cccccc';
-updateLandUseLayer();
 

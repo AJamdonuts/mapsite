@@ -489,4 +489,6 @@ map.on('click', 'hydrogelogy', function(e) {
   }
 });
 
+
+// Add missing closing brace for setupSidebar function
 }

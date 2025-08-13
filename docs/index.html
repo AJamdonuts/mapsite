@@ -30,19 +30,24 @@ NOTES:
 </head>
 
 <body>
-  <header id="site-header">
+  <header id="site-header" style="display: flex; align-items: center; gap: 16px;">
   <h1 id="site-title">InsightMap</h1>
   <nav>
     <a href="index.html" class="active">Map</a>
     <a href="about.html">About & Data</a>
   </nav>
-  <div id="search-container">
+  <button id="exportMapBtn">Export</button>
+  <div id="exportPanel" class="hidden" style="position:absolute; background:#fff; border:1px solid #ccc; z-index:1000;">
+  <div id="layerCheckboxes"></div>
+  <button id="exportPNG">Export PNG</button>
+  <button id="exportLayers">Export GeoJSON</button>
+  <button id="exportDXF">Export DXF</button>
+</div>
+  <div id="search-container" style="display: flex; align-items: center;">
     <input type="text" id="search-input" placeholder="Search location or feature..." />
     <button id="search-button">🔍</button>
   </div>
 </header>
-  <div id="map"></div>
-  <div id="sidebar"></div>
 
   
 
@@ -73,6 +78,7 @@ NOTES:
         <label><input type="checkbox" id="toggleLanduse"> General Land Use</label>
         <label><input type="checkbox" id="toggleResidential"> Residential Areas</label>
         <label><input type="checkbox" id="toggleLPB"> Local Plan Boundaries</label>
+        <label><input type="checkbox" id="toggleStreetlighting"> Streetlighting</label>
 
 
       </div>
@@ -157,7 +163,7 @@ NOTES:
       <strong>Social Infrastructure Key:</strong><br>
       <div><span class="legend-symbol legend-circle" style="background:#f8bbd0; border-color:#ffffff;"></span>Amenity POIs</div>
       <div><span class="legend-symbol" style="background: url('images/black-hatch.png'); background-size: 20px 20px; background-repeat: repeat; border-color:#000;"></span>Cemeteries</div>
-      <div><span class="legend-symbol legend-circle" style="background:#fff176; border-color:#666;"></span>Educational Establishments</div>
+      <div><span class="legend-symbol" style="background:#fff176; border-color:#666;"></span>Educational Establishments</div>
       <div><span class="legend-symbol" style="background:#f28cb1; border-color:#d63384;"></span>Hospitals</div>
       <div><span class="legend-symbol" style="background:#ce93d8; border-color:#ffffff;"></span>Shop POIs</div>
       <div><span class="legend-symbol" style="background:#ffe699; border-color:#e6cc00;"></span>Schools</div>
@@ -232,7 +238,29 @@ NOTES:
       </div>
     </div>
 
-
+    <div id="streetlighting-legend" style="display: none; margin-top: 10px;">
+      <strong>Streetlighting Key:</strong><br>
+      <div style="margin-bottom: 10px;">
+        <span style="background: url('images/streetlightingsign.png'); background-size: 16px 10px; width:16px; height:10px; display:inline-block; margin-right:5px; border:1px solid #FFD700;"></span>
+        Sign
+      </div>
+      <div style="margin-bottom: 10px;">
+        <span style="background:#F0F8FF; width:12px; height:12px; display:inline-block; margin-right:5px; border:2px solid #FFD700; border-radius:50%;"></span>
+        Column
+      </div>
+      <div style="margin-bottom: 10px;">
+        <span style="background:#FFD700; width:12px; height:12px; display:inline-block; margin-right:5px; border:2px solid #B8860B; border-radius:50%;"></span>
+        Other
+      </div>
+      <div style="margin-bottom: 10px;">
+        <span style="background:#FFF8DC; width:24px; height:8px; display:inline-block; margin-right:5px; border:1px solid #FFFACD;"></span>
+        Buffer Area
+      </div>
+      <div style="margin-bottom: 10px;">
+        <span style="background:#000000; opacity:0.2; width:24px; height:8px; display:inline-block; margin-right:5px;"></span>
+        Shadow Area
+      </div>
+    </div>
 
 <template id="listed-popup-template">
   <div class="listed-popup-content">
@@ -265,6 +293,7 @@ NOTES:
 <script src="sidebar.js"></script>
 <script src="toggles.js"></script>
 <script src="main.js"></script>
+<script src="export.js"></script>
 <script>
 function positionLayerControls() {
   var header = document.getElementById('site-header');
