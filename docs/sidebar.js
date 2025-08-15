@@ -1,3 +1,28 @@
+/**
+ * sidebar.js - Map sidebar logic for feature info display
+ *
+ * DESIGN OVERVIEW & CHOICES:
+ * - Modular: Feature-specific rendering functions (e.g., Article 4, Conservation, NTOW Trees, Canopy, LNR/NNR) keep logic maintainable and easy to extend.
+ * - Advanced Feature Handling: Supports combined Article 4 & Conservation display, NTOW popup/sidebar toggle, borehole scan key, and hydrogeology info.
+ * - Layer ID Consistency: Layer names in queries match those in the map style (e.g., 'article-4-direction', 'conservation-areas', etc.).
+ * - Defensive Coding: Handles missing properties gracefully, avoids runtime errors, and provides fallback text (e.g., 'N/A').
+ * - UI/UX: Sidebar content updates on map clicks, hover cursor changes for interactive layers, and close/reset buttons for clearing selections.
+ * - Extensible: Easy to add new feature renderers or sidebar sections as needed.
+ *
+ * HOW TO USE:
+ * - Call setupSidebar(map) after  Maplibre GL map is initialized.
+ * - Ensure your map style includes the required layers (see layer IDs in the code).
+ * - The sidebar expects an element with id 'sidebar-content' in your HTML.
+ * - Feature info is shown in the sidebar when a user clicks on a map feature.
+ * - Advanced features (combined Article 4 & Conservation, NTOW toggle, borehole scan key) are handled automatically based on data and UI state.
+ * - To add new feature types, create a new render function and update the click handler logic.
+ *
+ * MAINTAINER NOTES:
+ * - If you change layer IDs in map style, update them in this file.
+ * - If you add new sidebar sections, follow the modular pattern for clarity.
+ * - For accessibility, consider adding ARIA roles/labels to sidebar elements.
+ * - For performance, avoid heavy DOM updates outside of user interactions.
+ */
 function setupSidebar(map) {
   // Functions for updating sidebar sections, close buttons, etc.
 
@@ -35,7 +60,7 @@ map.on('click', (e) => {
     layers: ['listed-fill', 'ward-canopy', 'ntow-trees', 'buildings-3d']
   });
 
-  // If we have Article 4 or Conservation data, handle them
+  //  Article 4 or Conservation data, handle them
   if (article4Features.length > 0 || conservationFeatures.length > 0) {
     e.preventDefault();
     

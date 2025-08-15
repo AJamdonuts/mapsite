@@ -1,0 +1,88 @@
+// ============================================================================
+// 1. HERITAGE & DESIGNATION LAYERS (Refactored)
+// ============================================================================
+
+// Helper: Toggle multiple layers at once
+function toggleLayers(layerIds, checked) {
+  const visibility = checked ? 'visible' : 'none';
+  layerIds.forEach(id => {
+    if (map.getLayer(id)) {
+      map.setLayoutProperty(id, 'visibility', visibility);
+    }
+  });
+}
+
+// Config: checkbox ID → layer IDs
+const heritageLayerConfig = {
+  toggleArticle4: ['article-4-direction', 'article-4-direction-outline'],
+  toggleConservationAreas: ['conservation-areas', 'conservation-areas-outline'],
+  toggleHeritageParks: ['heritage-parks-fill', 'heritage-parks-outline'],
+  toggleListed: ['listed-point', 'listed-highlight'],
+  toggleSMonuments: ['smonuments-fill', 'smonuments-outline'],
+  toggleWorldHeritage: ['whs-core', 'whs-buffer']
+};
+
+// Setup: loop through each config entry & attach event listener
+Object.entries(heritageLayerConfig).forEach(([checkboxId, layerIds]) => {
+  document.getElementById(checkboxId)?.addEventListener('change', (e) => {
+    toggleLayers(layerIds, e.target.checked);
+    updateHistoricLegendVisibility();
+  });
+});
+
+
+// ============================================================================
+// 3. NATURAL ENVIRONMENT LAYER TOGGLES (Refactored)
+// ============================================================================
+
+
+
+// Config: standard visibility toggles
+const naturalLayerConfig = {
+  toggleAncientWoodland: ['ancient-woodland', 'ancient-woodland-outline'],
+  toggleAONB: ['aonb-fill', 'aonb-outline'],
+  toggleLNR: ['local-nature-reserves', 'local-nature-reserves-outline'],
+  toggleNNR: ['national-nature-reserves', 'national-nature-reserves-outline'],
+  toggleTPZ: ['tree-preservation-zones']
+};
+
+// Setup: attach event listeners for standard visibility layers
+Object.entries(naturalLayerConfig).forEach(([checkboxId, layerIds]) => {
+  document.getElementById(checkboxId)?.addEventListener('change', (e) => {
+    toggleLayers(layerIds, e.target.checked);
+  });
+});
+
+// Special case: Grass area (paint property change)
+document.getElementById('toggleGrassArea')?.addEventListener('change', (e) => {
+  if (map.getLayer('landcover_grass')) {
+    const color = e.target.checked
+      ? originalLandcoverStyles.grass['fill-color']
+      : '#cccccc';
+    map.setPaintProperty('landcover_grass', 'fill-color', color);
+  }
+});
+
+// Special case: Woodland (paint property change)
+document.getElementById('toggleWoodland')?.addEventListener('change', (e) => {
+  if (map.getLayer('landcover_wood')) {
+    const color = e.target.checked
+      ? originalLandcoverStyles.wood['fill-color']
+      : '#aaaaaa';
+    map.setPaintProperty('landcover_wood', 'fill-color', color);
+  }
+});
+
+// Special case: NTOW (layer toggle + legend visibility)
+document.getElementById('toggleNTOW')?.addEventListener('change', (e) => {
+  toggleLayers(['ntow-trees'], e.target.checked);
+  const legend = document.getElementById('ntow-legend');
+  if (legend) legend.style.display = e.target.checked ? 'block' : 'none';
+});
+
+// Special case: Canopy (layer toggle + button visibility)
+document.getElementById('toggleCanopy')?.addEventListener('change', (e) => {
+  toggleLayers(['ward-canopy'], e.target.checked);
+  const refreshBtn = document.getElementById('refresh-canopy-btn');
+  if (refreshBtn) refreshBtn.style.display = e.target.checked ? 'block' : 'none';
+});

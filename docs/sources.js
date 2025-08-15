@@ -1,4 +1,28 @@
+/*
+  SOURCES.JS - Urban Design Webmapping Data Sources
 
+  This file defines all the data sources used in the web mapping application for urban design analysis. The reasoning for using GeoJSON is its wide support in web mapping libraries (such as Mapbox GL JS and Leaflet), its human-readable format, and its ability to represent complex spatial features (points, lines, polygons) with associated properties. GeoJSON is ideal for client-side rendering and interactive mapping, making it suitable for modern web-based GIS applications.
+
+  Most datasets were provided in GeoJSON format, but some required preprocessing. For those not originally in GeoJSON, I used QGIS to convert and clean the data, ensuring compatibility and spatial accuracy. The Canterbury boundary was used to filter and clip datasets to the relevant study area, focusing the analysis on the local urban context.
+
+  The datasets chosen cover a broad spectrum of urban design factors, including heritage assets, land use, building heights, green infrastructure, flood risk, transport, and planning boundaries. Each dataset was selected for its relevance to urban design decision-making, availability, and authoritative source. By integrating these diverse datasets, the map provides a holistic view of the urban environment, supporting analysis and planning for sustainable, resilient, and context-sensitive urban design.
+
+  Data sources include:
+    - Historic England (heritage assets)
+    - Natural England (environmental features)
+    - Local Planning Authorities (planning boundaries, conservation areas)
+    - Ordnance Survey (topography)
+    - Kent County Council (streetlighting, PROW)
+    - British Geological Survey (hydrogeology, boreholes)
+    - Department for Education, MHCLG (educational establishments, brownfield sites)
+    - National Tree Officers Association (tree data)
+    - Forest Research (canopy cover)
+    - Environment Agency (flood risk)
+    - Office for National Statistics (built-up areas)
+    - OpenStreetMap (land use, POIs)
+
+  These datasets enable multi-layered spatial analysis for urban design, helping users understand constraints, opportunities, and context for development and placemaking.
+*/
  // SOURCES 
 
 function addSources(map) {

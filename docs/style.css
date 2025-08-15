@@ -1,4 +1,19 @@
-/* Header bar full width, fixed at top */
+
+/* Global styles */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: sans-serif;
+  overflow: auto; /* Allow scroll for about page */
+}
+
+.hidden {
+  display: none;
+}
+
+
+/* Header and navigation styles */
 #site-header {
   position: fixed;
   top: 0;
@@ -11,7 +26,7 @@
   background: #f8f8f8;
   border-bottom: 1px solid #ddd;
   padding: 4px 16px;
-  height: 44px;
+  height: 50px;
   box-sizing: border-box;
 }
 
@@ -23,6 +38,10 @@
   flex: 1;
   text-align: left;
   margin: 0;
+  font-family: inherit;
+  font-size: 2em;
+  font-weight: 700;
+  color: #222;
 }
 
 #site-header nav {
@@ -46,45 +65,64 @@
 }
 
 
+/* Main layout */
 #main-container {
-  height: calc(100vh - 44px); /* match header height */
+  height: calc(100vh - 50px); 
   width: 100vw;
-  margin-top: 44px;
+  margin-top: 50px;
   display: flex;
   overflow: visible; /* Allow map to receive scroll/pan events */
 }
 
 #sidebar {
-  position: absolute;
-  top: 0; /* Make sidebar start at the very top */
+  position: fixed;
+  top: 50px;
   right: 0;
   width: 300px;
-  height: 100vh; /* Full viewport height */
-  background: white;
-  z-index: 950;
+  height: calc(100vh - 50px);
+  background: #fff;
+  z-index: 2100;
   overflow-y: auto;
-  box-shadow: -2px 0 6px rgba(0, 0, 0, 0.1);
-  pointer-events: auto; /* needed for sidebar itself */
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
+  pointer-events: auto;
+  border-left: 2px solid #ddd;
 }
 
-.hidden {
-  display: none;
+#sidebar h2 {
+  font-family: inherit;
+  font-size: 1.9em;
+  font-weight: 700;
+  color: #222;
+  margin: 0 0 14px 0;
+  background: transparent;
+  padding: 24px 0 0 0;
+  border-bottom: none;
+}
+
+#sidebar-content {
+  padding-top: 50px; 
+  font-size: 0.95em;
+  line-height: 1.4em;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
 }
 
 #map {
   position: absolute;
-  top: 44px; /* height of your header */
+  top: 50px; 
   left: 0;
   width: 100vw;
-  height: calc(100vh - 44px); /* fills below header */
+  height: calc(100vh - 50px); 
   z-index: 1;
-  pointer-events: auto; /* map needs this to receive events */
+  pointer-events: auto;
 }
+
 
 /* Export panel styling */
 #exportPanel {
   position: absolute;
-  top: 44px; /* exactly matches header height */
+  top: 50px;
   right: 20px;
   background: white;
   padding: 10px;
@@ -101,68 +139,6 @@
   pointer-events: none;
 }
 
-/* Grid for categories */
-#layerCheckboxes {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 10px;
-  margin-bottom: 8px;
-}
-
-#layerCheckboxes {
-  max-height: 300px;
-  overflow-y: auto;
-}
-
-/* Each category dropdown */
-#layerCheckboxes details {
-  margin-bottom: 0;
-  border-radius: 5px;
-  background: #f7f7f7;
-  border: 1px solid #eaeaea;
-  padding: 2px 0 2px 0;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
-  min-width: 0;
-}
-
-/* Category summary */
-#layerCheckboxes summary {
-  font-weight: 600;
-  cursor: pointer;
-  font-size: 0.98rem;
-  padding: 4px 8px;
-  border-radius: 5px;
-  background: #e9ecef;
-  outline: none;
-  transition: background 0.2s;
-  margin-bottom: 2px;
-}
-
-#layerCheckboxes summary:focus {
-  background: #d0e6fa;
-}
-
-/* Layer checkbox row */
-#layerCheckboxes div {
-  margin-bottom: 2px;
-  padding-left: 8px;
-  display: flex;
-  align-items: center;
-}
-
-/* Layer label */
-#layerCheckboxes label {
-  margin-left: 6px;
-  font-size: 0.93rem;
-  color: #222;
-}
-
-/* Checkbox */
-#layerCheckboxes input[type="checkbox"] {
-  accent-color: #0074d9;
-  width: 15px;
-  height: 15px;
-}
 
 /* Export buttons */
 #exportPanel button {
@@ -184,33 +160,33 @@
   color: #fff;
 }
 
-body, html {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  font-family: sans-serif;
-  overflow: hidden; /* Prevents website scroll */
-}
 
-/* Responsive: adjust top for taller mobile header */
-@media (max-width: 700px) {
-  .layer-controls {
-    top: 80px; /* increase if your mobile header is taller */
-  }
-}
-
-
+/* Layer controls */
 .layer-controls {
   position: fixed;
   left: 10px;
   z-index: 2100;
-  /* Remove top: ... here, JS will set it */
   background: rgba(255, 255, 255, 0.95);
   border-radius: 6px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   font-family: sans-serif;
   overflow: hidden;
   font-size: 0.6rem;
+}
+
+.layer-controls.collapsed .layer-options {
+  display: none;
+}
+
+.layer-options {
+  display: flex;
+  flex-direction: column; /* checkboxes stack vertically */
+  padding: 8px 12px;
+  gap: 6px;
+  max-height: 70vh;
+  overflow-y: auto;
+  position: relative;
+  min-width: 200px;
 }
 
 .toggle-button {
@@ -224,16 +200,6 @@ body, html {
   border-bottom: 1px solid #ccc;
 }
 
-.layer-options {
-  display: flex;
-  flex-direction: column; /* checkboxes stack vertically */
-  padding: 8px 12px;
-  gap: 6px;
-  max-height: 70vh;
-  overflow-y: auto;
-  position: relative;
-  min-width: 200px;
-}
 
 /* Custom scrollbar styling */
 .layer-options::-webkit-scrollbar {
@@ -254,6 +220,7 @@ body, html {
   background: #a8a8a8;
 }
 
+
 /* Fade effect at bottom when scrollable */
 .layer-options::after {
   content: '';
@@ -265,12 +232,81 @@ body, html {
   margin: 0 -12px -8px -12px;
 }
 
-.layer-controls.collapsed .layer-options {
-  display: none;
+
+/* Grid for categories */
+#layerCheckboxes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin-bottom: 8px;
+  max-height: 300px;
+  overflow-y: auto;
 }
 
-/* New styles for groups */
 
+/* Each category dropdown */
+#layerCheckboxes details {
+  margin-bottom: 0;
+  border-radius: 5px;
+  background: #f7f7f7;
+  border: 1px solid #eaeaea;
+  padding: 2px 0 2px 0;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  min-width: 0;
+}
+
+
+/* Category summary */
+#layerCheckboxes summary {
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.98rem;
+  padding: 4px 8px;
+  border-radius: 5px;
+  background: #e9ecef;
+  outline: none;
+  transition: background 0.2s;
+  margin-bottom: 2px;
+}
+
+#layerCheckboxes summary:focus {
+  background: #d0e6fa;
+}
+
+
+/* Layer checkbox row */
+#layerCheckboxes div {
+  margin-bottom: 2px;
+  padding-left: 8px;
+  display: flex;
+  align-items: center;
+}
+
+
+/* Layer label */
+#layerCheckboxes label {
+  margin-left: 6px;
+  font-size: 0.93rem;
+  color: #222;
+}
+
+
+/* Checkbox */
+#layerCheckboxes input[type="checkbox"] {
+  accent-color: #0074d9;
+  width: 15px;
+  height: 15px;
+}
+
+/* Responsive: adjust top for taller mobile header */
+@media (max-width: 700px) {
+  .layer-controls {
+    top: 80px; /* increase if your mobile header is taller */
+  }
+}
+
+
+/* New styles for groups */
 .layer-group {
   margin-bottom: 8px;
 }
@@ -291,6 +327,17 @@ body, html {
 
 .group-header:focus {
   outline: 2px solid #007acc;
+}
+
+/* Arrow styling in header: using pseudo element */
+.group-header::after {
+  content: '▸'; /* default collapsed arrow */
+  font-size: 0.6rem;
+  transition: transform 0.2s ease;
+}
+
+.group-header.expanded::after {
+  content: '▾'; /* expanded arrow */
 }
 
 .group-content {
@@ -320,34 +367,11 @@ body, html {
   display: none;
 }
 
-/* Arrow styling in header: using pseudo element */
+/* popup listed buildings */
 
-.group-header::after {
-  content: '▸'; /* default collapsed arrow */
-  font-size: 0.6rem;
-  transition: transform 0.2s ease;
+.listed-popup-content {
+  font-size: 12px;
 }
-
-.group-header.expanded::after {
-  content: '▾'; /* expanded arrow */
-}
-
-/* Sidebar styles */
-
-#sidebar h2 {
-  font-size: 1.4em;
-  margin-bottom: 10px;
-}
-
-#sidebar-content {
-  padding-top: 44px; /* Match your header height */
-}
-
-#sidebar-content {
-  font-size: 0.95em;
-  line-height: 1.4em;
-}
-
 
 /* When popup is shown inside the sidebar */
 .listed-popup-content.in-sidebar {
@@ -362,7 +386,22 @@ body, html {
   margin-bottom: 20px; /* Optional spacing between multiple entries */
 }
 
-/* Optional close button style */
+.listed-popup-content table {
+  margin-bottom: 6px;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.listed-popup-content td {
+  padding: 2px 4px;
+  vertical-align: top;
+}
+
+.listed-popup-content a {
+  color: #0066cc;
+  text-decoration: underline;
+}
+
 .popup-close-btn {
   position: static;
   top: auto;
@@ -371,7 +410,37 @@ body, html {
   font-size: 1.2em;
 }
 
-/* Optional: tidy up the toggle button and table */
+#popup-close-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.popup-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.popup-title {
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.toggle-btn {
+  font-size: 14px;
+  cursor: pointer;
+  padding: 2px 6px;
+  border: none;
+  background: #ddd;
+  border-radius: 3px;
+}
+
 #toggle-table-btn {
   margin-left: 10px;
   font-size: 0.9em;
@@ -393,38 +462,8 @@ body, html {
   vertical-align: top;
 }
 
-.hidden {
+.popup-table.hidden {
   display: none;
-}
-
-/* popup listed buildings */
-
-.listed-popup-content {
-  font-size: 12px;
-}
-
-.listed-popup-content table {
-  margin-bottom: 6px;
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.listed-popup-content td {
-  padding: 2px 4px;
-  vertical-align: top;
-}
-
-.listed-popup-content a {
-  color: #0066cc;
-  text-decoration: underline;
-}
-
-#move-popup-btn {
-  cursor: pointer;
-  padding: 4px 8px;
-  margin-top: 6px;
-  background: #f0f0f0;
-  border: 1px solid #ccc;
 }
 
 .popup-panel {
@@ -441,15 +480,12 @@ body, html {
   z-index: 1000;
 }
 
-#popup-close-btn {
-  position: absolute;
-  top: 5px;
-  right: 5px;
+#move-popup-btn {
   cursor: pointer;
-  border: none;
-  background: transparent;
-  font-weight: bold;
-  font-size: 16px;
+  padding: 4px 8px;
+  margin-top: 6px;
+  background: #f0f0f0;
+  border: 1px solid #ccc;
 }
 
 /* Only absolutely position the close button when in the popup (not in sidebar) */
@@ -476,54 +512,46 @@ body, html {
   cursor: pointer;
 }
 
-.popup-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+
+/* Legend styling - unified for all legends */
+.map-legend {
+  margin-top: 10px;
+  font-size: 0.95em;
+  margin-left: 15px;
+  margin-bottom: 8px;
 }
 
-.popup-title {
-  font-weight: bold;
-  font-size: 1.1em;
-}
-
-.toggle-btn {
-  font-size: 14px;
-  cursor: pointer;
-  padding: 2px 6px;
-  border: none;
-  background: #ddd;
-  border-radius: 3px;
-}
-
-.popup-table.hidden {
+#ntow-legend, #social-infrastructure-legend, #landuse-legend, #historic-legend, #agricultural-legend, #hydrogelogy-legend, #prow-legend, #natural-environment-legend {
+  margin-top: 10px;
+  font-size: 0.95em;
+  margin-left: 15px;
+  margin-bottom: 8px;
   display: none;
 }
 
-/* Heritage legend styling */
-#historic-legend {
-  margin-top: 10px;
-}
-
-#historic-legend > div {
+.map-legend > div,
+#ntow-legend > div, #social-infrastructure-legend > div, #landuse-legend > div, #historic-legend > div, #agricultural-legend > div, #hydrogelogy-legend > div, #prow-legend > div, #natural-environment-legend > div {
   margin-bottom: 8px;
   display: flex;
   align-items: center;
   line-height: 1.5;
 }
 
-#historic-legend span {
+.map-legend span,
+#ntow-legend span, #social-infrastructure-legend span, #landuse-legend span, #historic-legend span, #agricultural-legend span, #hydrogelogy-legend span, #prow-legend span, #natural-environment-legend span {
   margin-right: 10px;
   flex-shrink: 0;
+  color: #333;
+  font-size: 13px;
 }
 
-#historic-legend strong {
+.map-legend strong,
+#ntow-legend strong, #social-infrastructure-legend strong, #landuse-legend strong, #historic-legend strong, #agricultural-legend strong, #hydrogelogy-legend strong, #prow-legend strong, #natural-environment-legend strong {
   margin-bottom: 2px;
   display: block;
   font-size: 1.1em;
 }
 
-/* New map legend styles */
 .map-legend {
     position: absolute;
     bottom: 20px;
@@ -591,52 +619,261 @@ body, html {
     font-size: 13px;
 }
 
-/* Optional: Hide legend on mobile */
-@media (max-width: 768px) {
-    .map-legend {
-        bottom: 10px;
-        right: 10px;
-        font-size: 12px;
-        padding: 10px;
-        max-width: 150px;
-    }
-    
-    .legend-item span {
-        font-size: 11px;
-    }
+/* Remove duplicate standardization block, now unified above */
+
+.legend-ancient-woodland { background: #228b22; border: 1px solid #006400; }
+.legend-aonb-fill { background: #ccebc5; border: 1px solid #006d2c; }
+.legend-grass { background: #7CFC00; border: 1px solid #228B22; }
+.legend-lnr-fill { background: #b3cde3; border: 1px solid #045a8d; }
+.legend-nnr-fill { background: #fbb4ae; border: 1px solid #99000d;}
+.legend-tpz { background: #8B4513; border: 1px solid #000000; }
+.legend-woodland { background: rgba(34,139,34,0.5); border: 1px solid #006400; }
+
+.legend-lone-tree    { background: #00a884; border-color: #006d2c; }
+.legend-group-trees  { background: #4ae700; border-color: #2d5016; }
+.legend-nfi-ohc      { background: #6fa803; border-color: #4a7002; }
+.legend-small-wood   { background: #0ae6a9; border-color: #087a5c; }
+.legend-other        { background: #cccccc; border-color: #999999; }
+
+.legend-amenity      { background: #f8bbd0; border-color: #ffffff; }
+.legend-cemeteries   { background: url('images/black-hatch.png'); background-size: 20px 20px; background-repeat: repeat; border-color: #000; }
+.legend-educational  { background: #fff176; border-color: #666; }
+.legend-hospitals    { background: #f28cb1; border-color: #d63384; }
+.legend-shop         { background: #ce93d8; border-color: #ffffff; }
+.legend-schools      { background: #ffe699; border-color: #e6cc00; }
+.legend-stadiums     { background: #a1d99b; border-color: #4a854a; }
+.legend-tourism      { background: #81d4fa; border-color: #ffffff; }
+
+
+.legend-article4   { background: rgba(240, 230, 140, 0.15); border: 1px solid #000000; }
+.legend-conservation { background: #e6f3ff; border: 1px solid #0066cc; }
+.legend-heritage-park { background: #c1f7a1; border: 1px solid #598145; }
+.legend-listed-building { background: #b3cde0; border: 1px solid #6495ed; border-radius: 50%; }
+.legend-scheduled-monument { background: #f06a6c; border: 1px solid #a94442; }
+.legend-whs-buffer { background: url('images/gold-hatch.png'); border: 1px solid #FFD700; }
+.legend-whs-core   { background: #FFC300; border: 1px solid #B8860B; }
+.legend-symbol {
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  margin-right: 5px;
+  vertical-align: middle;
 }
 
-
-/* Standardize all legend styling to match heritage legend */
-#ntow-legend, #social-infrastructure-legend, #landuse-legend {
-  margin-top: 10px;
+.legend-builtup {
+  background: #FF6B6B;
+  border: 1px solid #CC5555;
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+.legend-residential {
+  background: #f4a261;
+  border: 1px solid #f4a261;
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+.legend-lpb {
+  background: #ff7f0e;
+  border-color: #cc5500;
 }
 
-#ntow-legend > div, 
-#social-infrastructure-legend > div, 
-#landuse-legend > div {
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  line-height: 1.5;
+.legend-agricultural-grade1 {
+  background: #228B22;
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  margin-right: 5px;
+  border: 1px solid #006400;
+}
+.legend-agricultural-grade2 {
+  background: #32CD32;
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  margin-right: 5px;
+  border: 1px solid #228B22;
+}
+.legend-agricultural-grade3a {
+  background: #9ACD32;
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  margin-right: 5px;
+  border: 1px solid #6B8E23;
+}
+.legend-agricultural-grade3b {
+  background: #ADFF2F;
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  margin-right: 5px;
+  border: 1px solid #9ACD32;
+}
+.legend-agricultural-grade4 {
+  background: #FFFF99;
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  margin-right: 5px;
+  border: 1px solid #CCCC00;
+}
+.legend-agricultural-grade5 {
+  background: #DDD;
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  margin-right: 5px;
+  border: 1px solid #999;
 }
 
-#ntow-legend span, 
-#social-infrastructure-legend span, 
-#landuse-legend span {
-  margin-right: 10px;
-  flex-shrink: 0;
+.legend-hydro-1b {
+  background: #a6cee3;
+  border-color: #888;
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  margin-right: 6px;
+  border: 1px solid #888;
+  vertical-align: middle;
+}
+.legend-hydro-2a {
+  background: #1f78b4;
+  border-color: #888;
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  margin-right: 6px;
+  border: 1px solid #888;
+  vertical-align: middle;
+}
+.legend-hydro-1c {
+  background: #b2df8a;
+  border-color: #888;
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  margin-right: 6px;
+  border: 1px solid #888;
+  vertical-align: middle;
+}
+.legend-hydro-3 {
+  background: #fdbf6f;
+  border-color: #888;
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  margin-right: 6px;
+  border: 1px solid #888;
+  vertical-align: middle;
+}
+.legend-hydro-other {
+  background: #cccccc;
+  border-color: #888;
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  margin-right: 6px;
+  border: 1px solid #888;
+  vertical-align: middle;
 }
 
-#ntow-legend strong, 
-#social-infrastructure-legend strong, 
-#landuse-legend strong {
-  margin-bottom: 2px;
-  display: block;
-  font-size: 1.1em;
+.legend-prow-footpath {
+  width: 18px;
+  height: 6px;
+  background: #E400FF;
+  border: 1px solid #E400FF;
+  border-radius: 2px;
+  display: inline-block;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+.legend-prow-bridleway {
+  width: 18px;
+  height: 6px;
+  background: #0000FF;
+  border: 1px solid #0000FF;
+  border-radius: 2px;
+  display: inline-block;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+.legend-prow-restricted {
+  width: 18px;
+  height: 6px;
+  background: #800080;
+  border: 1px solid #800080;
+  border-radius: 2px;
+  display: inline-block;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+.legend-prow-byway {
+  width: 18px;
+  height: 6px;
+  background: #FF0000;
+  border: 1px solid #FF0000;
+  border-radius: 2px;
+  display: inline-block;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+/* Streetlighting legend symbol styles */
+.legend-streetlighting-label {
+  margin-bottom: 10px;
+}
+.legend-streetlighting-sign {
+  background: url('images/streetlightingsign.png');
+  background-size: 16px 10px;
+  width: 16px;
+  height: 10px;
+  display: inline-block;
+  margin-right: 5px;
+  border: 1px solid #FFD700;
+}
+.legend-streetlighting-column {
+  background: #F0F8FF;
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  margin-right: 5px;
+  border: 2px solid #FFD700;
+  border-radius: 50%;
+}
+.legend-streetlighting-other {
+  background: #FFD700;
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  margin-right: 5px;
+  border: 2px solid #B8860B;
+  border-radius: 50%;
+}
+.legend-streetlighting-buffer {
+  background: #FFF8DC;
+  width: 24px;
+  height: 8px;
+  display: inline-block;
+  margin-right: 5px;
+  border: 1px solid #FFFACD;
+}
+.legend-streetlighting-shadow {
+  background: #000000;
+  opacity: 0.2;
+  width: 24px;
+  height: 8px;
+  display: inline-block;
+  margin-right: 5px;
 }
 
 /* Specific legend symbol styling */
+
 .legend-symbol {
   width: 12px;
   height: 12px;
@@ -659,6 +896,7 @@ body, html {
   border-radius: 50%;
 }
 
+/* Header and search bar styles */
 #header {
   position: absolute;
   top: 0;
@@ -698,13 +936,15 @@ body, html {
   margin-right: 20px ;
 }
 
-
+/* About content styles */
 #about-content {
   max-width: 800px;
   margin: 0 auto;
   padding: 56px 20px 0 20px; /* Top padding matches/clears header height */
   line-height: 1.6;
   font-family: sans-serif;
+  height: calc(100vh - 70px); /* Adjust for header/footer */
+  overflow-y: auto;
 }
 
 #about-content h2 {
@@ -730,7 +970,7 @@ body, html {
     gap: 6px;
   }
   .layer-controls {
-    top: 60px; /* or slightly more if header is taller on mobile */
+    top: 60px;
   }
   #site-title {
     font-size: 1.1em;
@@ -763,7 +1003,7 @@ body, html {
   }
   #about-content {
     margin: 0;
-    padding: 100px 8px 0 8px; /* More top padding for thicker mobile header */
+    padding: 100px 8px 0 8px; 
     max-width: 100%;
     font-size: 0.98em;
   }
@@ -774,4 +1014,18 @@ body, html {
   #about-content ul {
     padding-left: 18px;
   }
+}
+
+@media (max-width: 768px) {
+    .map-legend {
+        bottom: 10px;
+        right: 10px;
+        font-size: 12px;
+        padding: 10px;
+        max-width: 150px;
+    }
+    
+    .legend-item span {
+        font-size: 11px;
+    }
 }

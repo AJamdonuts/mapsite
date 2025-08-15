@@ -20,13 +20,20 @@ NOTES:
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>MapLibre GL JS Demo</title>
+  <title>InsightMap</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
+
+  <!-- MapLibre -->
   <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
+
+  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Turf.js -->
   <script src="https://unpkg.com/@turf/turf@6.5.0/turf.min.js"></script>
+
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -39,10 +46,10 @@ NOTES:
   <button id="exportMapBtn">Export</button>
   <div id="exportPanel" class="hidden" style="position:absolute; background:#fff; border:1px solid #ccc; z-index:1000;">
   <div id="layerCheckboxes"></div>
-  <button id="exportPNG">Export PNG</button>
-  <button id="exportLayers">Export GeoJSON</button>
-  <button id="exportDXF">Export DXF</button>
-</div>
+    <button id="exportPNG">Export PNG</button>
+    <button id="exportLayers">Export GeoJSON</button>
+    <button id="exportDXF">Export DXF</button>
+  </div>
   <div id="search-container" style="display: flex; align-items: center;">
     <input type="text" id="search-input" placeholder="Search location or feature..." />
     <button id="search-button">🔍</button>
@@ -94,7 +101,6 @@ NOTES:
         <label><input type="checkbox" id="toggleNNR"> National Nature Reserves</label>
         <label><input type="checkbox" id="toggleNTOW"> NTOW Trees</label>
         <label><input type="checkbox" id="toggleCanopy"> Tree Canopy Cover</label>
-        
         <label><input type="checkbox" id="toggleTPZ"> Tree Preservation Zones</label>
         <label><input type="checkbox" id="toggleWoodland"> Woodland</label>
       </div>
@@ -126,7 +132,7 @@ NOTES:
     </div>
 
     <div class="layer-group">
-      <h3 class="group-header" tabindex="0">Transport and Accessibility</h3>
+      <h3 class="group-header" tabindex="0">Transport & Accessibility</h3>
       <div class="group-content">
         <label><input type="checkbox" id="toggleprow"> PROW (footpaths)</label>
         <label><input type="checkbox" id="toggleTransportAccess"> Public Transport Access</label>
@@ -141,34 +147,79 @@ NOTES:
 <div id="main-container">
   <div id="map"></div>
   <div id="sidebar">
-    <h2>Viewport Dashboard</h2>
-    <div id="sidebar-content">
-        <p>Select a feature on the map to view details.</p>
+  <h2>Viewport Dashboard</h2>
+  <div id="sidebar-messages">
+    <p id="sidebar-feature-message">Select a feature on the map to view details.</p>
+    <div id="landuse-chart-message" style="display:none;">No land use data in view.</div>
+  </div>
+  <div id="sidebar-content">
+    <!-- Feature details will appear here -->
+  </div>
+    <div id="natural-environment-legend">
+      <strong>Natural Environment Key:</strong><br>
+      <div><span class="legend-symbol legend-ancient-woodland"></span>Ancient Woodland</div>
+      <div><span class="legend-symbol legend-aonb-fill"></span>Area Of Outstanding Beauty</div>
+      <div><span class="legend-symbol legend-grass"></span>Grass Area</div>
+      <div><span class="legend-symbol legend-lnr-fill"></span>Local Nature Reserve</div>
+      <div><span class="legend-symbol legend-nnr-fill"></span>National Nature Reserve</div>
+      <div><span class="legend-symbol legend-tpz"></span>Tree Preservation Zone</div>
+      <div><span class="legend-symbol legend-woodland"></span>Woodland</div>
     </div>
     <button id="refresh-canopy-btn" style="display:none;">Refresh Canopy Stats</button>
+
+
+    <div id="historic-legend">
+      <strong>Heritage & Designation Key:</strong><br>
+      <div><span class="legend-symbol legend-article4"></span>Article 4 Direction Areas</div>
+      <div><span class="legend-symbol legend-conservation"></span>Conservation Areas</div>
+      <div><span class="legend-symbol legend-heritage-park"></span>Heritage Park/Garden</div>
+      <div><span class="legend-symbol legend-listed-building"></span>Listed Building</div>
+      <div><span class="legend-symbol legend-scheduled-monument"></span>Scheduled Monument</div>
+      <div><span class="legend-symbol legend-whs-buffer"></span>WHS Buffer Zone</div>
+      <div><span class="legend-symbol legend-whs-core"></span>WHS Core Area</div>
+    </div>
 
     <div id="landuse-chart-container">
       <canvas id="landuse-chart" width="300" height="300"></canvas>
     </div>
-    <div id="ntow-legend" style="display: none;">
-      <strong>NTOW Tree Types:</strong><br>
-      <div><span class="legend-symbol" style="background:#00a884; border-color:#006d2c;"></span>Lone Tree</div>
-      <div><span class="legend-symbol" style="background:#4ae700; border-color:#2d5016;"></span>Group of Trees</div>
-      <div><span class="legend-symbol" style="background:#6fa803; border-color:#4a7002;"></span>NFI OHC</div>
-      <div><span class="legend-symbol" style="background:#0ae6a9; border-color:#087a5c;"></span>Small Woodland</div>
-      <div><span class="legend-symbol" style="background:#cccccc; border-color:#999999;"></span>Other</div>
+
+    <div id="landuse-legend" style="display: none; margin-top: 10px;">
+      <strong>Land Use Key:</strong><br>
+      <div><span class="legend-symbol legend-builtup"></span>Built Up Areas</div>
+      <div><span class="legend-symbol legend-residential"></span>Residential Areas</div>
+      <div><span class="legend-line-symbol legend-lpb"></span>Local Plan Boundaries</div>
     </div>
-    
-    <div id="social-infrastructure-legend" style="display: none;">
+
+    <div id="agricultural-legend" style="display:none;">
+      <strong>Agricultural Land:</strong>
+      <div class="legend-agricultural-label"><span class="legend-agricultural-grade1"></span>Grade 1 (Excellent)</div>
+      <div class="legend-agricultural-label"><span class="legend-agricultural-grade2"></span>Grade 2 (Very Good)</div>
+      <div class="legend-agricultural-label"><span class="legend-agricultural-grade3a"></span>Grade 3a (Good)</div>
+      <div class="legend-agricultural-label"><span class="legend-agricultural-grade3b"></span>Grade 3b (Moderate)</div>
+      <div class="legend-agricultural-label"><span class="legend-agricultural-grade4"></span>Grade 4 (Poor)</div>
+      <div class="legend-agricultural-label"><span class="legend-agricultural-grade5"></span>Grade 5 (Very Poor)</div>
+    </div>
+
+
+    <div id="ntow-legend">
+      <strong>NTOW Tree Types:</strong><br>
+      <div><span class="legend-symbol legend-lone-tree"></span>Lone Tree</div>
+      <div><span class="legend-symbol legend-group-trees"></span>Group of Trees</div>
+      <div><span class="legend-symbol legend-nfi-ohc"></span>NFI OHC</div>
+      <div><span class="legend-symbol legend-small-wood"></span>Small Woodland</div>
+      <div><span class="legend-symbol legend-other"></span>Other</div>
+    </div>
+
+    <div id="social-infrastructure-legend">
       <strong>Social Infrastructure Key:</strong><br>
-      <div><span class="legend-symbol legend-circle" style="background:#f8bbd0; border-color:#ffffff;"></span>Amenity POIs</div>
-      <div><span class="legend-symbol" style="background: url('images/black-hatch.png'); background-size: 20px 20px; background-repeat: repeat; border-color:#000;"></span>Cemeteries</div>
-      <div><span class="legend-symbol" style="background:#fff176; border-color:#666;"></span>Educational Establishments</div>
-      <div><span class="legend-symbol" style="background:#f28cb1; border-color:#d63384;"></span>Hospitals</div>
-      <div><span class="legend-symbol" style="background:#ce93d8; border-color:#ffffff;"></span>Shop POIs</div>
-      <div><span class="legend-symbol" style="background:#ffe699; border-color:#e6cc00;"></span>Schools</div>
-      <div><span class="legend-symbol" style="background:#a1d99b; border-color:#4a854a;"></span>Stadiums</div>
-      <div><span class="legend-symbol legend-circle" style="background:#81d4fa; border-color:#ffffff;"></span>Tourism POIs</div>
+      <div><span class="legend-symbol legend-amenity"></span>Amenity POIs</div>
+      <div><span class="legend-symbol legend-cemeteries"></span>Cemeteries</div>
+      <div><span class="legend-symbol legend-educational"></span>Educational Establishments</div>
+      <div><span class="legend-symbol legend-hospitals"></span>Hospitals</div>
+      <div><span class="legend-symbol legend-shop"></span>Shop POIs</div>
+      <div><span class="legend-symbol legend-schools"></span>Schools</div>
+      <div><span class="legend-symbol legend-stadiums"></span>Stadiums</div>
+      <div><span class="legend-symbol legend-tourism"></span>Tourism POIs</div>
     </div>
 
     <div id="listed-building-panel" style="display:none; position: relative;">
@@ -182,84 +233,30 @@ NOTES:
       <div id="building-height-info"></div>
     </div>
 
-    <div id="historic-legend" style="display: none; margin-top: 10px;">
-      <strong>Heritage & Designation Key:</strong><br>
-      <div><span style="background:rgba(240, 230, 140, 0.15);width:12px;height:12px;display:inline-block;margin-right:5px;border:1px solid #000000;"></span>Article 4 Direction Areas</div>
-      <div><span style="background:#e6f3ff;width:12px;height:12px;display:inline-block;margin-right:5px;border:1px solid #0066cc;"></span>Conservation Areas</div>
-      <div><span style="background:#c1f7a1;width:12px;height:12px;display:inline-block;margin-right:5px;border:1px solid #598145;"></span>Heritage Park/Garden</div>
-      <div><span style="background:#b3cde0;width:12px;height:12px;display:inline-block;margin-right:5px;border:1px solid #6495ed;border-radius:50%;"></span>Listed Building</div>
-      <div><span style="background:#f06a6c;width:12px;height:12px;display:inline-block;margin-right:5px;border:1px solid #a94442;"></span>Scheduled Monument</div>
-      <div><span style="background: url('images/gold-hatch.png'); width:12px; height:12px; display:inline-block; margin-right:5px; border:1px solid #FFD700;"></span>WHS Buffer Zone</div>
-      <div><span style="background:#FFC300;width:12px;height:12px;display:inline-block;margin-right:5px;border:1px solid #B8860B;"></span>WHS Core Area</div>
+    <div id="hydrogelogy-legend">
+      <strong>Hydrogelogy Key:</strong><br>
+      <div class="legend-hydro-label"><span class="legend-hydro-1b"></span>1B: Moderately productive aquifer</div>
+      <div class="legend-hydro-label"><span class="legend-hydro-2a"></span>2A: Highly productive aquifer</div>
+      <div class="legend-hydro-label"><span class="legend-hydro-1c"></span>1C: Low productivity aquifer</div>
+      <div class="legend-hydro-label"><span class="legend-hydro-3"></span>3: Rocks with essentially no groundwater</div>
+      <div class="legend-hydro-label"><span class="legend-hydro-other"></span>Other: Not classified</div>
     </div>
 
-    <div id="landuse-legend" style="display: none; margin-top: 10px;">
-      <strong>Land Use Key:</strong><br>
-      <div><span style="background:#FF6B6B;width:12px;height:12px;display:inline-block;margin-right:5px;border:1px solid #CC5555;"></span>Built Up Areas</div>
-      <div><span style="background:#f4a261;width:12px;height:12px;display:inline-block;margin-right:5px;border:1px solid #f4a261;"></span>Residential Areas</div>
-      <div><span style="background:#ff7f0e;width:16px;height:2px;display:inline-block;margin-right:5px;border:1px solid #cc5500;"></span>Local Plan Boundaries</div>
-      
-      <!-- Agricultural Land with sub-grades -->
-      <div style="margin-top: 8px; font-size: 0.9em;"><strong>Agricultural Land:</strong></div>
-      <div style="margin-left: 15px;"><span style="background:#228B22;width:12px;height:12px;display:inline-block;margin-right:5px;border:1px solid #006400;"></span>Grade 1 (Excellent)</div>
-      <div style="margin-left: 15px;"><span style="background:#32CD32;width:12px;height:12px;display:inline-block;margin-right:5px;border:1px solid #228B22;"></span>Grade 2 (Very Good)</div>
-      <div style="margin-left: 15px;"><span style="background:#9ACD32;width:12px;height:12px;display:inline-block;margin-right:5px;border:1px solid #6B8E23;"></span>Grade 3a (Good)</div>
-      <div style="margin-left: 15px;"><span style="background:#ADFF2F;width:12px;height:12px;display:inline-block;margin-right:5px;border:1px solid #9ACD32;"></span>Grade 3b (Moderate)</div>
-      <div style="margin-left: 15px;"><span style="background:#FFFF99;width:12px;height:12px;display:inline-block;margin-right:5px;border:1px solid #CCCC00;"></span>Grade 4 (Poor)</div>
-      <div style="margin-left: 15px;"><span style="background:#DDD;width:12px;height:12px;display:inline-block;margin-right:5px;border:1px solid #999;"></span>Grade 5 (Very Poor)</div>
-    </div>
-
-    <div id="hydrogeology-legend" style="display:none; margin-top: 10px;">
-      <strong>Hydrogeology Key:</strong><br>
-      <div style="margin-bottom:6px;"><span class="legend-symbol" style="background:#a6cee3; border-color:#888;"></span>1B: Moderately productive aquifer</div>
-      <div style="margin-bottom:6px;"><span class="legend-symbol" style="background:#1f78b4; border-color:#888;"></span>2A: Highly productive aquifer</div>
-      <div style="margin-bottom:6px;"><span class="legend-symbol" style="background:#b2df8a; border-color:#888;"></span>1C: Low productivity aquifer</div>
-      <div style="margin-bottom:6px;"><span class="legend-symbol" style="background:#fdbf6f; border-color:#888;"></span>3: Rocks with essentially no groundwater</div>
-      <div><span class="legend-symbol" style="background:#cccccc; border-color:#888;"></span>Other: Not classified</div>
-    </div>
-
-    <div id="prow-legend" style="display:none; margin-top: 10px;">
+    <div id="prow-legend">
       <strong>Public Rights of Way Key:</strong><br>
-      <div style="margin-bottom:6px;">
-        <span class="legend-symbol" style="width:18px;height:6px;background:#E400FF; border-color:#E400FF; border-radius:2px; display:inline-block; margin-right:6px; vertical-align:middle;"></span>
-        Public Footpath
-      </div>
-      <div style="margin-bottom:6px;">
-        <span class="legend-symbol" style="width:18px;height:6px;background:#0000FF; border-color:#0000FF; border-radius:2px; display:inline-block; margin-right:6px; vertical-align:middle;"></span>
-        Bridleway
-      </div>
-      <div style="margin-bottom:6px;">
-        <span class="legend-symbol" style="width:18px;height:6px;background:#800080; border-color:#800080; border-radius:2px; display:inline-block; margin-right:6px; vertical-align:middle;"></span>
-        Restricted Byway
-      </div>
-      <div>
-        <span class="legend-symbol" style="width:18px;height:6px;background:#FF0000; border-color:#FF0000; border-radius:2px; display:inline-block; margin-right:6px; vertical-align:middle;"></span>
-        Byway Open to All Traffic
-      </div>
+      <div><span class="legend-prow-footpath"></span>Public Footpath</div>
+      <div><span class="legend-prow-bridleway"></span>Bridleway</div>
+      <div><span class="legend-prow-restricted"></span>Restricted Byway</div>
+      <div><span class="legend-prow-byway"></span>Byway Open to All Traffic</div>
     </div>
 
-    <div id="streetlighting-legend" style="display: none; margin-top: 10px;">
+    <div id="streetlighting-legend" style="display:none;">
       <strong>Streetlighting Key:</strong><br>
-      <div style="margin-bottom: 10px;">
-        <span style="background: url('images/streetlightingsign.png'); background-size: 16px 10px; width:16px; height:10px; display:inline-block; margin-right:5px; border:1px solid #FFD700;"></span>
-        Sign
-      </div>
-      <div style="margin-bottom: 10px;">
-        <span style="background:#F0F8FF; width:12px; height:12px; display:inline-block; margin-right:5px; border:2px solid #FFD700; border-radius:50%;"></span>
-        Column
-      </div>
-      <div style="margin-bottom: 10px;">
-        <span style="background:#FFD700; width:12px; height:12px; display:inline-block; margin-right:5px; border:2px solid #B8860B; border-radius:50%;"></span>
-        Other
-      </div>
-      <div style="margin-bottom: 10px;">
-        <span style="background:#FFF8DC; width:24px; height:8px; display:inline-block; margin-right:5px; border:1px solid #FFFACD;"></span>
-        Buffer Area
-      </div>
-      <div style="margin-bottom: 10px;">
-        <span style="background:#000000; opacity:0.2; width:24px; height:8px; display:inline-block; margin-right:5px;"></span>
-        Shadow Area
-      </div>
+      <div class="legend-streetlighting-label"><span class="legend-streetlighting-sign"></span>Sign</div>
+      <div class="legend-streetlighting-label"><span class="legend-streetlighting-column"></span>Column</div>
+      <div class="legend-streetlighting-label"><span class="legend-streetlighting-other"></span>Other</div>
+      <div class="legend-streetlighting-label"><span class="legend-streetlighting-buffer"></span>Buffer Area</div>
+      <div class="legend-streetlighting-label"><span class="legend-streetlighting-shadow"></span>Shadow Area</div>
     </div>
 
 <template id="listed-popup-template">

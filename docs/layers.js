@@ -1,5 +1,56 @@
-// LAYERS 
+/**
+ * =============================================================================
+ * MAP LAYER INITIALIZATION SCRIPT
+ * =============================================================================
+ *
+ * Purpose:
+ * This file defines and adds all custom layers to the interactive map.
+ * It centralizes layer creation, maintains consistency, and simplifies future updates or additions.
+ * Each layer is configured with colors, styles, and visibility defaults that match the project's requirements.
+ *
+ * Usage:
+ * 1. Ensure the Maplibre map instance is fully loaded.
+ *    Typically, call `addLayers(map)` inside a map `on('load', ...)` event.
+ * 2. Layers are added in a controlled order to handle fill, line, and icon styles appropriately.
+ * 3. Images and icons used in layers are loaded automatically before layers are added.
+ * 4. All custom layer IDs are tracked in `window.customLayerIds` for easy reference or later removal.
+ *
+ * Design and Styling Decisions:
+ *
+ * - Colours:
+ *   Each layer has a colour chosen for clarity, visual hierarchy, and to match the thematic purpose of the feature:
+ *     • Heritage or protected areas: #f0e68c (khaki) for a classic, subtle heritage tone.
+ *     • Parks and wooded areas: #228B22 (dark green) for natural vegetation.
+ *     • Grass or open green spaces: #7CFC00 (bright green) for high visibility.
+ *     • Highlights or active selections: bright contrasting colours (#FF4500, etc.) for interactive features.
+ *     • Outlines: black or dark colours (#000000) for crisp boundaries.
+ *   These colours provide clear separation between layer types, maintain accessibility, and align with cartographic practices.
+ *
+ * - Layer Visibility:
+ *   Most layers are initialized with `visibility: 'none'` (hidden) by default using the `hidden` constant.
+ *   This allows controlled activation, prevents clutter, and improves performance.
+ *
+ * - Helper Constant:
+ *   The `hidden` constant (`const hidden = { visibility: 'none' }`) is used to reduce repetition and enforce consistency for hidden layers.
+ *
+ * - Image Loading:
+ *   Map images are preloaded with `map.loadImage()` to ensure icons and patterns are available when the layer is added. Pixel ratios are set for clarity at multiple zoom levels.
+ *
+ * - Maintainability:
+ *   Using a central function (`addLayers(map)`) and helper constants allows quick adjustments to styles, colors, filters, or new layers without duplicating code.
+ *
+ * Notes:
+ *   • All colours and style choices are embedded within their respective layer definitions for clarity and ease of maintenance.
+ *   • This file is intended to be the single source of truth for all custom map layers.
+ *   • Ensure any new layers are added through the `addLayers(map)` function and use the `hidden` constant for default visibility.
+ *
+ * =============================================================================
+ */
+// =============================
+// LAYERS CONFIGURATION & STYLES
+// =============================
 
+// Landcover style definitions (used for wood and grass areas)
 window.originalLandcoverStyles = {
     wood: {
         'fill-color': '#228B22', // forest green
@@ -9,6 +60,7 @@ window.originalLandcoverStyles = {
     },
 };
 
+// Landuse style definitions (used for special landuse types)
 window.originalLanduseStyles = {
     cemetery: { 'fill-color': '#a9a9a9' },   // dark grey
     hospital: { 'fill-color': '#f28cb1' },   // light pink
@@ -16,11 +68,11 @@ window.originalLanduseStyles = {
     stadium:  { 'fill-color': '#a1d99b' },   // soft green
 };
 
-// Add these global variables if they don't exist
+// Active land use types and colour mapping
 window.activeLandUseTypes = ['residential', 'commercial', 'industrial', 'forest', 'farmland', 'grass', 'park', 'retail', 'landfill']; // Initialize with all types
 window.inactiveColor = '#cccccc';
 
-// Update the landUseColors object to match your desired colors:
+// Colour mapping for each land use type
 window.landUseColors = {
     'residential': '#00FF00',     // Green (changed from orange)
     'commercial': '#FF0000',      // Red (changed from pink)
@@ -32,13 +84,23 @@ window.landUseColors = {
 };
 
 
+// Helper for hidden layers
+const hidden = { visibility: 'none' };
+
+// Adds all custom layers to the map instance, grouped by theme for clarity.
 function addLayers(map) {
+
+    // =============================
+    // HERITAGE & CONSERVATION LAYERS
+    // =============================
+
+
     // Article 4 Direction Areas layer
     map.addLayer({
         id: 'article-4-direction',
         type: 'fill',
         source: 'article-4-direction',
-        layout: { visibility: 'none' },
+        layout: hidden,
         paint: {
             'fill-color': '#f0e68c', // khaki
             'fill-opacity': 0.15,
@@ -47,7 +109,7 @@ function addLayers(map) {
     });
     window.customLayerIds.push('article-4-direction');
 
-    // Highlight layer for Article 4 Direction Areas
+    // Highlight layer for Article 4 Direction Areas (for selection)
     map.addLayer({
         id: 'article-4-highlight',
         type: 'line',
@@ -62,12 +124,12 @@ function addLayers(map) {
     });
     window.customLayerIds.push('article-4-highlight');
 
-    // Article 4 Direction Areas dashed outline
+    // Article 4 Direction Areas dashed outline (for boundaries)
     map.addLayer({
         id: 'article-4-direction-outline',
         type: 'line',
         source: 'article-4-direction',
-        layout: { visibility: 'none' },
+        layout: hidden,
         paint: {
             'line-color': '#000000', // black
             'line-width': [
@@ -85,12 +147,12 @@ function addLayers(map) {
     });
     window.customLayerIds.push('article-4-direction-outline');
 
-    //Heritage Parks and Gardens layer
+    // Heritage Parks and Gardens layer
     map.addLayer({
         id: 'heritage-parks-fill',
         type: 'fill',
         source: 'heritage_parks',
-        layout: { visibility: 'none' },
+        layout: hidden,
         paint: {
             'fill-color': ' #c1f7a1', 
             'fill-opacity': 0.3,
@@ -102,7 +164,7 @@ function addLayers(map) {
         id: 'heritage-parks-outline',
         type: 'line',
         source: 'heritage_parks',
-        layout: { visibility: 'none' },
+        layout: hidden,
         paint: {
             'line-color': '#598145',
             'line-width': 1.5
@@ -110,7 +172,7 @@ function addLayers(map) {
     });
     window.customLayerIds.push('heritage-parks-outline');
 
-    // Listed buildings layer
+    // Listed buildings layer (points)
     map.addLayer({
         id: 'listed-point',
         type: 'circle',
@@ -132,7 +194,7 @@ function addLayers(map) {
         id: 'listed-fill',
         type: 'fill',
         source: 'listed-buildings',
-        layout: { visibility: 'none' },
+        layout: hidden,
         paint: {
             'fill-color': '#3388ff',
             'fill-opacity': 0.3
@@ -145,7 +207,7 @@ function addLayers(map) {
         id: 'listed-highlight',
         type: 'fill',
         source: 'listed-buildings',
-        layout: { visibility: 'none' },
+        layout: hidden,
         paint: {
             'fill-color': '#ff0000',
             'fill-opacity': 0.6
@@ -158,7 +220,7 @@ function addLayers(map) {
     map.addLayer({
         id: 'smonuments-fill',
         type: 'fill',
-        layout: { visibility: 'none' },
+        layout: hidden,
         source: 'scheduled_monuments',
         paint: {
             'fill-color': '#f06a6c', // light red
@@ -171,7 +233,7 @@ function addLayers(map) {
         id: 'smonuments-outline',
         type: 'line',
         source: 'scheduled_monuments',
-        layout: { visibility: 'none' },
+        layout: hidden,
         paint: {
             'line-color': '#f06a6c',
             'line-width': 1.5
@@ -180,33 +242,35 @@ function addLayers(map) {
     window.customLayerIds.push('smonuments-outline');
 
 
-// World Heritage Sites layer
+    // =============================
+    // WORLD HERITAGE SITES LAYERS
+    // =============================
 
-    // Core Area Layer
-    map.addLayer({
-      id: 'whs-core',
-      type: 'fill',
-      source: 'world-heritage',
-      layout: { visibility: 'none' },
-      filter: ['==', ['get', 'Notes'], 'Core Area'],
-      paint: {
-        'fill-color': '#FFC300', // gold
-        'fill-opacity': 0.4,
-      }
-    });
+    // Core Area Layer (World Heritage Site)
+        map.addLayer({
+            id: 'whs-core',
+            type: 'fill',
+            source: 'world-heritage',
+            layout: hidden,
+            filter: ['==', ['get', 'Notes'], 'Core Area'],
+            paint: {
+                'fill-color': '#FFC300', // gold
+                'fill-opacity': 0.4,
+            }
+        });
     window.customLayerIds.push('whs-core');
 
-    // Buffer Zone Layer
-    map.addLayer({
-      id: 'whs-buffer',
-      type: 'fill',
-      source: 'world-heritage',
-      layout: { visibility: 'none' },
-      filter: ['==', ['get', 'Notes'], 'Buffer Zone'],
-      paint: {
-        'fill-pattern': 'goldHatch'
-      }
-    });
+    // Buffer Zone Layer (World Heritage Site)
+        map.addLayer({
+            id: 'whs-buffer',
+            type: 'fill',
+            source: 'world-heritage',
+            layout: hidden,
+            filter: ['==', ['get', 'Notes'], 'Buffer Zone'],
+            paint: {
+                'fill-pattern': 'goldHatch'
+            }
+        });
     window.customLayerIds.push('whs-buffer');
 
     // Conservation Areas outline - Separate line layer for visible outline
@@ -214,7 +278,7 @@ function addLayers(map) {
         id: 'conservation-areas-outline',
         type: 'line',
         source: 'conservation-areas',
-        layout: { visibility: 'none' },
+        layout: hidden,
         paint: {
             'line-color': '#1565c0', // darker blue outline at full opacity
             'line-width': 2,
@@ -223,7 +287,7 @@ function addLayers(map) {
     });
     window.customLayerIds.push('conservation-areas-outline');
 
-    // Highlight layer for Conservation Areas
+    // Highlight layer for Conservation Areas (for selection)
     map.addLayer({
         id: 'conservation-areas-highlight',
         type: 'line',
@@ -243,22 +307,26 @@ function addLayers(map) {
         id: 'conservation-areas',
         type: 'fill',
         source: 'conservation-areas',
-        layout: { visibility: 'none' },
+        layout: hidden,
         paint: {
             'fill-color': '#90caf9', // light blue
             'fill-opacity': 0.3 // 30% opacity
-            // Remove fill-outline-color since we'll use a separate line layer
         }
     });
     window.customLayerIds.push('conservation-areas');
 
-    // 3D Buildings
+    // =============================
+    // BUILT ENVIRONMENT LAYERS
+    // =============================
+
+
+    // 3D Buildings (extruded polygons)
     map.addLayer({
         id: 'buildings-3d',
         type: 'fill-extrusion',
         source: 'building_height',
         paint: {
-        'fill-extrusion-color': 'transparent', // Use transparent color for fill
+        'fill-extrusion-color': 'transparent', 
         'fill-extrusion-opacity': 0.1,
         'fill-extrusion-height': [ // Calculate height based on building levels or height property
             'coalesce',
@@ -271,12 +339,16 @@ function addLayers(map) {
     });
     window.customLayerIds.push('buildings-3d');
 
+    // =============================
+    // NATURE & ENVIRONMENTAL LAYERS
+    // =============================
+
     // Ancient Woodland layer
     map.addLayer({
         id: 'ancient-woodland',
         type: 'fill',
         source: 'ancient-woodland',
-        layout: { visibility: 'none' },
+        layout: hidden,
         paint: {
             'fill-color': '#3a743a',
             'fill-opacity': 0.5,
@@ -285,11 +357,11 @@ function addLayers(map) {
     window.customLayerIds.push('ancient-woodland');
 
     // Ancient Woodland outline layer
-        map.addLayer({
+    map.addLayer({
         id: 'ancient-woodland-outline',
         type: 'line',
         source: 'ancient-woodland',
-        layout: { visibility: 'none' },
+        layout: hidden,
         paint: {
             'line-color': '#006d2c', 
             'line-width': 2,
@@ -303,7 +375,7 @@ function addLayers(map) {
         id: 'aonb-fill',
         type: 'fill',
         source: 'aonb',
-        layout: { visibility: 'none' },
+        layout: hidden,
         paint: {
             'fill-color': '#ccebc5',  
             'fill-opacity': 0.3  
@@ -316,7 +388,7 @@ function addLayers(map) {
         id: 'aonb-outline',
         type: 'line',
         source: 'aonb',
-        layout: { visibility: 'none' },
+        layout: hidden,
         paint: {
             'line-color': '#006d2c', 
             'line-width': 2,
@@ -331,7 +403,7 @@ function addLayers(map) {
         id: 'local-nature-reserves',
         type: 'fill',
         source: 'local-nature-reserves',
-        layout: { visibility: 'none' },
+        layout: hidden,
         paint: {
             'fill-color': '#b3cde3', 
             'fill-opacity': 0.4,
@@ -344,7 +416,7 @@ function addLayers(map) {
         id: 'local-nature-reserves-outline',
         type: 'line',
         source: 'local-nature-reserves',
-        layout: { visibility: 'none' },
+        layout: hidden,
         paint: {
             'line-color': '#045a8d', 
             'line-width': 2,
@@ -359,7 +431,7 @@ function addLayers(map) {
         id: 'national-nature-reserves',
         type: 'fill',
         source: 'national-nature-reserves',
-        layout: { visibility: 'none' },
+        layout: hidden,
         paint: {
             'fill-color': '#fbb4ae', 
             'fill-opacity': 0.4,
@@ -372,7 +444,7 @@ function addLayers(map) {
         id: 'national-nature-reserves-outline',
         type: 'line',
         source: 'national-nature-reserves',
-        layout: { visibility: 'none' },
+        layout: hidden,
         paint: {
             'line-color': '#99000d', 
             'line-width': 2,
@@ -381,7 +453,7 @@ function addLayers(map) {
     });
     window.customLayerIds.push('national-nature-reserves-outline');
 
-        // National Tree Register (NTOW) trees
+    // National Tree Register (NTOW) trees
 
     map.addLayer({
     id: 'ntow-trees',
@@ -404,7 +476,7 @@ function addLayers(map) {
     });
     window.customLayerIds.push('ntow-trees');
 
-    //UK Ward Canopy Cover layer
+    // UK Ward Canopy Cover layer
     map.addLayer({
     id: 'ward-canopy',
     type: 'fill',
@@ -433,7 +505,7 @@ function addLayers(map) {
         id: 'tree-preservation-zones',
         type: 'fill',
         source: 'tree-preservation-zones',
-        layout: { visibility: 'none' },
+        layout: hidden,
         paint: {
             'fill-color': '#8B4513', // brown
             'fill-opacity': 0.4,
@@ -443,12 +515,17 @@ function addLayers(map) {
     window.customLayerIds.push('tree-preservation-zones');
 
 
+    // =============================
+    // INFRASTRUCTURE & TRANSPORT LAYERS
+    // =============================
+
+
     // Transport Access Nodes layer
     map.addLayer({
         id: 'public-transport-nodes',
         type: 'circle',
         source: 'public-transport-nodes',
-        layout: { visibility: 'none' },
+        layout: hidden,
         paint: {
             'circle-radius': 4,
             'circle-color': '#ff7f0e', // orange
@@ -459,12 +536,12 @@ function addLayers(map) {
     });
     window.customLayerIds.push('public-transport-nodes');
 
-     // Agricultural Land Classification
+    // Agricultural Land Classification layer
     map.addLayer({
         id: 'agricultural-land',
         type: 'fill',
         source: 'agricultural_land',
-        layout: { visibility: 'none' },
+        layout: hidden,
         paint: {
             'fill-color': [
                 'match',
@@ -490,7 +567,7 @@ function addLayers(map) {
         id: 'built-up-areas',
         type: 'fill',
         source: 'built-up-areas',
-        layout: { visibility: 'none' },
+        layout: hidden,
         paint: {
             'fill-color': '#FF6B6B', // khaki
             'fill-opacity': 0.4,
@@ -499,11 +576,16 @@ function addLayers(map) {
     });
     window.customLayerIds.push('built-up-areas');
 
-    // Land use fill layer - ADD THIS BEFORE the outline layer
+    // =============================
+    // LAND USE LAYERS
+    // =============================
+
+
+    // Land use fill layer (main polygons)
     map.addLayer({
         id: 'landuse-fill',
         type: 'fill',
-        layout: { visibility: 'none' },
+        layout: hidden,
         source: 'landuse',
         paint: {
             'fill-color': [
@@ -529,7 +611,7 @@ function addLayers(map) {
     map.addLayer({
         id: 'landuse-outline',
         type: 'line',
-        layout: { visibility: 'none' },
+        layout: hidden,
         source: 'landuse',
         filter: ['in', ['get', 'landuse'], ['literal', ['residential', 'commercial', 'industrial', 'farmland', 'park']]], // Fixed syntax
         paint: {
@@ -539,12 +621,12 @@ function addLayers(map) {
     });
     window.customLayerIds.push('landuse-outline');
 
-       // Local Plan Boundaries layer
+    // Local Plan Boundaries layer
     map.addLayer({
         id: 'local-plan-boundaries',
         type: 'line',
         source: 'local-plan-boundaries',
-        layout: { visibility: 'none' },
+        layout: hidden,
         paint: {
             'line-color': '#ff7f0e', // orange
             'line-width': 2,
@@ -554,25 +636,34 @@ function addLayers(map) {
     window.customLayerIds.push('local-plan-boundaries');
 
 
-        map.loadImage('images/gold-hatch.png', (error, image) => {
+    // =============================
+    // IMAGE PATTERNS FOR FILL/ICONS
+    // =============================
+
+    // Load gold hatch image for fill patterns
+    map.loadImage('images/gold-hatch.png', (error, image) => {
       if (error) throw error;
       map.addImage('goldHatch', image, { pixelRatio: 2 });
     });
 
-    // Load the black hatch image
+    // Load the black hatch image for fill patterns
     map.loadImage('images/black-hatch.png', (error, image) => {
         if (error) throw error;
         map.addImage('blackHatch', image, { pixelRatio: 4 });
     });
 
 
-    // Land use cemetery
+    // =============================
+    // LANDUSE OUTLINE LAYERS
+    // =============================
+
+    // Land use cemetery outline
     map.addLayer({
     id: 'cemetery-outline',
     type: 'line',
     source: 'openmaptiles',
     'source-layer': 'landuse',
-    layout: { visibility: 'none' },
+    layout: hidden,
     filter: ['==', ['get', 'class'], 'cemetery'],
     paint: {
         'line-color': '#000000',
@@ -582,13 +673,13 @@ function addLayers(map) {
     });
     window.customLayerIds.push('cemetery-outline');
 
-    // Land use hospital
+    // Land use hospital outline
     map.addLayer({
     id: 'hospital-outline',
     type: 'line',
     source: 'openmaptiles',
     'source-layer': 'landuse',
-    layout: { visibility: 'none' },
+    layout: hidden,
     filter: ['==', ['get', 'class'], 'hospital'],
     paint: {
         'line-color': '#d63384',
@@ -598,13 +689,13 @@ function addLayers(map) {
     });
     window.customLayerIds.push('hospital-outline');
 
-    // Land use school
+    // Land use school outline
     map.addLayer({
     id: 'school-outline',
     type: 'line',
     source: 'openmaptiles',
     'source-layer': 'landuse',
-    layout: { visibility: 'none' },
+    layout: hidden,
     filter: ['==', ['get', 'class'], 'school'],
     paint: {
         'line-color': '#e6cc00',
@@ -614,13 +705,13 @@ function addLayers(map) {
     });
     window.customLayerIds.push('school-outline');
 
-    // Land use stadium
+    // Land use stadium outline
     map.addLayer({
     id: 'stadium-outline',
     type: 'line',
     source: 'openmaptiles',
     'source-layer': 'landuse',
-    layout: { visibility: 'none' },
+    layout: hidden,
     filter: ['==', ['get', 'class'], 'stadium'],
     paint: {
         'line-color': '#d63384',
@@ -630,19 +721,24 @@ function addLayers(map) {
     });
     window.customLayerIds.push('stadium-outline');
 
-  // Points of Interest (POIs) layer
+    // =============================
+    // POINTS OF INTEREST (POIs) LAYERS
+    // =============================
+
+
+    // Points of Interest (POIs) layer
     const poiColors = {
     amenity: '#f8bbd0',    // red
     tourism: '#81d4fa',    // blue
     shop: '#ce93d8',      
     };
 
-    // Create a circle layer for each POI category
+    // Create a circle layer for each POI category (amenity, tourism, shop)
     for (const category of ['amenity', 'tourism', 'shop']) {
         map.addLayer({
         id: `pois-${category}`,
         type: 'circle',
-        layout: { visibility: 'none' },
+        layout: hidden,
         source: 'pois',
         filter: ['all', ['has', category], ['has', 'name']], // Only features with category and name
         paint: {
@@ -660,7 +756,7 @@ function addLayers(map) {
         id: 'educational-establishments',
         type: 'circle',
         source: 'educational-establishments',
-        layout: { visibility: 'none' },
+        layout: hidden,
         paint: {
             'circle-radius': 6,
             'circle-color': '#fff176',
@@ -670,12 +766,16 @@ function addLayers(map) {
     });
     window.customLayerIds.push('educational-establishments');
 
+    // =============================
+    // ENVIRONMENTAL RISK & GEOLOGY LAYERS
+    // =============================
+
     // Flood Risk Areas layer
     map.addLayer({
         id: 'flood-risk',
         type: 'fill',
         source: 'flood-risk',
-        layout: { visibility: 'none' },
+        layout: hidden,
         paint: {
             'fill-color': [
                 'match',
@@ -691,12 +791,12 @@ function addLayers(map) {
     });
     window.customLayerIds.push('flood-risk');
 
-    // Boreholes layer
+    // Boreholes layer (colored by year)
     map.addLayer({
         id: 'boreholes',
         type: 'circle',
         source: 'boreholes',
-        layout: { visibility: 'none' },
+        layout: hidden,
         paint: {
         'circle-radius': 6,
         'circle-color': [
@@ -714,32 +814,37 @@ function addLayers(map) {
     window.customLayerIds.push('boreholes');
 
     // Hydrogelogy layer
-    map.addLayer({
-        id: 'hydrogelogy',
-        type: 'fill',
-        source: 'Hydrogelogy-features',
-        layout: { visibility: 'none' },
-        paint: {
-            'fill-color': [
-              'match',
-              ['get', 'CLASS'],
-              '1B', '#a6cee3',
-              '2A', '#1f78b4',
-              '1C', '#b2df8a',
-              '3', '#fdbf6f',
-              /* fallback */ '#cccccc'
-            ],
-            'fill-opacity': 0.6
-          }
-    });
+        map.addLayer({
+                id: 'hydrogelogy',
+                type: 'fill',
+                source: 'Hydrogelogy-features',
+                layout: hidden,
+                paint: {
+                        'fill-color': [
+                            'match',
+                            ['get', 'CLASS'],
+                            '1B', '#a6cee3',
+                            '2A', '#1f78b4',
+                            '1C', '#b2df8a',
+                            '3', '#fdbf6f',
+                            /* fallback */ '#cccccc'
+                        ],
+                        'fill-opacity': 0.6
+                    }
+        });
     window.customLayerIds.push('hydrogelogy');
+
+    // =============================
+    // PUBLIC RIGHTS OF WAY (PROW) LAYERS
+    // =============================
+
 
     // PROW: Public Footpath
 map.addLayer({
   id: 'prow-footpath',
   type: 'line',
   source: 'PROW',
-  layout: { visibility: 'none' },
+    layout: hidden,
   filter: ['==', ['get', 'StatusDesc'], 'Public Footpath'],
   paint: {
     'line-color': '#E400FF',
@@ -750,12 +855,12 @@ map.addLayer({
 });
 window.customLayerIds.push('prow-footpath');
 
-// PROW: Bridleway
+    // PROW: Bridleway
 map.addLayer({
   id: 'prow-bridleway',
   type: 'line',
   source: 'PROW',
-  layout: { visibility: 'none' },
+    layout: hidden,
   filter: ['==', ['get', 'StatusDesc'], 'Public Bridleway'],
   paint: {
     'line-color': '#0000FF',
@@ -766,12 +871,12 @@ map.addLayer({
 });
 window.customLayerIds.push('prow-bridleway');
 
-// PROW: Restricted Byway
+    // PROW: Restricted Byway
 map.addLayer({
   id: 'prow-restricted-byway',
   type: 'line',
   source: 'PROW',
-  layout: { visibility: 'none' },
+    layout: hidden,
   filter: ['==', ['get', 'StatusDesc'], 'Restricted Byway'],
   paint: {
     'line-color': '#800080',
@@ -782,12 +887,12 @@ map.addLayer({
 });
 window.customLayerIds.push('prow-restricted-byway');
 
-// PROW: Byway Open to All Traffic (solid)
+    // PROW: Byway Open to All Traffic (solid)
 map.addLayer({
   id: 'prow-byway-open',
   type: 'line',
   source: 'PROW',
-  layout: { visibility: 'none' },
+    layout: hidden,
   filter: ['==', ['get', 'StatusDesc'], 'Byway open to all traffic'],
   paint: {
     'line-color': '#FF0000',
@@ -798,7 +903,12 @@ map.addLayer({
 });
 window.customLayerIds.push('prow-byway-open');
 
-// Contour Lines layer
+    // =============================
+    // TOPOGRAPHY LAYERS
+    // =============================
+
+
+    // Contour Lines layer (colored by elevation)
 map.addLayer({
     id: 'contour-lines',
     type: 'line',
@@ -826,7 +936,7 @@ map.addLayer({
 });
 window.customLayerIds.push('contour-lines');
 
-// Contour Points layer
+    // Contour Points layer
 map.addLayer({
     id: 'contour-points',
     type: 'circle',
@@ -842,7 +952,7 @@ map.addLayer({
 });
 window.customLayerIds.push('contour-points');
 
-// Contour Labels layer
+    // Contour Labels layer (elevation text)
 map.addLayer({
   id: 'contour-labels',
   type: 'symbol',
@@ -862,12 +972,12 @@ map.addLayer({
 });
 window.customLayerIds.push('contour-labels');
 
-// Contour Lines Index layer
+    // Contour Lines Index layer (major lines)
 map.addLayer({
   id: 'contour-lines-index',
   type: 'line',
   source: 'contour-lines',
-  layout: { visibility: 'none' },
+    layout: hidden,
   filter: ['==', ['%', ['get', 'PROP_VALUE'], 50], 0],
   paint: {
     'line-color': '#8B4513',
@@ -878,12 +988,12 @@ map.addLayer({
 });
 window.customLayerIds.push('contour-lines-index');
 
-// Contour Lines Ordinary layer
+    // Contour Lines Ordinary layer (minor lines)
 map.addLayer({
   id: 'contour-lines-ordinary',
   type: 'line',
   source: 'contour-lines',
-  layout: { visibility: 'none' },
+    layout: hidden,
   filter: ['!=', ['%', ['get', 'PROP_VALUE'], 50], 0],
   paint: {
     'line-color': '#8B4513',
@@ -894,12 +1004,17 @@ map.addLayer({
 });
 window.customLayerIds.push('contour-lines-ordinary');
 
-// For the streetlighting buffer layer
+    // =============================
+    // STREETLIGHTING LAYERS
+    // =============================
+
+
+    // Streetlighting buffer layer (illuminated area)
 map.addLayer({
   id: 'streetlighting-buffer',
   type: 'fill',
   source: 'streetlighting-buffer',
-    layout: { visibility: 'none' },
+        layout: hidden,
   paint: {
     'fill-color': '#FFF8DC',     // Light yellow to show illuminated area
     'fill-opacity': 0.8,         // Very transparent so it doesn't dominate
@@ -907,12 +1022,12 @@ map.addLayer({
 });
 window.customLayerIds.push('streetlighting-buffer');
 
-// Add a subtle outline for the buffer
+    // Add a subtle outline for the buffer
 map.addLayer({
   id: 'streetlighting-buffer-outline',
   type: 'line',
   source: 'streetlighting-buffer',
-    layout: { visibility: 'none' },
+        layout: hidden,
   paint: {
     'line-color': '#FFFACD',
     'line-width': 1,
@@ -921,12 +1036,12 @@ map.addLayer({
 });
 window.customLayerIds.push('streetlighting-buffer-outline');
 
-// Streetlighting shadows layer
+    // Streetlighting shadows layer
 map.addLayer({
     id: 'streetlighting-shadows',
     type: 'fill',
     source: 'streetlighting-shadows',
-    layout: { visibility: 'none' },
+        layout: hidden,
     paint: {
         'fill-color': '#000000', // Black for shadows
         'fill-opacity': 0.2,     // Very transparent to not dominate
@@ -936,10 +1051,8 @@ map.addLayer({
 window.customLayerIds.push('streetlighting-shadows');
 
 
-// Remove the current circle-based streetlighting layer and replace with these:
-
-// First, create the rectangle image for signs (add this early in your addLayers function)
-map.loadImage('images/streetlightingsign.png', (error, image) => {
+    // Load rectangle image for streetlighting signs
+    map.loadImage('images/streetlightingsign.png', (error, image) => {
     if (error) {
         console.error('Error loading streetlight sign PNG:', error);
         return;
@@ -951,14 +1064,14 @@ map.loadImage('images/streetlightingsign.png', (error, image) => {
 });
 window.customLayerIds.push('streetlighting-signs');
 
-// Streetlighting Signs layer (slim rectangles)
+    // Streetlighting Signs layer (slim rectangles)
 map.addLayer({
     id: 'streetlighting-signs',
     type: 'symbol',
     source: 'streetlighting',
     layout: { 
         visibility: 'none',
-        'icon-image': 'sign-rectangle', // This will now use your PNG
+        'icon-image': 'sign-rectangle',
         'icon-size': [
             'interpolate',
             ['linear'],
@@ -973,12 +1086,12 @@ map.addLayer({
 });
 window.customLayerIds.push('streetlighting-signs');
 
-// Streetlighting Columns layer (circles)
+    // Streetlighting Columns layer (circles)
 map.addLayer({
     id: 'streetlighting-columns',
     type: 'circle',
     source: 'streetlighting',
-    layout: { visibility: 'none' },
+        layout: hidden,
     filter: ['==', ['get', 'feature_type'], 'Column'],
     paint: {
         'circle-radius': [
@@ -997,7 +1110,7 @@ map.addLayer({
 });
 window.customLayerIds.push('streetlighting-columns');
 
-// Streetlighting Others layer (small circles) - ADD THIS MISSING LAYER
+    // Streetlighting Others layer (small circles)
 map.addLayer({
     id: 'streetlighting-others',
     type: 'circle',
@@ -1025,8 +1138,6 @@ map.addLayer({
 window.customLayerIds.push('streetlighting-others');
 }
 
-// Export the addLayers function
+// Export the addLayers function and customLayerIds array
 window.addLayers = addLayers;
-
-// Custom layer IDs export
 window.customLayerIds = [];

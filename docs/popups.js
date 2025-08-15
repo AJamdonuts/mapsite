@@ -1,3 +1,23 @@
+
+/**
+ * popups.js
+ *
+ * This manages interactive popups and sidebar panels for various map features using MapLibre GL JS.
+ * It handles click and hover events for layers such as land use, buildings, listed buildings, POIs, schools, trees, canopy cover, heritage sites, flood risk, boreholes, and contour points.
+ *
+ * Reasoning & Design Choices:
+ * - Uses MapLibre's event system to provide contextual information for each feature type, improving user experience and map interactivity.
+ * - Popups are customized per layer, showing relevant details and links, and sometimes moving content to the sidebar for richer info display.
+ * - Cursor changes and visual feedback help users understand clickable/interactive areas.
+ * - For complex features (e.g., listed buildings), popups can be moved between map and sidebar, with close and zoom controls for usability.
+ * - Avoids external dependencies, keeping logic simple and maintainable for future contributors.
+ * - Exposed as `window.setupPopups` for easy integration in main.js and other scripts.
+ *
+ * This approach is modular, extensible, and designed for clarity, making it easier for others to add new feature popups or adjust existing ones.
+ */
+
+
+
 // --- POPUPS & INTERACTION ---
 
 function setupPopups(map) {
@@ -343,30 +363,38 @@ map.on('click', (e) => {
 
   if (!features.length) return;
 
+
+  // Create a popup for heritage features (Scheduled Monuments, Parks/Gardens, World Heritage Sites)
   const popup = new maplibregl.Popup({ closeButton: true }).setLngLat(e.lngLat);
 
+  // Build HTML content for each feature found at the click location
   let html = '';
   features.forEach((feature, i) => {
+    // Extract relevant properties for display
     const props = feature.properties;
     let name = props.Name || props.name || 'Unnamed';
     let listEntry = props.ListEntry || props.ListEntryNumber || 'Not available';
     let grade = props.Grade || 'Not applicable';
+    // Use provided hyperlink if available, otherwise default to Historic England entry
     let url = props.hyperlink || `https://historicengland.org.uk/listing/the-list/list-entry/${listEntry}`;
     let type = '';
 
+    // Determine feature type based on layer id
     if (feature.layer.id === 'smonuments-fill') {
       type = 'Scheduled Monument';
     } else if (feature.layer.id === 'heritage-parks-fill') {
       type = 'Heritage Park/Garden';
     } else if (feature.layer.id === 'whs-core') {
       type = 'World Heritage Site (Core Area)';
-      // Optionally override color or add extra info
+      // Optionally override colour
     } else if (feature.layer.id === 'whs-buffer') {
       type = 'World Heritage Site (Buffer Zone)';
     }
 
+    // Unique button id for zooming to this feature
     const zoomButtonId = `zoom-${feature.layer.id}-${feature.id}`;
 
+    // Compose the popup HTML for this feature
     html += `
       <div style="margin-bottom:10px;">
         <strong>${name}</strong><br>
@@ -377,18 +405,22 @@ map.on('click', (e) => {
         <button id="${zoomButtonId}">Zoom to Feature</button>
       </div>
     `;
+    // Add a horizontal rule between features if multiple are present
     if (i < features.length - 1) {
       html += '<hr>';
     }
   });
 
+  // Set the constructed HTML in the popup and add to map
   popup.setHTML(html).addTo(map);
 
+  // Attach zoom button handlers after popup is rendered
   setTimeout(() => {
     for (const feature of features) {
       const zoomButtonId = `zoom-${feature.layer.id}-${feature.id}`;
       const btn = document.getElementById(zoomButtonId);
       if (btn) {
+        // Zoom to feature: fit bounds for polygons, fly to point otherwise
         btn.onclick = () => {
           const geometry = feature.geometry;
           if (geometry.type === 'Polygon' || geometry.type === 'MultiPolygon') {

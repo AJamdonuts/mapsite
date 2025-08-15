@@ -19,48 +19,64 @@
     <section>
       <h2>About This Project</h2>
       <p>
-        InsightMap is a web-based geovisualisation platform designed for urban designers, architects, and local councils. 
-        It provides clear, interactive tools for exploring land use, heritage features, and other spatial datasets, 
-        supporting planning and decision-making.
+        <strong>InsightMap</strong> is a web-based geovisualisation platform for urban designers, architects, planners, and local councils. It provides interactive tools for exploring land use, heritage, environmental, and planning datasets in Canterbury and Kent. The platform supports evidence-based decision-making, site analysis, and public engagement by integrating authoritative spatial data with a clear, user-friendly interface.
       </p>
-    </section>
-
-    <section>
-      <h2>Data Sources</h2>
       <ul>
-        <li>Ordnance Survey OpenData</li>
-        <li>Historic England</li>
-        <li>Local Authority planning datasets</li>
-        <li>OpenStreetMap</li>
-        <li>National Tree Officers Association</li>
-        <li>Forest Research</li>
-        <li>Natural England</li>
-        <li>Office for National Statistics</li>
-        <li>Department for Education, Ministry of Housing, Communities & Local Government</li>
-        <li>The National Public Transport Access Nodes (NaPTAN)</li>
-        <li>Environment Agency</li>
-        <li>British Geological Survey</li>
-        <li>Rowmaps-Kent County Council</li>
+        <li><strong>Purpose:</strong> To enable multi-layered spatial analysis for urban design, helping users understand constraints, opportunities, and context for development and placemaking.</li>
+        <li><strong>Features:</strong> Toggleable map layers, feature info sidebar, search, export tools, legends, and measurement utilities.</li>
+        <li><strong>Audience:</strong> Urban professionals, students, and the public interested in local planning and environment.</li>
       </ul>
-      <p>
-        All datasets have been processed to align with UK cartographic standards for clarity and accessibility. 
-        © Data providers as stated.
-      </p>
     </section>
 
     <section>
-      <h2>Design Choices</h2>
-      <p>
-        The map interface prioritises legibility, minimal clutter, and consistent colour coding for land use categories. 
-        Layer toggles, search, and measurement tools are provided to encourage exploration without overwhelming users.
-      </p>
+      <h2>Data Sources (with Dates & Links)</h2>
+      <p>All datasets have been processed to align with UK cartographic standards for clarity and accessibility. Most data is clipped to the Canterbury boundary for local relevance. Below is a full list of sources, dates, and links:</p>
+      <ul>
+        <li><strong>Ordnance Survey OpenData</strong> (Topography, Contours, Built-up Areas) <br> <em>Date:</em> 2025-05-14 <br> <a href="https://www.ordnancesurvey.co.uk/opendatadownload/products.html" target="_blank">ordnancesurvey.co.uk</a></li>
+        <li><strong>Historic England</strong> (Conservation Areas, Listed Buildings, Scheduled Monuments, World Heritage Sites) <br> <em>Date:</em> 2024-05-10, 2025-08-01 <br> <a href="https://historicengland.org.uk/listing/the-list/" target="_blank">historicengland.org.uk</a></li>
+        <li><strong>Local Planning Authorities</strong> (Article 4 Direction, Tree Preservation Zones, Local Plan Boundaries) <br> <em>Date:</em> 2025-08-01 <br> <a href="https://www.kent.gov.uk/environment/planning" target="_blank">kent.gov.uk</a></li>
+        <li><strong>OpenStreetMap</strong> (Land Use, POIs) <br> <em>Date:</em> 2025-07-01 <br> <a href="https://www.openstreetmap.org/" target="_blank">openstreetmap.org</a></li>
+        <li><strong>National Tree Officers Association</strong> (NTOW Trees) <br> <em>Date:</em> 2023-11-01 <br> <a href="https://www.nato.org.uk/ntow/" target="_blank">nato.org.uk/ntow</a></li>
+        <li><strong>Forest Research</strong> (Canopy Cover) <br> <em>Date:</em> 2023-09-15 <br> <a href="https://www.forestresearch.gov.uk/tools-and-resources/fthr/canopy-cover-map/" target="_blank">forestresearch.gov.uk</a></li>
+        <li><strong>Natural England</strong> (Ancient Woodland, AONB, Agricultural Land Classification) <br> <em>Date:</em> 2024-09-27, 2024-10-04, 2025-08-01 <br> <a href="https://naturalengland-defra.opendata.arcgis.com/" target="_blank">naturalengland-defra.opendata.arcgis.com</a></li>
+        <li><strong>Office for National Statistics</strong> (Built-up Areas) <br> <em>Date:</em> 2024-06-11 <br> <a href="https://www.ons.gov.uk/" target="_blank">ons.gov.uk</a></li>
+        <li><strong>Department for Education, MHCLG</strong> (Educational Establishments, Brownfield Sites, Nature Reserves) <br> <em>Date:</em> 2024-07-06, 2025-04-25 <br> <a href="https://www.gov.uk/government/organisations/ministry-of-housing-communities-and-local-government" target="_blank">gov.uk/mhclg</a></li>
+        <li><strong>NaPTAN</strong> (Transport Access Nodes) <br> <em>Date:</em> 2025-07-01 <br> <a href="https://data.gov.uk/dataset/national-public-transport-access-node-naptan" target="_blank">data.gov.uk</a></li>
+        <li><strong>Environment Agency</strong> (Flood Risk) <br> <em>Date:</em> 2025-05-14 <br> <a href="https://environment.data.gov.uk/" target="_blank">environment.data.gov.uk</a></li>
+        <li><strong>British Geological Survey</strong> (Hydrogeology, Boreholes) <br> <em>Date:</em> 2024-10-01 <br> <a href="https://www.bgs.ac.uk/datasets/" target="_blank">bgs.ac.uk/datasets</a></li>
+        <li><strong>Rowmaps - Kent County Council</strong> (Public Rights of Way) <br> <em>Date:</em> 2025-05-14 <br> <a href="https://www.rowmaps.com/" target="_blank">rowmaps.com</a></li>
+      </ul>
+      <p>See <a href="https://github.com/AJamdonuts/mapsite/tree/main/docs/datasets" target="_blank">datasets folder</a> for all files used.</p>
+    </section>
+
+    <section>
+      <h2>Tutorial</h2>
+      <ol>
+        <li><strong>Explore the Map:</strong> Use the layer toggles to show/hide features such as heritage, environment, planning, and infrastructure.</li>
+        <li><strong>Click Features:</strong> Click on map features (e.g., buildings, trees, nature reserves) to view detailed info in the sidebar.</li>
+        <li><strong>Search:</strong> Use the search bar to find locations or features by name.</li>
+        <li><strong>Export:</strong> Use the export button to download the current map view as PNG, GeoJSON, or DXF for further analysis.</li>
+        <li><strong>Legend:</strong> Refer to the legend for colour codes and symbols for each layer.</li>
+      </ol>
+      <p>For advanced use, see the <a href="https://github.com/AJamdonuts/mapsite" target="_blank">project repository</a> for code and documentation.</p>
+    </section>
+
+    <section>
+      <h2>Design Choices & Features</h2>
+      <ul>
+        <li>Legible, minimal interface with consistent colour coding for land use and designations.</li>
+        <li>Sidebar displays feature info on click, including heritage, environment, planning, and infrastructure details.</li>
+        <li>Layer toggles, search, and measurement tools encourage exploration without clutter.</li>
+        <li>All data is processed for spatial accuracy and clipped to Canterbury for local relevance.</li>
+        <li>Accessible design: responsive layout, keyboard navigation, and ARIA roles for sidebar.</li>
+        <li>Export and charting tools for further analysis.</li>
+      </ul>
     </section>
 
     <section>
       <h2>Disclaimer</h2>
       <p>
-        The information displayed on this map is for reference purposes only. 
-        While efforts have been made to ensure accuracy, the data should not be used as the sole basis for legal or planning decisions.
+        The information displayed on this map is for reference purposes only. While efforts have been made to ensure accuracy, the data should not be used as the sole basis for legal or planning decisions.
       </p>
     </section>
   </main>
