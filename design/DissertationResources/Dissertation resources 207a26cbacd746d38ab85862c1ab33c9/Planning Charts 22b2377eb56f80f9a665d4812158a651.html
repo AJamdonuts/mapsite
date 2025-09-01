@@ -1,0 +1,687 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Planning Charts</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-default { background-color: rgba(84, 72, 49, 0.08); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="22b2377e-b56f-80f9-a665-d4812158a651" class="page sans"><header><h1 class="page-title">Planning Charts</h1><p class="page-description"></p></header><div class="page-body"><p id="22c2377e-b56f-803a-ada4-c1b249bd91b6" class="">Meeting 9/07</p><p id="22b2377e-b56f-8052-9dd1-d6ab442078e8" class="">
+</p><figure id="22b2377e-b56f-809f-b680-ce273d4c7d01" class="image"><a href="Planning%20Charts%2022b2377eb56f80f9a665d4812158a651/ChatGPT_Image_Jul_9_2025_at_12_46_07_PM.png"><img style="width:710px" src="Planning%20Charts%2022b2377eb56f80f9a665d4812158a651/ChatGPT_Image_Jul_9_2025_at_12_46_07_PM.png"/></a></figure><p id="22b2377e-b56f-80c2-bddb-e9ebbea430a4" class="">
+</p><figure id="22b2377e-b56f-80df-b939-f49fe7137c3c" class="image"><a href="Planning%20Charts%2022b2377eb56f80f9a665d4812158a651/Screenshot_2025-07-09_at_12.49.19.png"><img style="width:710px" src="Planning%20Charts%2022b2377eb56f80f9a665d4812158a651/Screenshot_2025-07-09_at_12.49.19.png"/></a></figure><figure id="22b2377e-b56f-8031-9b7e-cc8769e1f420" class="image"><a href="Planning%20Charts%2022b2377eb56f80f9a665d4812158a651/Screenshot_2025-07-09_at_12.49.44.png"><img style="width:2430px" src="Planning%20Charts%2022b2377eb56f80f9a665d4812158a651/Screenshot_2025-07-09_at_12.49.44.png"/></a></figure><ul id="22b2377e-b56f-80b7-a658-f7bde15ff196" class="bulleted-list"><li style="list-style-type:disc">Created a plan of action and organised the project into weekly sprints so that workload is managable. I inlcuded optional future work if time is permitting. </li></ul><ul id="22b2377e-b56f-80de-bb8f-ce2b6e5db9b4" class="bulleted-list"><li style="list-style-type:disc">Summarised progress so far to keep up to date with findings and whether adjustments should be made</li></ul><ul id="22b2377e-b56f-80e7-b3c5-f73d05dfcd20" class="bulleted-list"><li style="list-style-type:disc">Reading more case studies of web mapping and their uses to discover current gaps</li></ul><ul id="22b2377e-b56f-80c9-8227-f16ad7f2d059" class="bulleted-list"><li style="list-style-type:disc">Searched for more datasets to add to site- found that the best data to use is from canterbury council, however this requires permission to use which i have asked for. In the mean time I am using open street map data. </li></ul><ul id="22b2377e-b56f-80c9-9403-c3f3da516863" class="bulleted-list"><li style="list-style-type:disc">Found the building height error in open street map therefore need to create a vetting system to ensure data is legit and from a credible source.</li></ul><ul id="22b2377e-b56f-80b6-b731-c4a51f91e69d" class="bulleted-list"><li style="list-style-type:disc">Created a visual flowchart to demonstrate how data layers and features will connect within the web platform.</li></ul><ul id="22b2377e-b56f-80bc-aa89-cf47d3a85902" class="bulleted-list"><li style="list-style-type:disc">Included optional features and future work, showing critical thinking about time constraints and priority.</li></ul><p id="22b2377e-b56f-80c0-90b5-e4a790d78a64" class="">
+</p><p id="22b2377e-b56f-80b3-9db8-f160ffa8d220" class="">
+</p><p id="22b2377e-b56f-80d4-b33a-ecd9c63f7d2a" class="">Literature Findings:</p><ul id="22b2377e-b56f-809a-bac7-effe6dfa538e" class="bulleted-list"><li style="list-style-type:disc">Incorporating Time-Based Data into Web Maps<p id="22b2377e-b56f-80d5-ada1-f3dc5983ddff" class="">Most web maps present data as static snapshots, typically representing a single moment in time. However, spatial data often changes depending on the time of day, week, or season. Introducing a temporal dimension into mapping platforms would allow users to explore how conditions vary over time for instance, tracking the fluctuating footfall of public spaces throughout the day. This temporal visualisation could be particularly useful for infrastructure planning, such as determining optimal times for road closures or identifying underused areas. Presenting this data as an animated timeline directly on the map could be more intuitive and accessible than traditional graphs (e.g., the bar graphs used in Google Maps’ &quot;Popular Times&quot; feature).</p><figure id="22b2377e-b56f-80e7-afdb-cef84705f81f" class="image"><a href="Planning%20Charts%2022b2377eb56f80f9a665d4812158a651/Screenshot_2025-07-09_at_13.09.24.png"><img style="width:413.984375px" src="Planning%20Charts%2022b2377eb56f80f9a665d4812158a651/Screenshot_2025-07-09_at_13.09.24.png"/></a></figure></li></ul><ul id="22b2377e-b56f-80ee-a660-e9222b129f80" class="bulleted-list"><li style="list-style-type:disc">Mapping Local Suppliers and Construction Workers<p id="22b2377e-b56f-809b-a207-efb55e4feff8" class="">Another important dataset to integrate involves local suppliers and construction workers. Projects in the built environment often rely heavily on locally sourced materials and labor, which need to be identified, evaluated, and engaged quickly and reliably. A web mapping platform that visualizes the geographic distribution and availability of these resources would significantly support early-stage project planning and supply chain resilience.</p></li></ul><ul id="22b2377e-b56f-8048-8f87-c4a6cc4230e4" class="bulleted-list"><li style="list-style-type:disc">Capturing Views and Popularity Through Photographs<p id="22b2377e-b56f-809b-abc8-e4eddf58dab4" class="">The visual appeal and photographic representation of a location play a key role in its popularity, walkability, and perceived livability. These visual cues could be leveraged by harvesting data from social media platforms. Mapping the locations with the highest density of geotagged photos or user posts could reveal informal &quot;hotspots&quot; that are culturally or socially significant, yet overlooked in formal planning processes.</p></li></ul><ul id="22b2377e-b56f-8059-96f1-da24b1a9d06a" class="bulleted-list"><li style="list-style-type:disc">Facilitating User Interaction and Participatory Feedback<p id="22b2377e-b56f-80e4-aa6d-e035c668a567" class="">One limitation of current web mapping platforms such as Google Maps is the minimal interaction between users and the map beyond navigation. A more participatory model could incorporate community feedback tools, enabling users to contribute comments, ideas, or even vote on proposed developments. This would shift the platform from a one-way display tool to a two-way communication channel. For example, in a student-dominated neighbourhood, users might suggest more leisure amenities like cinemas or cafés. Implementing a structured comment and voting system, with safeguards to reduce bias and manipulation, could help planners and architects better understand and prioritise community needs.</p></li></ul><ul id="22b2377e-b56f-808a-a5eb-e865c6398157" class="bulleted-list"><li style="list-style-type:disc">Waste &amp; Resource Tracking</li></ul><p id="22b2377e-b56f-80f7-b84f-ddfaa918e5e5" class="">Visualise local recycling points, construction waste collection areas, or reuse centres. Especially useful for sustainable architecture or circular economy approaches.</p><ul id="22b2377e-b56f-80e7-adf2-f2a86732240c" class="bulleted-list"><li style="list-style-type:disc">Public Transport Accessibility &amp; Emissions Reduction<p id="22b2377e-b56f-800c-a821-d04594766c01" class="">Map areas with high public transport coverage and compare against car dependency zones. Suggest sustainable transport enhancements or walkability improvements.</p></li></ul><p id="22b2377e-b56f-8018-a9bc-c3899f95a8e4" class="">Next steps:</p><ul id="22b2377e-b56f-80fa-875d-cae4839c9877" class="bulleted-list"><li style="list-style-type:disc">Time-based visualisation (e.g., animated timelines)</li></ul><ul id="22b2377e-b56f-807c-9f70-c47c3aba02b9" class="bulleted-list"><li style="list-style-type:disc">Mapping suppliers and local labour for sustainable design workflows</li></ul><ul id="22b2377e-b56f-8041-9fba-c748b3d26985" class="bulleted-list"><li style="list-style-type:disc">Capturing popularity using geotagged photographs</li></ul><ul id="22b2377e-b56f-80c0-936c-e50ceae4c4d0" class="bulleted-list"><li style="list-style-type:disc">Participatory user feedback (comments, votes)</li></ul><ul id="22b2377e-b56f-8090-8efd-eb66574f4cf1" class="bulleted-list"><li style="list-style-type:disc">Environmental data overlays (waste, emissions, walkability)</li></ul><table id="22c2377e-b56f-80a6-876f-ee3040616407" class="simple-table"><thead class="simple-table-header"><tr id="22c2377e-b56f-8075-a9ae-e3b25379e760"><th id="YU^N" class="simple-table-header-color simple-table-header">Source</th><th id=";X&gt;k" class="simple-table-header-color simple-table-header">Data Type</th><th id="|qxt" class="simple-table-header-color simple-table-header">Realtime/API Access?</th><th id="mlh?" class="simple-table-header-color simple-table-header">Coverage</th><th id="]T|Q" class="simple-table-header-color simple-table-header">Notes</th></tr></thead><tbody><tr id="22c2377e-b56f-80c1-b9a5-c5dd125c2d8b"><td id="YU^N" class=""><strong>OpenStreetMap (OSM)</strong></td><td id=";X&gt;k" class="">Roads, buildings, land use, POIs</td><td id="|qxt" class="">Yes (Overpass API)</td><td id="mlh?" class="">Global</td><td id="]T|Q" class="">You can filter by tags, download as GeoJSON/OSM XML</td></tr><tr id="22c2377e-b56f-802b-a69f-d03f185df588"><td id="YU^N" class=""><strong>UK Ordnance Survey OpenData</strong></td><td id=";X&gt;k" class="">Terrain, boundaries, infrastructure</td><td id="|qxt" class="">Yes</td><td id="mlh?" class="">UK</td><td id="]T|Q" class="">Licenced under OS OpenData</td></tr><tr id="22c2377e-b56f-80c7-a3b5-d4f0e196b3dd"><td id="YU^N" class=""><strong>National Heritage List for England (NHLE)</strong></td><td id=";X&gt;k" class="">Listed buildings, historic sites</td><td id="|qxt" class="">Yes (API)</td><td id="mlh?" class="">England</td><td id="]T|Q" class="">You’ve started with this – API makes it easier</td></tr><tr id="22c2377e-b56f-807e-bda1-d1a2e153964d"><td id="YU^N" class=""><strong>Environment Agency (UK)</strong></td><td id=";X&gt;k" class="">Flood zones, rivers, LIDAR, water quality</td><td id="|qxt" class="">Yes (<a href="http://data.gov.uk/">Data.gov.uk</a> &amp; APIs)</td><td id="mlh?" class="">England</td><td id="]T|Q" class="">Great for flood analysis and environmental layers</td></tr><tr id="22c2377e-b56f-800c-99e8-fc9759390103"><td id="YU^N" class=""><strong>Natural England / DEFRA</strong></td><td id=";X&gt;k" class="">Protected areas, biodiversity</td><td id="|qxt" class="">Mostly static</td><td id="mlh?" class="">England</td><td id="]T|Q" class="">Includes SSSIs, AONBs, Green Belt</td></tr><tr id="22c2377e-b56f-808e-a714-dffc818e2f28"><td id="YU^N" class=""><strong>Local Council Open Data</strong></td><td id=";X&gt;k" class="">Planning applications, tree preservation orders, zoning</td><td id="|qxt" class="">Varies</td><td id="mlh?" class="">UK (Local)</td><td id="]T|Q" class="">Many councils have their own data portals (CKAN, Socrata)</td></tr><tr id="22c2377e-b56f-803b-ae15-e9bda96ce0cb"><td id="YU^N" class=""><strong>UK Met Office / OpenWeatherMap</strong></td><td id=";X&gt;k" class="">Weather, climate risk zones</td><td id="|qxt" class="">Yes (API)</td><td id="mlh?" class="">UK / Global</td><td id="]T|Q" class="">Realtime weather, future climate models (Met Office is paid)</td></tr><tr id="22c2377e-b56f-8090-a72b-c74719731881"><td id="YU^N" class=""><strong>Transport for London (TfL)</strong></td><td id=";X&gt;k" class="">Transit routes, construction impacts</td><td id="|qxt" class="">Yes (API)</td><td id="mlh?" class="">London</td><td id="]T|Q" class="">Realtime travel data, roadworks</td></tr><tr id="22c2377e-b56f-807f-81fe-ce2a60e526a2"><td id="YU^N" class=""><strong>Land Registry UK</strong></td><td id=";X&gt;k" class="">Price paid data, land titles</td><td id="|qxt" class="">Partial APIs</td><td id="mlh?" class="">England &amp; Wales</td><td id="]T|Q" class="">Needs aggregation and privacy handling</td></tr><tr id="22c2377e-b56f-801b-a2eb-d28e105d5fa2"><td id="YU^N" class=""><strong>Census Data (ONS)</strong></td><td id=";X&gt;k" class="">Demographics, household data</td><td id="|qxt" class="">Download/API (Nomis API)</td><td id="mlh?" class="">UK</td><td id="]T|Q" class="">Great for understanding population &amp; social patterns</td></tr><tr id="22c2377e-b56f-808f-a66e-fd587e29a7fd"><td id="YU^N" class=""><strong>Satellite &amp; Elevation Data</strong></td><td id=";X&gt;k" class="">Terrain, 3D data</td><td id="|qxt" class="">Yes (AWS Open Data, Mapzen Terrain Tiles, NASA SRTM)</td><td id="mlh?" class="">Global</td><td id="]T|Q" class="">Useful for slope, topography, viewshed analysis</td></tr><tr id="22c2377e-b56f-80f5-85d3-f127d64d090d"><td id="YU^N" class=""><strong>UK Planning Data (PlanX / MHCLG)</strong></td><td id=";X&gt;k" class="">Local plan info, zones</td><td id="|qxt" class="">Mostly static</td><td id="mlh?" class="">UK</td><td id="]T|Q" class="">Being developed as standardised schema</td></tr><tr id="22c2377e-b56f-8009-91a1-cf41788ffe0f"><td id="YU^N" class=""><strong>OpenInfraMap</strong></td><td id=";X&gt;k" class="">Utility infrastructure (power, telecoms)</td><td id="|qxt" class="">Yes</td><td id="mlh?" class="">Global (OSM-based)</td><td id="]T|Q" class="">Underground/overhead lines where mapped</td></tr></tbody></table><h2 id="22d2377e-b56f-8000-832e-e9aa0dcb2a5e" class="">1. Code &amp; Structure Improvements</h2><ul id="22d2377e-b56f-80ba-82a4-d4d98a29654d" class="bulleted-list"><li style="list-style-type:disc"> Splitting into smaller functions/modules improves readability and maintainability. For example:<ul id="22d2377e-b56f-80bb-bce7-f2e59d236ef5" class="bulleted-list"><li style="list-style-type:circle"><code>addSources()</code></li></ul><ul id="22d2377e-b56f-8083-9004-cb697b8ab3c0" class="bulleted-list"><li style="list-style-type:circle"><code>addLayers()</code></li></ul><ul id="22d2377e-b56f-8007-bcbf-d247eca69e0e" class="bulleted-list"><li style="list-style-type:circle"><code>setupPopups()</code></li></ul><ul id="22d2377e-b56f-80fa-bdac-da90eead8477" class="bulleted-list"><li style="list-style-type:circle"><code>setupToggleHandlers()</code></li></ul><ul id="22d2377e-b56f-80ef-bab6-f25e26d7f0f2" class="bulleted-list"><li style="list-style-type:circle"><code>fetchAndAddOverpassData()</code></li></ul></li></ul><ul id="22d2377e-b56f-8087-88b1-ed568f00546e" class="bulleted-list"><li style="list-style-type:disc"><strong>Debounce toggle handlers if needed:</strong> If users toggle rapidly, debounce can prevent excessive redraws.</li></ul><ul id="22d2377e-b56f-8082-bf7c-c17bee755313" class="bulleted-list"><li style="list-style-type:disc"><strong>Use constants and enums:</strong> Your layer IDs and colors are repeated. Group these in objects or constants at the top.</li></ul><ul id="22d2377e-b56f-8041-90dc-e044203fda16" class="bulleted-list"><li style="list-style-type:disc"><strong>Async/await:</strong> Use <code>async</code> functions for fetch calls to make the code cleaner.</li></ul><ul id="22d2377e-b56f-801a-8b5a-fd4c54353785" class="bulleted-list"><li style="list-style-type:disc"><strong>Map style parameterization:</strong> If you want different base maps or styles, make the style URL configurable.</li></ul><hr id="22d2377e-b56f-8059-bc83-c59a1e9e00c9"/><h2 id="22d2377e-b56f-80b0-a807-c384318680ac" class="">2. UI/UX Improvements</h2><ul id="22d2377e-b56f-8075-8272-ed84fbcbb4f3" class="bulleted-list"><li style="list-style-type:disc"><strong>Layer legend:</strong> Add a legend to explain what colors and symbols mean, helping users quickly understand the map.</li></ul><ul id="22d2377e-b56f-8067-ab70-d6e986de0eaf" class="bulleted-list"><li style="list-style-type:disc"><strong>Improved toggle UI:</strong> Use nicer toggle switches or multi-select dropdowns with searchable options if you expect many layers.</li></ul><ul id="22d2377e-b56f-8016-9f21-f8f11f1c4846" class="bulleted-list"><li style="list-style-type:disc"><strong>Better cluster interaction:</strong> Show aggregated info about clustered points on click (e.g., number of trees, species distribution).</li></ul><ul id="22d2377e-b56f-8057-9e4f-eb44f4267117" class="bulleted-list"><li style="list-style-type:disc"><strong>Highlight interactions:</strong> Add a hover effect on features, e.g., outline buildings when hovered, highlight paths.</li></ul><ul id="22d2377e-b56f-8034-8926-c9f454acc9c7" class="bulleted-list"><li style="list-style-type:disc"><strong>Details panel:</strong> On clicking a feature, show a side panel with rich info, images, documents, or related data instead of just a popup.</li></ul><ul id="22d2377e-b56f-80f7-8047-d0e53da31880" class="bulleted-list"><li style="list-style-type:disc"><strong>Mobile support:</strong> The toggle controls and map need to be tested and optimized for smaller screens.</li></ul><hr id="22d2377e-b56f-8021-8d07-e8371e3b90b5"/><h2 id="22d2377e-b56f-8063-94ca-c64e2f8e72be" class="">3. Functional &amp; Visualization Enhancements</h2><ul id="22d2377e-b56f-80f7-8119-c51191fde0d9" class="bulleted-list"><li style="list-style-type:disc"><strong>Impact analysis layers:</strong><ul id="22d2377e-b56f-80f1-b116-f79f9c0ca048" class="bulleted-list"><li style="list-style-type:circle">Add <strong>shadow analysis</strong> or <strong>sun path</strong> visualizations for buildings (important for urban designers).</li></ul><ul id="22d2377e-b56f-806c-a912-c2d936df2f40" class="bulleted-list"><li style="list-style-type:circle">Show <strong>noise contours</strong> or <strong>pollution data</strong> if you can access them.</li></ul><ul id="22d2377e-b56f-80ca-9c5a-d6321fc380f2" class="bulleted-list"><li style="list-style-type:circle">Overlay <strong>demographics</strong> or <strong>census data</strong> to indicate community needs.</li></ul></li></ul><ul id="22d2377e-b56f-8090-858e-d73fe5d23a03" class="bulleted-list"><li style="list-style-type:disc"><strong>3D model integration:</strong><ul id="22d2377e-b56f-8005-af80-c22461b7d1ce" class="bulleted-list"><li style="list-style-type:circle">Integrate with tools like Cesium or Three.js for detailed 3D modeling of proposed developments.</li></ul><ul id="22d2377e-b56f-80b1-bafd-f96454147e49" class="bulleted-list"><li style="list-style-type:circle">Allow uploading and visualizing proposed building footprints and heights to compare with existing context.</li></ul></li></ul><ul id="22d2377e-b56f-8096-bee7-e3aebf90b689" class="bulleted-list"><li style="list-style-type:disc"><strong>Dynamic analytics:</strong><ul id="22d2377e-b56f-80eb-8051-ed111e496959" class="bulleted-list"><li style="list-style-type:circle">Provide <strong>metrics</strong> on area coverage, green space ratio, walkability score, etc.</li></ul><ul id="22d2377e-b56f-80dc-abe8-c218cd022e5d" class="bulleted-list"><li style="list-style-type:circle">Enable <strong>what-if scenarios</strong> where users can “draw” or “upload” new developments and see how it changes the map statistics.</li></ul></li></ul><ul id="22d2377e-b56f-80b8-9b6e-c25a2d76338b" class="bulleted-list"><li style="list-style-type:disc"><strong>Collaboration features:</strong><ul id="22d2377e-b56f-809e-a33c-dda7734accd1" class="bulleted-list"><li style="list-style-type:circle">Allow multiple users to annotate or comment on areas.</li></ul><ul id="22d2377e-b56f-80e2-a066-ea6f10750d89" class="bulleted-list"><li style="list-style-type:circle">Versioning of proposed plans.</li></ul></li></ul><ul id="22d2377e-b56f-807e-8445-cb4ee7ad1429" class="bulleted-list"><li style="list-style-type:disc"><strong>Real-time updates:</strong><ul id="22d2377e-b56f-8091-a1af-c5becd245874" class="bulleted-list"><li style="list-style-type:circle">If feasible, integrate live feeds such as construction status, traffic flows, or planning applications.</li></ul></li></ul><hr id="22d2377e-b56f-8072-8e8b-dc34b9fb39bc"/><h2 id="22d2377e-b56f-80e0-a7a7-d5d30c7acca8" class="">4. Data Enhancements</h2><ul id="22d2377e-b56f-80c9-a809-d89f43c3acc1" class="bulleted-list"><li style="list-style-type:disc"><strong>Data completeness:</strong><ul id="22d2377e-b56f-807f-8f74-d8c6bdbfdd09" class="bulleted-list"><li style="list-style-type:circle">Your POIs come from OSM — consider integrating local council datasets for planning permissions, development constraints, protected areas, or utility locations.</li></ul><ul id="22d2377e-b56f-8062-bd45-e6aed37df320" class="bulleted-list"><li style="list-style-type:circle">Bring in <strong>land ownership boundaries</strong>, <strong>flood risk zones</strong>, and <strong>heritage overlays</strong>.</li></ul></li></ul><ul id="22d2377e-b56f-800f-afd7-dab4144a3c74" class="bulleted-list"><li style="list-style-type:disc"><strong>Attribute enrichment:</strong><ul id="22d2377e-b56f-80f2-870b-e00b7499fc2c" class="bulleted-list"><li style="list-style-type:circle">When showing buildings, include use type, year built, construction materials if available.</li></ul><ul id="22d2377e-b56f-806d-a660-d0fd72bd4aeb" class="bulleted-list"><li style="list-style-type:circle">For trees, show species, age, health status (important for landscape architects).</li></ul></li></ul><hr id="22d2377e-b56f-8041-8fe2-fe9f3d857968"/><h2 id="22d2377e-b56f-80b5-8eb1-c3752c019406" class="">5. Visual Improvements &amp; Accessibility</h2><ul id="22d2377e-b56f-80af-9f45-de4b4a5c18af" class="bulleted-list"><li style="list-style-type:disc"><strong>Improved color palettes:</strong><ul id="22d2377e-b56f-8002-8076-c3b0236ceffa" class="bulleted-list"><li style="list-style-type:circle">Use colorblind-friendly palettes (ColorBrewer or similar).</li></ul><ul id="22d2377e-b56f-8085-b7f2-e238b7c17cec" class="bulleted-list"><li style="list-style-type:circle">Adjust opacity or use patterns for overlapping layers.</li></ul></li></ul><ul id="22d2377e-b56f-8016-ae36-e357afc46044" class="bulleted-list"><li style="list-style-type:disc"><strong>Legend interactivity:</strong><ul id="22d2377e-b56f-803c-94bc-f32f5e67c1fd" class="bulleted-list"><li style="list-style-type:circle">Clicking on a legend item could toggle that layer’s visibility.</li></ul></li></ul><ul id="22d2377e-b56f-808b-ba23-c71dcbabdfab" class="bulleted-list"><li style="list-style-type:disc"><strong>Accessibility:</strong><ul id="22d2377e-b56f-80e0-b9e5-e06a9ff4fd97" class="bulleted-list"><li style="list-style-type:circle">Ensure contrast and text sizes are readable.</li></ul><ul id="22d2377e-b56f-8064-a43f-dc84c5d88787" class="bulleted-list"><li style="list-style-type:circle">Make sure keyboard navigation works for toggles.</li></ul></li></ul><hr id="22d2377e-b56f-80e2-ab9f-dbe0a713f876"/><h2 id="22d2377e-b56f-80a7-8509-efc2084afae0" class="">6. Example Features To Add Next</h2><p id="22d2377e-b56f-8070-96b8-fc7e6445bbac" class="">Here’s a small prioritized list you could tackle next:</p><ul id="22d2377e-b56f-8089-bbd8-c6cfa88b0f94" class="bulleted-list"><li style="list-style-type:disc">Add a <strong>legend panel</strong> explaining layer colors and symbols.</li></ul><ul id="22d2377e-b56f-80ad-80cb-f926fe2a494b" class="bulleted-list"><li style="list-style-type:disc">Modularize your JS for easier maintenance.</li></ul><ul id="22d2377e-b56f-808b-8afa-d744aea52b83" class="bulleted-list"><li style="list-style-type:disc">Add a <strong>side panel</strong> that opens on feature click with extended info.</li></ul><ul id="22d2377e-b56f-8042-9dec-c62a49f9aa56" class="bulleted-list"><li style="list-style-type:disc">Implement <strong>dynamic filtering</strong>, e.g., filter buildings by height or date built.</li></ul><ul id="22d2377e-b56f-80f2-a2e5-e8b52bda951d" class="bulleted-list"><li style="list-style-type:disc">Add <strong>measurement tools</strong> so users can measure distances/areas on the map.</li></ul><ul id="22d2377e-b56f-803d-b52d-c8c76a36559e" class="bulleted-list"><li style="list-style-type:disc">Add a <strong>print/export map view</strong> function with selected layers.</li></ul><p id="22f2377e-b56f-80e8-8790-dd653dd726d7" class="">
+</p><p id="22f2377e-b56f-806c-adb0-e20f70a0e242" class="">
+</p><p id="22f2377e-b56f-80f5-8108-f611e3a26c84" class="">Built Environment</p><ul id="22f2377e-b56f-80bf-b1c6-c9bdc73ed174" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Listed Buildings</span><div class="indented"></div></li></ul><ul id="22f2377e-b56f-8018-a050-e7d6d1bcbc8f" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Building Height</span><div class="indented"></div></li></ul><p id="22f2377e-b56f-80f3-9370-fa9c3ac756da" class="">Natural Features</p><ul id="22f2377e-b56f-809d-b452-cb10bbce3eaa" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">NTOW Trees</span><div class="indented"></div></li></ul><ul id="22f2377e-b56f-806c-bc30-cea317a915c9" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Ward Canopy</span><div class="indented"></div></li></ul><p id="22f2377e-b56f-80e7-9889-f9d7266c772f" class="">Land Use &amp; Admin</p><ul id="22f2377e-b56f-8063-8635-fbf320270a3b" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Land Use</span><div class="indented"></div></li></ul><ul id="22f2377e-b56f-80a0-b5f0-fdaaefc6facb" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Roads</span><div class="indented"></div></li></ul><ul id="22f2377e-b56f-8001-8f5a-c8eb356c0501" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">PROW</span><div class="indented"></div></li></ul><p id="22f2377e-b56f-803a-bd5e-cf089d05c350" class="">POIs</p><ul id="22f2377e-b56f-8027-93e0-d376a691f556" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Amenities</span><div class="indented"></div></li></ul><ul id="22f2377e-b56f-80e8-a289-c8fb36e66892" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Shops</span><div class="indented"></div></li></ul><ul id="22f2377e-b56f-8008-bb51-eb3fd381e846" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Tourism</span><div class="indented"></div></li></ul><ul id="22f2377e-b56f-804c-ac7f-e0238cad29d6" class="bulleted-list"><li style="list-style-type:disc">Total canopy cover percentage in view ✔️</li></ul><ul id="22f2377e-b56f-80e7-ae28-fc363026927c" class="bulleted-list"><li style="list-style-type:disc">Number of listed buildings</li></ul><ul id="22f2377e-b56f-8090-88f1-e922816a973a" class="bulleted-list"><li style="list-style-type:disc">Area of each land use category in view ✔️</li></ul><ul id="22f2377e-b56f-809b-9df3-dfa9c7a3b2d8" class="bulleted-list"><li style="list-style-type:disc">Avg. building height in view</li></ul><p id="22f2377e-b56f-8052-8757-f61eede92812" class="">
+</p><p id="2492377e-b56f-803e-b4f6-ffe814fd820c" class=""><strong>Navigating the map</strong></p><p id="2492377e-b56f-808e-a02e-e3ec0e51ffa4" class="">Pan: </p><p id="2492377e-b56f-8002-845d-e71e8ad5e184" class="">Zoom: </p><p id="2492377e-b56f-8098-86c4-f3adeda6d048" class=""><strong>Display map layers</strong></p><p id="2492377e-b56f-80e4-8ab0-cb9eafc0e582" class=""><strong>Show map legend</strong></p><p id="2492377e-b56f-80f6-bdeb-d574af354571" class=""><strong>Clip &amp; Download</strong></p><p id="2492377e-b56f-8082-a941-f0e3d71163f2" class=""><strong>Get feature details</strong></p><p id="2492377e-b56f-80cf-ae9b-c45b947d86f8" class=""><strong>Go to location</strong></p><p id="2492377e-b56f-8091-bf4f-c2324ef2314f" class=""><strong>Search map layers</strong></p><p id="2492377e-b56f-805c-966f-ef860c1d6018" class="">To use the search tools, make one or more layers visible using &#x27;Map Layers&#x27; and go to the &#x27;Search&#x27; tab.</p><p id="2492377e-b56f-803b-a029-e22ec4f5784d" class="">Two types of search are available</p><p id="2492377e-b56f-80c5-b513-cf6c08a69677" class="">1) Spatial Search:</p><p id="2492377e-b56f-806e-ac19-e01ded0d324b" class="">2) Attribute Search: </p><p id="2492377e-b56f-8082-afd3-f7f0ec59ee36" class="">The &#x27;CLEAR SELECTION&#x27; button will hide the results window and remove any active search query.</p><p id="2492377e-b56f-8090-98c6-ef6aff6337e5" class=""><strong>Exporting results</strong></p><p id="2492377e-b56f-8052-a899-cf1a215a25ae" class="">Click on the &#x27;EXPORT SELECTION&#x27; button to download an Excel compatible tab delimited text file of the results shown in the currently active tab of the results table.</p><p id="2492377e-b56f-805e-b227-c1f92f0d5a3e" class=""><strong>Printable map</strong></p><p id="2492377e-b56f-809e-9215-c464281f76b4" class=""><strong>Measure</strong></p><p id="2492377e-b56f-800a-a4af-cb0392697ec8" class=""><strong>Mobile Version</strong></p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

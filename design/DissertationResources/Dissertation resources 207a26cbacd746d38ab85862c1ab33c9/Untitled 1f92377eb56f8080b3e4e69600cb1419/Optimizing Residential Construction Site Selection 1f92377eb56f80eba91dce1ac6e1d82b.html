@@ -1,0 +1,685 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Optimizing Residential Construction Site Selection in Mountainous Regions Using Geospatial Data and eXplainable AI
+
+	
+</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-default { background-color: rgba(84, 72, 49, 0.08); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="1f92377e-b56f-80eb-a91d-ce1ac6e1d82b" class="page sans"><header><h1 class="page-title"><strong>Optimizing Residential Construction Site Selection in Mountainous Regions Using Geospatial Data and eXplainable AI<br/></strong><br/>	<br/></h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-text"><th><span class="icon property-icon"><div data-testid="/icons/description_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/description_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/description_gray.svg?mode=light) no-repeat center;background-color:rgba(71, 70, 68, 0.6);fill:rgba(71, 70, 68, 0.6)"></div></span>Links</th><td><strong><a href="https://doi.org/10.3390/su16104235">https://doi.org/10.3390/su16104235</a></strong></td></tr></tbody></table></header><div class="page-body"><ul id="2022377e-b56f-8040-872a-e5194b6b9108" class="bulleted-list"><li style="list-style-type:disc">Recent research emphasizes the effectiveness of GIS-based multi-criteria decision making in mountainous regions but shows critical gaps in the consideration of dynamic socio-economic factors that are essential for sustainable urban development [36–38]. The integration of artificial intelligence (AI) techniques could close these gaps. Artificial neural networks (ANNs), for example, are promising for analyzing complex, nonlinear dependen- cies between socio-economic and environmental factors. These networks can process huge datasets typical of urban planning to detect patterns that may not be apparent using con- ventional methods, improving the accuracy and sustainability of building site selection [36].</li></ul><ul id="2022377e-b56f-806c-af76-d492bde414fc" class="bulleted-list"><li style="list-style-type:disc">Fuzzy-AHP, Deep Neural Network (DNN)-based eXplainable Artificial Intelligence (XAI)<br/></li></ul><ul id="2022377e-b56f-8053-8e37-f4d1c4b7fd82" class="bulleted-list"><li style="list-style-type:disc">Satellite data were utilized to generate maps depicting LULC, the NDVI, road networks, and various other features. Images from space: On 8 February 2020, Sentinel cloud-free data with a spatial resolution of 10 m were gathered from the archives of the Earth Explorer website. “The digital elevation model (DEM) ALOSPALSAR (<a href="https://asf.alaska.edu/data-sets/derived-data-sets/alos-palsar-">https://asf.alaska.edu/data-sets/derived-data-sets/alos-palsar-</a> rtc/alos-palsar-radiometric-terrain-correction/ (accessed on 11 March 2024)) at a resolution of 12.5 m was provided by NASA’s Earth Science Data Systems”. Between January 1 and 12 March 2023, extensive fieldwork and reconnaissance surveys were conducted across multiple locations to verify the diverse categories of land use and land cover (LULC) and to precisely locate the sites hosting ongoing construction for buildings. To process the data, ArcGIS 10.3, IDRISI, ERDAS, and SPSS software were used. In this research, Sentinel satellite datasets covering the study area were used. </li></ul><p id="2022377e-b56f-8082-beb7-e25685c4a795" class="">
+</p><ul id="2022377e-b56f-8053-b84f-e7ae8b8e8194" class="bulleted-list"><li style="list-style-type:disc">Fuzzy set theory, developed by Lotfi A. Zadeh, extends classical set theory to manage partial membership and thus model the uncertainty prevalent in real-world scenarios, par- ticularly in environmental and construction settings [53]. By enabling partial membership, this theory allows for more nuanced assessments compared to classical binary logic, which aligns well with the complexities of identifying eco-friendly and safe construction sites [54]. This flexible and adaptive approach is crucial for managing the imprecision often found in environmental data and stakeholder inputs, which are vital for planning sustainable urban developments [55].</li></ul><ul id="2022377e-b56f-805f-b02d-d422b947beb6" class="bulleted-list"><li style="list-style-type:disc">Self-Organizing Maps (SOMs) for Classifying the Potential Residential Safe Site Map<br/>Self-organizing maps (SOMs), introduced by Teuvo Kohonen, are pivotal for analyzing and classifying geographical data to determine potential sites for safe residential develop- ment. By reducing high-dimensional data into a two-dimensional, interpretable format, SOMs facilitate the visualization of complex spatial relationships and patterns that are critical for site selection. This method supports the decision-making process by providing a clear, organized representation of safety and environmental factors, which is essential for stakeholders aiming to balance development with ecological preservation.<br/>However, an SOM is a form of artificial neural network. It transforms high-dimensional data into a reduced space while preserving data relationships. SOMs employ a 2D grid of neurons, each representing a cluster of similar data. Training involves iteratively presenting data and activating the nearest neuron, adjusting its weights to match the data. Once trained, new data are classified by finding the closest neuron, termed the best matching unit (BMU). Applications encompass data clustering, high-dimensional data visualization, and feature extraction. SOMs provide a user-friendly and versatile solution for diverse data analysis and visualization challenges.</li></ul><ul id="2022377e-b56f-8058-8b9d-e1cf2880bbef" class="bulleted-list"><li style="list-style-type:disc">To automate the classification of a single-band raster image using the k-means clus- tering algorithm and Self-Organizing Maps (SOMs), follow these steps: Begin by loading the single-band raster image as a point shapefile using software like ArcGIS, ensuring the shapefile includes X and Y coordinates for each point and a column for pixel values. Then, execute k-means clustering by loading the point shapefile through the geopandas library, extracting coordinates and values, converting data to a NumPy array, iterating through cluster numbers with sklearn.cluster.KMeans to compute silhouette scores using silhouette_samples from sklearn.metrics, and visualizing scores to determine the optimal cluster count. Normalize the data to a 0-1 scale, and proceed to create and train the SOM. Calculate the grid size based on clusters, instantiate minisom.MiniSom with the appropriate parameters, initialize weights using normalized data, and train the SOM. Assign cluster labels by obtaining cluster assignments with the labels_map method, and finally, generate a new shapefile containing clustered data using a GeoDataFrame with point coordinates and labels, before saving it to a desired location.</li></ul><p id="2022377e-b56f-80d1-8409-ce9810efa72e" class="">References<br/></p><p id="2022377e-b56f-8059-ae31-e092a9658dec" class="">1. Wong, V.S.H.; El Massah, S. Recent Evidence on the Oil Price Shocks on Gulf Cooperation Council Stock Markets. <em>Int. J. Econ. Bus.<br/></em><strong>2018</strong>, <em>25</em>, 297–312. [CrossRef]<br/><br/>2. Alharthi, Y.Z.; Siddiki, M.K.; Chaudhry, G.M. The New Vision and the Contribution of Solar Power in the Kingdom of Saudi<br/>Arabia Electricity Production. In Proceedings of the 2017 Ninth Annual IEEE Green Technologies Conference (GreenTech),<br/>Denver, CO, USA, 29–31 March 2017; pp. 83–88.<br/><br/>3. Giorgi, S.; Lavagna, M.; Wang, K.; Osmani, M.; Liu, G.; Campioli, A. Drivers and barriers towards circular economy in the<br/>building sector: Stakeholder interviews and analysis of five European countries policies and practices. <em>J. Clean. Prod. </em><strong>2022</strong>,<br/><em>336</em>, 130395. [CrossRef]<br/><br/>4. Lahn, G.; Stevens, P. <em>Burning Oil to Keep Cool The Hidden Energy Crisis in Saudi Arabia Charity</em>; Chatham House: London, UK, 2012.<br/><br/>5. Chen, Y.; Yu, J.; Khan, S. Spatial sensitivity analysis of multi-criteria weights in GIS-based land suitability evaluation. <em>Environ.<br/></em><br/><em>Model. Softw. </em><strong>2010</strong>, <em>25</em>, 1582–1591. [CrossRef]<br/><br/>6. Akmam Syed Zakaria, S.; Gajendran, T.; Rose, T.; Brewer, G. Contextual, structural and behavioural factors influencing the<br/><br/>adoption of industrialised building systems: A review. <em>Archit. Eng. Des. Manag. </em><strong>2018</strong>, <em>14</em>, 3–26. [CrossRef]<br/><br/>7. Logan, J.R.; Molotch, H.L. <em>Urban Fortunes: The Political Economy of Place</em>; University of California Press: Berkeley, CA, USA, 2007;<br/><br/>ISBN 9780520254282.<br/><br/>8. Atta, I.; Bakhoum, E.S.; Marzouk, M.M. Digitizing material passport for sustainable construction projects using BIM. <em>J. Build. Eng.<br/></em><br/><strong>2021</strong>, <em>43</em>, 103233. [CrossRef]<br/><br/>9. Al Garni, H.Z.; Awasthi, A. Solar PV power plant site selection using a GIS-AHP based approach with application in Saudi<br/><br/>Arabia. <em>Appl. Energy </em><strong>2017</strong>, <em>206</em>, 1225–1240. [CrossRef]<br/><br/>10. Kuller, M.; Bach, P.M.; Ramirez-Lovering, D.; Deletic, A. What drives the location choice for water sensitive infrastructure in<br/><br/>Melbourne, Australia? <em>Landsc. Urban Plan. </em><strong>2018</strong>, <em>175</em>, 92–101. [CrossRef]<br/><br/>11. Meng, Q.; Pang, N.; Zhao, S.; Gao, J. Two-stage optimal site selection for waste-to-energy plant using single-valued neutrosophic<br/><br/>sets and geographic information system based multi-criteria decision-making approach: A case study of Beijing, China. <em>Waste<br/></em><br/><em>Manag. </em><strong>2023</strong>, <em>156</em>, 283–296. [CrossRef]<br/><br/>12. Erol-Kantarci, M.; Mouftah, H.T. Energy-Efficient Information and Communication Infrastructures in the Smart Grid: A Survey<br/><br/>on Interactions and Open Issues. <em>IEEE Commun. Surv. Tutor. </em><strong>2015</strong>, <em>17</em>, 179–197. [CrossRef]<br/><br/>13. Casini, M. Extended Reality for Smart Building Operation and Maintenance: A Review. <em>Energies </em><strong>2022</strong>, <em>15</em>, 3785. [CrossRef]<br/><br/>14. Carsjens, G.J.; Ligtenberg, A. A GIS-based support tool for sustainable spatial planning in metropolitan areas. <em>Landsc. Urban Plan.<br/></em><br/><strong>2007</strong>, <em>80</em>, 72–83. [CrossRef]<br/><br/>15. Mallick, J.; Singh, R.K.; AlAwadh, M.A.; Islam, S.; Khan, R.A.; Qureshi, M.N. GIS-based landslide susceptibility evaluation using<br/><br/>fuzzy-AHP multi-criteria decision-making techniques in the Abha Watershed, Saudi Arabia. <em>Environ. Earth Sci. </em><strong>2018</strong>, <em>77</em>, 1–25.<br/><br/>[CrossRef]<br/><br/>16. Derdour, A.; Benkaddour, Y.; Bendahou, B. Application of remote sensing and GIS to assess groundwater potential in the<br/><br/>transboundary watershed of the Chott-El-Gharbi (Algerian–Moroccan border). <em>Appl. Water Sci. </em><strong>2022</strong>, <em>12</em>, 136. [CrossRef]<br/><br/>17. Rezvani, S.M.H.S.; Falcão, M.J.; Komljenovic, D.; de Almeida, N.M. A Systematic Literature Review on Urban Resilience Enabled<br/>with Asset and Disaster Risk Management Approaches and GIS-Based Decision Support Tools. <em>Appl. Sci. </em><strong>2023</strong>, <em>13</em>, 2223.<br/><br/>[CrossRef]<br/><br/>18. Xia, H.; Liu, Z.; Efremochkina, M.; Liu, X.; Lin, C. Study on city digital twin technologies for sustainable smart city design: A<br/><br/>review and bibliometric analysis of geographic information system and building information modeling integration. <em>Sustain. Cities<br/></em><br/><em>Soc. </em><strong>2022</strong>, <em>84</em>, 104009. [CrossRef]<br/><br/>19. Tache, A.V.; Popescu, O.C.; Petris, or, A.I. Conceptual Model for Integrating the Green-Blue Infrastructure in Planning Using<br/><br/>Geospatial Tools: Case Study of Bucharest, Romania Metropolitan Area. <em>Land </em><strong>2023</strong>, <em>12</em>, 1432. [CrossRef]<br/><br/>20. Bansal, V.K. Use of GIS to consider spatial aspects in construction planning process. <em>Int. J. Constr. Manag. </em><strong>2020</strong>, <em>20</em>, 207–222.<br/><br/>[CrossRef]<br/><br/>21. Jones, C.B. <em>Geographical Information Systems and Computer Cartography</em>; Routledge: London, UK, 2014.<br/><br/>22. Wang, H.; Pan, Y.; Luo, X. Integration of BIM and GIS in sustainable built environment: A review and bibliometric analysis.<br/><br/><em>Autom. Constr. </em><strong>2019</strong>, <em>103</em>, 41–52. [CrossRef]<br/><br/>23. Khan, M.S.; Kim, I.S.; Seo, J. A boundary and voxel-based 3D geological data management system leveraging BIM and GIS. <em>Int. J.</em></p><ol type="1" id="2022377e-b56f-80d0-9c5a-d6a62049c212" class="numbered-list" start="1"><li>1.<p id="2022377e-b56f-803c-9f98-ed206ae1a573" class="">Wong, V.S.H.; El Massah, S. Recent Evidence on the Oil Price Shocks on Gulf Cooperation Council Stock Markets. <em>Int. J. Econ. Bus.<br/></em><strong>2018</strong>, <em>25</em>, 297–312. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-8077-857b-d4553c197b8b" class="numbered-list" start="2"><li>2.<p id="2022377e-b56f-8031-a8b5-c1e3fbf9273a" class="">Alharthi, Y.Z.; Siddiki, M.K.; Chaudhry, G.M. The New Vision and the Contribution of Solar Power in the Kingdom of Saudi<br/>Arabia Electricity Production. In Proceedings of the 2017 Ninth Annual IEEE Green Technologies Conference (GreenTech),<br/>Denver, CO, USA, 29–31 March 2017; pp. 83–88.</p></li></ol><ol type="1" id="2022377e-b56f-806a-b790-d9eddee77bbe" class="numbered-list" start="3"><li>3.<p id="2022377e-b56f-805e-8a69-f3c92931c926" class="">Giorgi, S.; Lavagna, M.; Wang, K.; Osmani, M.; Liu, G.; Campioli, A. Drivers and barriers towards circular economy in the<br/>building sector: Stakeholder interviews and analysis of five European countries policies and practices. <em>J. Clean. Prod. </em><strong>2022</strong>,<br/><em>336</em>, 130395. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-80c0-b4c0-d4661e443652" class="numbered-list" start="4"><li>4.<p id="2022377e-b56f-80bc-b1cd-cee5a3ec7e07" class="">Lahn, G.; Stevens, P. <em>Burning Oil to Keep Cool The Hidden Energy Crisis in Saudi Arabia Charity</em>; Chatham House: London, UK, 2012.</p></li></ol><ol type="1" id="2022377e-b56f-8098-9d26-e001bea343b8" class="numbered-list" start="5"><li>5.<p id="2022377e-b56f-800c-a64e-fd850ff6c62a" class="">Chen, Y.; Yu, J.; Khan, S. Spatial sensitivity analysis of multi-criteria weights in GIS-based land suitability evaluation. <em>Environ.</em></p><p id="2022377e-b56f-8050-8104-eae7801660c9" class=""><em>Model. Softw. </em><strong>2010</strong>, <em>25</em>, 1582–1591. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-80b1-b0fb-ff1d2cab1d3e" class="numbered-list" start="6"><li>6.<p id="2022377e-b56f-80a6-8a78-e6efd4e90756" class="">Akmam Syed Zakaria, S.; Gajendran, T.; Rose, T.; Brewer, G. Contextual, structural and behavioural factors influencing the</p><p id="2022377e-b56f-800b-9121-d3a2260c2010" class="">adoption of industrialised building systems: A review. <em>Archit. Eng. Des. Manag. </em><strong>2018</strong>, <em>14</em>, 3–26. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-80de-a369-ecf551736652" class="numbered-list" start="7"><li>7.<p id="2022377e-b56f-8072-b82c-fd38191c607f" class="">Logan, J.R.; Molotch, H.L. <em>Urban Fortunes: The Political Economy of Place</em>; University of California Press: Berkeley, CA, USA, 2007;</p><p id="2022377e-b56f-803b-a752-ed60169a48d0" class="">ISBN 9780520254282.</p></li></ol><ol type="1" id="2022377e-b56f-80b7-a762-d362a4824882" class="numbered-list" start="8"><li>8.<p id="2022377e-b56f-807b-a02b-c542cfd03323" class="">Atta, I.; Bakhoum, E.S.; Marzouk, M.M. Digitizing material passport for sustainable construction projects using BIM. <em>J. Build. Eng.</em></p><p id="2022377e-b56f-80c1-b604-fb775773dfed" class=""><strong>2021</strong>, <em>43</em>, 103233. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-805b-b8a0-d4e48cf5f517" class="numbered-list" start="9"><li>9.<p id="2022377e-b56f-804b-ae42-ec50f15739de" class="">Al Garni, H.Z.; Awasthi, A. Solar PV power plant site selection using a GIS-AHP based approach with application in Saudi</p><p id="2022377e-b56f-80f4-acb5-efabc5ed4fab" class="">Arabia. <em>Appl. Energy </em><strong>2017</strong>, <em>206</em>, 1225–1240. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-8020-999b-fcaceb91fbb8" class="numbered-list" start="10"><li>10.<p id="2022377e-b56f-80bb-bafc-f544d11b19dc" class="">Kuller, M.; Bach, P.M.; Ramirez-Lovering, D.; Deletic, A. What drives the location choice for water sensitive infrastructure in</p><p id="2022377e-b56f-8079-9e12-c098551a5335" class="">Melbourne, Australia? <em>Landsc. Urban Plan. </em><strong>2018</strong>, <em>175</em>, 92–101. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-80aa-8d26-c9344cf85dd0" class="numbered-list" start="11"><li>11.<p id="2022377e-b56f-80c7-b8cf-df0ff1c75092" class="">Meng, Q.; Pang, N.; Zhao, S.; Gao, J. Two-stage optimal site selection for waste-to-energy plant using single-valued neutrosophic</p><p id="2022377e-b56f-8012-94dc-ca8ec79857d5" class="">sets and geographic information system based multi-criteria decision-making approach: A case study of Beijing, China. <em>Waste</em></p><p id="2022377e-b56f-801a-ab63-ee825653946d" class=""><em>Manag. </em><strong>2023</strong>, <em>156</em>, 283–296. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-8069-9109-cccf01a4d82b" class="numbered-list" start="12"><li>12.<p id="2022377e-b56f-80b7-b20d-d8bae074c6af" class="">Erol-Kantarci, M.; Mouftah, H.T. Energy-Efficient Information and Communication Infrastructures in the Smart Grid: A Survey</p><p id="2022377e-b56f-804b-89b9-ea171a3490e3" class="">on Interactions and Open Issues. <em>IEEE Commun. Surv. Tutor. </em><strong>2015</strong>, <em>17</em>, 179–197. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-801a-ba2d-c16dbf0e084b" class="numbered-list" start="13"><li>13.<p id="2022377e-b56f-80a8-ad31-e67f663e6f98" class="">Casini, M. Extended Reality for Smart Building Operation and Maintenance: A Review. <em>Energies </em><strong>2022</strong>, <em>15</em>, 3785. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-803c-9ba4-c15e6a49b9f4" class="numbered-list" start="14"><li>14.<p id="2022377e-b56f-809c-9325-dd190324beee" class="">Carsjens, G.J.; Ligtenberg, A. A GIS-based support tool for sustainable spatial planning in metropolitan areas. <em>Landsc. Urban Plan.</em></p><p id="2022377e-b56f-8049-a1e5-c7fdb8f26827" class=""><strong>2007</strong>, <em>80</em>, 72–83. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-8049-9c9b-e79484e17bcf" class="numbered-list" start="15"><li>15.<p id="2022377e-b56f-806d-a3db-f187555644b6" class="">Mallick, J.; Singh, R.K.; AlAwadh, M.A.; Islam, S.; Khan, R.A.; Qureshi, M.N. GIS-based landslide susceptibility evaluation using</p><p id="2022377e-b56f-80b1-a7e5-d06f9b3f9276" class="">fuzzy-AHP multi-criteria decision-making techniques in the Abha Watershed, Saudi Arabia. <em>Environ. Earth Sci. </em><strong>2018</strong>, <em>77</em>, 1–25.</p><p id="2022377e-b56f-8024-9f78-c769ad4aeff5" class="">[CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-80ea-a4cd-ee70eeba519b" class="numbered-list" start="16"><li>16.<p id="2022377e-b56f-80f7-9db2-fb2077ac2c5d" class="">Derdour, A.; Benkaddour, Y.; Bendahou, B. Application of remote sensing and GIS to assess groundwater potential in the</p><p id="2022377e-b56f-80db-b6c5-dacd7193ef7e" class="">transboundary watershed of the Chott-El-Gharbi (Algerian–Moroccan border). <em>Appl. Water Sci. </em><strong>2022</strong>, <em>12</em>, 136. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-800f-92fb-e803494fe694" class="numbered-list" start="17"><li>17.<p id="2022377e-b56f-8073-ab7e-e31b3510ca6a" class="">Rezvani, S.M.H.S.; Falcão, M.J.; Komljenovic, D.; de Almeida, N.M. A Systematic Literature Review on Urban Resilience Enabled<br/>with Asset and Disaster Risk Management Approaches and GIS-Based Decision Support Tools. <em>Appl. Sci. </em><strong>2023</strong>, <em>13</em>, 2223.</p><p id="2022377e-b56f-8039-b999-eef50bd4e9e0" class="">[CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-807f-8720-ed591b2d1256" class="numbered-list" start="18"><li>18.<p id="2022377e-b56f-803f-a1d2-cc2aad22db96" class="">Xia, H.; Liu, Z.; Efremochkina, M.; Liu, X.; Lin, C. Study on city digital twin technologies for sustainable smart city design: A</p><p id="2022377e-b56f-80fd-b1f4-ca9f05fe1975" class="">review and bibliometric analysis of geographic information system and building information modeling integration. <em>Sustain. Cities</em></p><p id="2022377e-b56f-80b9-9154-efad7ca309f8" class=""><em>Soc. </em><strong>2022</strong>, <em>84</em>, 104009. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-80cb-8cd4-f80e40be974f" class="numbered-list" start="19"><li>19.<p id="2022377e-b56f-80c6-ad6d-c6f123f13237" class="">Tache, A.V.; Popescu, O.C.; Petris, or, A.I. Conceptual Model for Integrating the Green-Blue Infrastructure in Planning Using</p><p id="2022377e-b56f-8076-9274-ec17f52c9c8e" class="">Geospatial Tools: Case Study of Bucharest, Romania Metropolitan Area. <em>Land </em><strong>2023</strong>, <em>12</em>, 1432. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-809e-83ad-c062db9e0d72" class="numbered-list" start="20"><li>20.<p id="2022377e-b56f-80bd-8c59-cc2e4accb705" class="">Bansal, V.K. Use of GIS to consider spatial aspects in construction planning process. <em>Int. J. Constr. Manag. </em><strong>2020</strong>, <em>20</em>, 207–222.</p><p id="2022377e-b56f-80d1-8dd8-e7f0c4d1780e" class="">[CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-8049-93dc-ebf25089d518" class="numbered-list" start="21"><li>21.<p id="2022377e-b56f-80b3-b041-fbd15672cbab" class="">Jones, C.B. <em>Geographical Information Systems and Computer Cartography</em>; Routledge: London, UK, 2014.</p></li></ol><ol type="1" id="2022377e-b56f-8099-b320-f049d54b3ebe" class="numbered-list" start="22"><li>22.<p id="2022377e-b56f-8082-ac37-df27e5aea447" class="">Wang, H.; Pan, Y.; Luo, X. Integration of BIM and GIS in sustainable built environment: A review and bibliometric analysis.</p><p id="2022377e-b56f-8066-85bf-da5f7734b352" class=""><em>Autom. Constr. </em><strong>2019</strong>, <em>103</em>, 41–52. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-8040-af21-e32697e5b1e6" class="numbered-list" start="23"><li><p id="2022377e-b56f-801c-a490-c77552cade5c" class="">Khan, M.S.; Kim, I.S.; Seo, J. A boundary and voxel-based 3D geological data management system leveraging BIM and GIS. <em>Int. J. Appl. Earth Obs. Geoinf. </em><strong>2023</strong>, <em>118</em>, 103277. [CrossRef]</p><p id="2022377e-b56f-80de-baf4-fba919fbcb80" class="">1. Mallick, J. Municipal Solid Waste Landfill Site Selection Based on Fuzzy-AHP and Geoinformation Techniques in Asir Region<br/>Saudi Arabia. <em>Sustainability </em><strong>2021</strong>, <em>13</em>, 1538. [CrossRef]<br/><br/>2. Chakraborty, S.; Chatterjee, P.; Das, P.P. <em>Multi-Criteria Decision-Making Methods in Manufacturing Environments: Models and<br/>Applications</em>; CRC Press: Boca Raton, FL, USA, 2023.<br/><br/>3. Dunne, A.; Kuleshov, Y. Drought risk assessment and mapping for the Murray–Darling Basin, Australia. <em>Nat. Hazards </em><strong>2023</strong>, <em>115</em>,<br/>839–863. [CrossRef]<br/><br/>4. Koc-San, D.; San, B.T.; Bakis, V.; Helvaci, M.; Eker, Z. Multi-Criteria Decision Analysis integrated with GIS and remote sensing for<br/>astronomical observatory site selection in Antalya province, Turkey. <em>Adv. Sp. Res. </em><strong>2013</strong>, <em>52</em>, 39–51. [CrossRef]<br/><br/>5. Gholamizadeh, K.; Zarei, E.; Omidvar, M.; Yazdi, M. Fuzzy Sets Theory and Human Reliability: Review, Applications, and<br/>Contributions. <em>Stud. Fuzziness Soft Comput. </em><strong>2022</strong>, <em>414</em>, 91–137.<br/><br/>6. Ma, L.D.; Wang, W.X.; Xie, J.W.; Zhang, N.; Hu, N.F.; Wang, Z.A. Evaluation of product conceptual design based on Pythagorean<br/>fuzzy set under big data environment. <em>Sci. Rep. </em><strong>2022</strong>, <em>12</em>, 22387. [CrossRef]<br/><br/>7. Singh, A.; Kumar, R.; Kumar, R.; Pippal, P.S.; Sharma, P.; Tanuja; Sharma, A. Delineation of groundwater potential zone using<br/>geospatial tools and analytical hierarchy process (AHP) in the state of Uttarakhand, India. <em>Adv. Sp. Res. </em><strong>2024</strong>, <em>73</em>, 2939–2954.<br/>[CrossRef]<br/><br/>8. Tariq, A.; Hashemi Beni, L.; Ali, S.; Adnan, S.; Hatamleh, W.A. An effective geospatial-based flash flood susceptibility assessment<br/>with hydrogeomorphic responses on groundwater recharge. <em>Groundw. Sustain. Dev. </em><strong>2023</strong>, <em>23</em>, 100998. [CrossRef]<br/><br/>9. Xu, Z.; Coors, V. Combining system dynamics model, GIS and 3D visualization in sustainability assessment of urban residential<br/>development. <em>Build. Environ. </em><strong>2012</strong>, <em>47</em>, 272–287. [CrossRef]<br/><br/>10. Karasan, A.; Ilbahar, E.; Kahraman, C. A novel pythagorean fuzzy AHP and its application to landfill site selection problem. <em>Soft<br/>Comput. </em><strong>2019</strong>, <em>23</em>, 10953–10968. [CrossRef]<br/><br/>11. Wijitkosum, S.; Sriburi, T. Fuzzy AHP Integrated with GIS Analyses for Drought Risk Assessment: A Case Study from Upper<br/>Phetchaburi River Basin, Thailand. <em>Water </em><strong>2019</strong>, <em>11</em>, 939. [CrossRef]<br/><br/>12. Talukdar, S.; Naikoo, M.W.; Mallick, J.; Praveen, B.; Shahfahad; Sharma, P.; Islam, A.R.M.T.; Pal, S.; Rahman, A. Coupling<br/>geographic information system integrated fuzzy logic-analytical hierarchy process with global and machine learning based<br/>sensitivity analysis for agricultural suitability mapping. <em>Agric. Syst. </em><strong>2022</strong>, <em>196</em>, 103343. [CrossRef]<br/><br/>13. Ahmed, M.; AlQadhi, S.; Mallick, J.; Kahla, N.B.; Le, H.A.; Singh, C.K.; Hang, H.T. Artificial neural networks for sustainable<br/>development of the construction industry. <em>Sustainability </em><strong>2022</strong>, <em>14</em>, 14738. [CrossRef]<br/><br/>14. Xiang, Y.; Chen, Y.; Xu, J.; Chen, Z. Research on sustainability evaluation of green building engineering based on artificial<br/>intelligence and energy consumption. <em>Energy Rep. </em><strong>2022</strong>, <em>8</em>, 11378–11391. [CrossRef]<br/><br/>15. Pan, Y.; Zhang, L. Roles of artificial intelligence in construction engineering and management: A critical review and future trends.<br/><em>Autom. Constr. </em><strong>2021</strong>, <em>122</em>, 103517. [CrossRef]<br/><br/>16. Venkatesh, A.N.; Naved, M.; Fakih, A.H.; Kshirsagar, P.R.; Vijayakumar, P. An approach for smart city applications using artificial<br/>intelligence. In <em>AIP Conference Proceedings</em>; AIP Publishing: Melville, NY, USA, 2022; Volume 2393.<br/><br/>17. Kuhaneswaran, B.; Chamanee, G.; Kumara, B.T.G.S. A comprehensive review on the integration of geographic information<br/>systems and artificial intelligence for landfill site selection: A systematic mapping perspective. <em>Waste Manag. Res. </em><strong>2024</strong>,<br/>0734242X241237100. [CrossRef]<br/><br/>18. Waqar, A. Intelligent decision support systems in construction engineering: An artificial intelligence and machine learning<br/>approaches. <em>Expert Syst. Appl. </em><strong>2024</strong>, <em>249</em>, 123503. [CrossRef]<br/><br/>19. Seid, A.M.; Boateng, G.O.; Mareri, B.; Sun, G.; Jiang, W. Multi-agent DRL for task offloading and resource allocation in multi-UAV<br/>enabled IoT edge network. <em>IEEE Trans. Netw. Serv. Manag. </em><strong>2021</strong>, <em>18</em>, 4531–4547. [CrossRef]<br/><br/>20. Gao, H.; Jiang, S.; Li, Z.; Wang, R.; Liu, Y.; Liu, J. A Two-stage Multi-agent Deep Reinforcement Learning Method for Urban<br/>Distribution Network Reconfiguration Considering Switch Contribution. <em>IEEE Trans. Power Systems </em><strong>2024</strong>. [CrossRef]<br/><br/>21. Vincent, P. <em>Saudi Arabia: An Environmental Overview</em>; Taylor Francis: London, UK, 2008.<br/><br/>22. Mallick, J.; Ibnatiq, A.A.; Kahla, N.B.e.n.; Alqadhi, S.; Singh, V.P.; Hoa, P.V.; Hang, H.T.; Hong, N.V.a.n.; Le, H.A. GIS-Based<br/><br/>Decision Support System for Safe and Sustainable Building Construction Site in a Mountainous Region. <em>Sustainability </em><strong>2022</strong>, <em>14</em>,<br/><br/>888. [CrossRef]<br/><br/>23. Abulafatih, H.A. Medicinal Plants in Southwestern Saudi Arabia on JSTOR. <em>Econ. Bot. </em><strong>1987</strong>, <em>41</em>, 354–360. [CrossRef]<br/><br/>24. Wee, S.J.; Park, E.; Alcantara, E.; Lee, J.S.H. Exploring Multi-Driver Influences on Indonesia’s Biomass Fire Patterns from 2002 to<br/><br/>2019 through Geographically Weighted Regression. <em>J. Geovisualization Spat. Anal. </em><strong>2024</strong>, <em>8</em>, 4. [CrossRef]<br/><br/>25. Yamusa, I.B.; Ismail, M.S. Futuristic structural and lithological constraint mapping of landslides using structural geology and<br/><br/>geospatial techniques. <em>J. Geovisualization Spat. Anal. </em><strong>2023</strong>, <em>7</em>, 5. [CrossRef]<br/><br/>26. Rihan, M.; Ali Bindajam, A.; Talukdar, S.; Shahfahad; Waseem Naikoo, M.; Mallick, J.; Rahman, A. Forest fire susceptibility<br/><br/>mapping with sensitivity and uncertainty analysis using machine learning and deep learning algorithms. <em>Adv. Sp. Res. </em><strong>2023</strong>, <em>72</em>,<br/><br/>426–443. [CrossRef]<br/><br/>27. Mallick, J.; Alashker, Y.; Mohammad, S.A.D.; Ahmed, M.; Hasan, M.A. Risk assessment of soil erosion in semi-arid moun-tainous<br/><br/>watershed in Saudi Arabia by RUSLE model coupled with remote sensing and GIS. <em>Geocarto Int. </em><strong>2014</strong>, <em>29</em>, 915–940. [CrossRef]<br/><br/>28. Yeh, H.F.; Cheng, Y.S.; Lin, H.I.; Lee, C.H. Mapping groundwater recharge potential zone using a GIS approach in Hualian River,</p><ol type="1" id="2022377e-b56f-80fd-b290-c4bb064953e0" class="numbered-list" start="1"><li>1.<p id="2022377e-b56f-80ed-9205-d018fb20baea" class="">Mallick, J. Municipal Solid Waste Landfill Site Selection Based on Fuzzy-AHP and Geoinformation Techniques in Asir Region<br/>Saudi Arabia. <em>Sustainability </em><strong>2021</strong>, <em>13</em>, 1538. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-8059-a82c-d4df400b3d43" class="numbered-list" start="2"><li>2.<p id="2022377e-b56f-8003-8a59-ea45ee3c728c" class="">Chakraborty, S.; Chatterjee, P.; Das, P.P. <em>Multi-Criteria Decision-Making Methods in Manufacturing Environments: Models and<br/>Applications</em>; CRC Press: Boca Raton, FL, USA, 2023.</p></li></ol><ol type="1" id="2022377e-b56f-8008-919f-ed73f6819343" class="numbered-list" start="3"><li>3.<p id="2022377e-b56f-8060-ad08-d0ec7c11fa88" class="">Dunne, A.; Kuleshov, Y. Drought risk assessment and mapping for the Murray–Darling Basin, Australia. <em>Nat. Hazards </em><strong>2023</strong>, <em>115</em>,<br/>839–863. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-8008-88ad-cfc4bdcd8b0f" class="numbered-list" start="4"><li>4.<p id="2022377e-b56f-80fd-919a-d3535ad09ee5" class="">Koc-San, D.; San, B.T.; Bakis, V.; Helvaci, M.; Eker, Z. Multi-Criteria Decision Analysis integrated with GIS and remote sensing for<br/>astronomical observatory site selection in Antalya province, Turkey. <em>Adv. Sp. Res. </em><strong>2013</strong>, <em>52</em>, 39–51. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-80fb-847a-d62af1dd7c32" class="numbered-list" start="5"><li>5.<p id="2022377e-b56f-807f-9e2d-ebead3bbe237" class="">Gholamizadeh, K.; Zarei, E.; Omidvar, M.; Yazdi, M. Fuzzy Sets Theory and Human Reliability: Review, Applications, and<br/>Contributions. <em>Stud. Fuzziness Soft Comput. </em><strong>2022</strong>, <em>414</em>, 91–137.</p></li></ol><ol type="1" id="2022377e-b56f-80d6-822b-ddd499bb3500" class="numbered-list" start="6"><li>6.<p id="2022377e-b56f-8003-89e9-f542073b603e" class="">Ma, L.D.; Wang, W.X.; Xie, J.W.; Zhang, N.; Hu, N.F.; Wang, Z.A. Evaluation of product conceptual design based on Pythagorean<br/>fuzzy set under big data environment. <em>Sci. Rep. </em><strong>2022</strong>, <em>12</em>, 22387. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-8033-921d-c9f984d5cb9c" class="numbered-list" start="7"><li>7.<p id="2022377e-b56f-802b-b246-e3db3c4bc5be" class="">Singh, A.; Kumar, R.; Kumar, R.; Pippal, P.S.; Sharma, P.; Tanuja; Sharma, A. Delineation of groundwater potential zone using<br/>geospatial tools and analytical hierarchy process (AHP) in the state of Uttarakhand, India. <em>Adv. Sp. Res. </em><strong>2024</strong>, <em>73</em>, 2939–2954.<br/>[CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-80ef-937d-e5f3772dcd4f" class="numbered-list" start="8"><li>8.<p id="2022377e-b56f-80a7-a671-fbef95a3c96f" class="">Tariq, A.; Hashemi Beni, L.; Ali, S.; Adnan, S.; Hatamleh, W.A. An effective geospatial-based flash flood susceptibility assessment<br/>with hydrogeomorphic responses on groundwater recharge. <em>Groundw. Sustain. Dev. </em><strong>2023</strong>, <em>23</em>, 100998. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-80f5-a96a-f9119ed30a99" class="numbered-list" start="9"><li>9.<p id="2022377e-b56f-803c-aa0d-f7c1b011aad1" class="">Xu, Z.; Coors, V. Combining system dynamics model, GIS and 3D visualization in sustainability assessment of urban residential<br/>development. <em>Build. Environ. </em><strong>2012</strong>, <em>47</em>, 272–287. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-805a-a3a1-f49c26402367" class="numbered-list" start="10"><li>10.<p id="2022377e-b56f-80a9-8df2-fad05dc4a097" class="">Karasan, A.; Ilbahar, E.; Kahraman, C. A novel pythagorean fuzzy AHP and its application to landfill site selection problem. <em>Soft<br/>Comput. </em><strong>2019</strong>, <em>23</em>, 10953–10968. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-80a3-a81c-d5fc6ebb05a0" class="numbered-list" start="11"><li>11.<p id="2022377e-b56f-80a7-9dd2-f20925e6cf70" class="">Wijitkosum, S.; Sriburi, T. Fuzzy AHP Integrated with GIS Analyses for Drought Risk Assessment: A Case Study from Upper<br/>Phetchaburi River Basin, Thailand. <em>Water </em><strong>2019</strong>, <em>11</em>, 939. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-80b7-8382-e3d789f9bb0a" class="numbered-list" start="12"><li>12.<p id="2022377e-b56f-80c1-81d8-ce1c08005710" class="">Talukdar, S.; Naikoo, M.W.; Mallick, J.; Praveen, B.; Shahfahad; Sharma, P.; Islam, A.R.M.T.; Pal, S.; Rahman, A. Coupling<br/>geographic information system integrated fuzzy logic-analytical hierarchy process with global and machine learning based<br/>sensitivity analysis for agricultural suitability mapping. <em>Agric. Syst. </em><strong>2022</strong>, <em>196</em>, 103343. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-80ac-bdc6-d7900a9b2cd9" class="numbered-list" start="13"><li>13.<p id="2022377e-b56f-80ee-8162-d7a64d27caee" class="">Ahmed, M.; AlQadhi, S.; Mallick, J.; Kahla, N.B.; Le, H.A.; Singh, C.K.; Hang, H.T. Artificial neural networks for sustainable<br/>development of the construction industry. <em>Sustainability </em><strong>2022</strong>, <em>14</em>, 14738. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-80a1-be9d-c5b7d856d4d8" class="numbered-list" start="14"><li>14.<p id="2022377e-b56f-80f4-93eb-d6ac034d88c7" class="">Xiang, Y.; Chen, Y.; Xu, J.; Chen, Z. Research on sustainability evaluation of green building engineering based on artificial<br/>intelligence and energy consumption. <em>Energy Rep. </em><strong>2022</strong>, <em>8</em>, 11378–11391. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-8094-b4e7-f44c2c0539af" class="numbered-list" start="15"><li>15.<p id="2022377e-b56f-80ec-98ce-cbdcb5049abd" class="">Pan, Y.; Zhang, L. Roles of artificial intelligence in construction engineering and management: A critical review and future trends.<br/><em>Autom. Constr. </em><strong>2021</strong>, <em>122</em>, 103517. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-80a0-b948-e44b6abb9b76" class="numbered-list" start="16"><li>16.<p id="2022377e-b56f-8067-81f8-de7523d23f90" class="">Venkatesh, A.N.; Naved, M.; Fakih, A.H.; Kshirsagar, P.R.; Vijayakumar, P. An approach for smart city applications using artificial<br/>intelligence. In <em>AIP Conference Proceedings</em>; AIP Publishing: Melville, NY, USA, 2022; Volume 2393.</p></li></ol><ol type="1" id="2022377e-b56f-8025-9131-c89bb8cac362" class="numbered-list" start="17"><li>17.<p id="2022377e-b56f-801d-a058-c2fbc1792c35" class="">Kuhaneswaran, B.; Chamanee, G.; Kumara, B.T.G.S. A comprehensive review on the integration of geographic information<br/>systems and artificial intelligence for landfill site selection: A systematic mapping perspective. <em>Waste Manag. Res. </em><strong>2024</strong>,<br/>0734242X241237100. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-80fa-bda9-ce3ca44db5f6" class="numbered-list" start="18"><li>18.<p id="2022377e-b56f-8024-94c2-fea372a363ac" class="">Waqar, A. Intelligent decision support systems in construction engineering: An artificial intelligence and machine learning<br/>approaches. <em>Expert Syst. Appl. </em><strong>2024</strong>, <em>249</em>, 123503. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-8000-b04e-dc03754492ae" class="numbered-list" start="19"><li>19.<p id="2022377e-b56f-800d-ae5a-d31e8c8a155e" class="">Seid, A.M.; Boateng, G.O.; Mareri, B.; Sun, G.; Jiang, W. Multi-agent DRL for task offloading and resource allocation in multi-UAV<br/>enabled IoT edge network. <em>IEEE Trans. Netw. Serv. Manag. </em><strong>2021</strong>, <em>18</em>, 4531–4547. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-806e-a669-c864a62b18a2" class="numbered-list" start="20"><li>20.<p id="2022377e-b56f-8044-b6f5-c95d340636aa" class="">Gao, H.; Jiang, S.; Li, Z.; Wang, R.; Liu, Y.; Liu, J. A Two-stage Multi-agent Deep Reinforcement Learning Method for Urban<br/>Distribution Network Reconfiguration Considering Switch Contribution. <em>IEEE Trans. Power Systems </em><strong>2024</strong>. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-803a-8489-c304f6182ea9" class="numbered-list" start="21"><li>21.<p id="2022377e-b56f-80fe-b5cb-e37416021cf2" class="">Vincent, P. <em>Saudi Arabia: An Environmental Overview</em>; Taylor Francis: London, UK, 2008.</p></li></ol><ol type="1" id="2022377e-b56f-80be-81d5-f7bca76f8fd7" class="numbered-list" start="22"><li>22.<p id="2022377e-b56f-806f-a4e8-cfeb39fef203" class="">Mallick, J.; Ibnatiq, A.A.; Kahla, N.B.e.n.; Alqadhi, S.; Singh, V.P.; Hoa, P.V.; Hang, H.T.; Hong, N.V.a.n.; Le, H.A. GIS-Based</p><p id="2022377e-b56f-8097-8081-eb5ee956222d" class="">Decision Support System for Safe and Sustainable Building Construction Site in a Mountainous Region. <em>Sustainability </em><strong>2022</strong>, <em>14</em>,</p><p id="2022377e-b56f-803f-9248-c362f73e2103" class="">888. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-80af-b45e-ef3ac52e53fb" class="numbered-list" start="23"><li>23.<p id="2022377e-b56f-80a9-ad4b-c5b7282be1d6" class="">Abulafatih, H.A. Medicinal Plants in Southwestern Saudi Arabia on JSTOR. <em>Econ. Bot. </em><strong>1987</strong>, <em>41</em>, 354–360. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-8098-9b76-cd8efde52d58" class="numbered-list" start="24"><li>24.<p id="2022377e-b56f-80b6-bc7a-d2a4d2efdd27" class="">Wee, S.J.; Park, E.; Alcantara, E.; Lee, J.S.H. Exploring Multi-Driver Influences on Indonesia’s Biomass Fire Patterns from 2002 to</p><p id="2022377e-b56f-8021-b4ca-f5146e1467ae" class="">2019 through Geographically Weighted Regression. <em>J. Geovisualization Spat. Anal. </em><strong>2024</strong>, <em>8</em>, 4. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-8000-bb7a-e537e0adc776" class="numbered-list" start="25"><li>25.<p id="2022377e-b56f-80b8-88b2-f32e756bda6b" class="">Yamusa, I.B.; Ismail, M.S. Futuristic structural and lithological constraint mapping of landslides using structural geology and</p><p id="2022377e-b56f-80c5-b6a3-d181de93457e" class="">geospatial techniques. <em>J. Geovisualization Spat. Anal. </em><strong>2023</strong>, <em>7</em>, 5. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-80d7-970a-e4a07a80b07e" class="numbered-list" start="26"><li>26.<p id="2022377e-b56f-80ef-abbf-eccb7f7c00c0" class="">Rihan, M.; Ali Bindajam, A.; Talukdar, S.; Shahfahad; Waseem Naikoo, M.; Mallick, J.; Rahman, A. Forest fire susceptibility</p><p id="2022377e-b56f-8037-9b4d-d8704c9cbc99" class="">mapping with sensitivity and uncertainty analysis using machine learning and deep learning algorithms. <em>Adv. Sp. Res. </em><strong>2023</strong>, <em>72</em>,</p><p id="2022377e-b56f-8072-a283-e3a533ba7c32" class="">426–443. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-8047-8780-f15aab913b8b" class="numbered-list" start="27"><li>27.<p id="2022377e-b56f-80f7-8444-c0cc79f264cc" class="">Mallick, J.; Alashker, Y.; Mohammad, S.A.D.; Ahmed, M.; Hasan, M.A. Risk assessment of soil erosion in semi-arid moun-tainous</p><p id="2022377e-b56f-8074-8314-ff2bdda06fe4" class="">watershed in Saudi Arabia by RUSLE model coupled with remote sensing and GIS. <em>Geocarto Int. </em><strong>2014</strong>, <em>29</em>, 915–940. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-80f4-815f-ff02e067e3f9" class="numbered-list" start="28"><li>28.<p id="2022377e-b56f-8091-b61e-cb582afede41" class="">Yeh, H.F.; Cheng, Y.S.; Lin, H.I.; Lee, C.H. Mapping groundwater recharge potential zone using a GIS approach in Hualian River,</p></li></ol><p id="2022377e-b56f-8094-b779-db219164f24f" class="">Taiwan. <em>Sustain. Environ. Res. </em><strong>2016</strong>, <em>26</em>, 33–43. [CrossRef]</p></li></ol><p id="2022377e-b56f-803f-a517-d52cfa584a0b" class="">1. Wang, J.; Chen, L.; Su, R.; Zhao, X. The Beishan underground research laboratory for geological disposal of high-level radio-active<br/>waste in China: Planning, site selection, site characterization and in situ tests. <em>J. Rock Mech. Geotech. Eng. </em><strong>2018</strong>, <em>10</em>, 411–435.<br/>[CrossRef]<br/><br/>2. Zadeh, L.A. Fuzzy sets. <em>Inf. Control </em><strong>1965</strong>, <em>8</em>, 338–353. [CrossRef]<br/><br/>3. Akram, M.; Nawaz, H.S.; Kahraman, C. Rough Pythagorean fuzzy approximations with neighborhood systems and infor-mation<br/><br/>granulation. <em>Expert Syst. Appl. </em><strong>2023</strong>, <em>218</em>, 119603. [CrossRef]<br/><br/>4. Al Awadh, M.; Mallick, J. A Decision-Making Framework for Landfill Site Selection in Saudi Arabia Using eXplainable Arti-ficial<br/><br/>Intelligence and Multi-criteria Analysis. <em>Environ. Technol. Innov. </em><strong>2023</strong>, <em>33</em>, 103464. [CrossRef]<br/><br/>5. Singh, K.; Kaushik, M.; Kumar, M. Integrating α-cut interval based fuzzy fault tree analysis with Bayesian network for criti-cality<br/><br/>analysis of submarine pipeline leakage: A novel approach. <em>Process Saf. Environ. Prot. </em><strong>2022</strong>, <em>166</em>, 189–201. [CrossRef]<br/><br/>6. Krawczak, M.; Szkatuła, G. On matching of intuitionistic fuzzy sets. <em>Inf. Sci. </em><strong>2020</strong>, <em>517</em>, 254–274. [CrossRef]<br/><br/>7. Chen, W.P.; Lee, C.H. Estimating ground-water recharge from streamflow records. <em>Environ. Geol. </em><strong>2003</strong>, <em>44</em>, 257–265. [CrossRef]<br/><br/>8. Mallick, J.; Singh, R.K.; Khan, R.A.; Singh, C.K.; Kahla, N.B.; Warrag, E.I.; Islam, S.; Rahman, A. Examining the rainfall–topography<br/><br/>relationship using non-stationary modelling technique in semi-arid Aseer region, Saudi Arabia. <em>Arab. J. Geosci. </em><strong>2018</strong>, <em>11</em>, 1–16.<br/><br/>[CrossRef]<br/><br/>9. Buckley, J.J. Fuzzy hierarchical analysis. <em>Fuzzy Sets Syst. </em><strong>1985</strong>, <em>17</em>, 233–247. [CrossRef]<br/><br/>10. Malczewski, J.; Rinner, C. <em>Multicriteria Decision Analysis in Geographic Information Science</em>; Springer: New York, NY, USA, 2015.<br/><br/>11. Kumar, S.; Bansal, V.K. A GIS-based methodology for safe site selection of a building in a hilly region. <em>Front. Archit. Res. </em><strong>2016</strong>, <em>5</em>,<br/><br/>39–51. [CrossRef]<br/><br/>12. Duru, O.; Bulut, E.; Yoshida, S. Regime switching fuzzy AHP model for choice-varying priorities problem and</p><ol type="1" id="2022377e-b56f-800b-b570-f242ea570a0a" class="numbered-list" start="1"><li>1.<p id="2022377e-b56f-806a-9aa7-fe844ba1614d" class="">Wang, J.; Chen, L.; Su, R.; Zhao, X. The Beishan underground research laboratory for geological disposal of high-level radio-active<br/>waste in China: Planning, site selection, site characterization and in situ tests. <em>J. Rock Mech. Geotech. Eng. </em><strong>2018</strong>, <em>10</em>, 411–435.<br/>[CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-8066-9c85-d42f628491d1" class="numbered-list" start="2"><li>2.<p id="2022377e-b56f-80b1-8fc1-ed63189ab6d9" class="">Zadeh, L.A. Fuzzy sets. <em>Inf. Control </em><strong>1965</strong>, <em>8</em>, 338–353. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-80b9-8d4e-c239f247b6fc" class="numbered-list" start="3"><li>3.<p id="2022377e-b56f-8038-ad4d-d612c847e62e" class="">Akram, M.; Nawaz, H.S.; Kahraman, C. Rough Pythagorean fuzzy approximations with neighborhood systems and infor-mation</p><p id="2022377e-b56f-8064-81ce-ef527a788e68" class="">granulation. <em>Expert Syst. Appl. </em><strong>2023</strong>, <em>218</em>, 119603. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-80fc-abb8-c3f5ca43d8d8" class="numbered-list" start="4"><li>4.<p id="2022377e-b56f-8010-9828-dfcbd22d125f" class="">Al Awadh, M.; Mallick, J. A Decision-Making Framework for Landfill Site Selection in Saudi Arabia Using eXplainable Arti-ficial</p><p id="2022377e-b56f-801a-b5b0-fbe400e628e4" class="">Intelligence and Multi-criteria Analysis. <em>Environ. Technol. Innov. </em><strong>2023</strong>, <em>33</em>, 103464. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-80cb-ba48-da4dc1622c25" class="numbered-list" start="5"><li>5.<p id="2022377e-b56f-803d-8ebe-e15e147eca6f" class="">Singh, K.; Kaushik, M.; Kumar, M. Integrating α-cut interval based fuzzy fault tree analysis with Bayesian network for criti-cality</p><p id="2022377e-b56f-8009-8541-d8aaeb00c057" class="">analysis of submarine pipeline leakage: A novel approach. <em>Process Saf. Environ. Prot. </em><strong>2022</strong>, <em>166</em>, 189–201. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-8009-a21a-d551d2e0616d" class="numbered-list" start="6"><li>6.<p id="2022377e-b56f-805b-8ac0-d4eb0e33364f" class="">Krawczak, M.; Szkatuła, G. On matching of intuitionistic fuzzy sets. <em>Inf. Sci. </em><strong>2020</strong>, <em>517</em>, 254–274. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-80ff-a760-d0da87852f2b" class="numbered-list" start="7"><li>7.<p id="2022377e-b56f-803e-a069-da2e5ca3e506" class="">Chen, W.P.; Lee, C.H. Estimating ground-water recharge from streamflow records. <em>Environ. Geol. </em><strong>2003</strong>, <em>44</em>, 257–265. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-80a5-a0a9-f42956af77c7" class="numbered-list" start="8"><li>8.<p id="2022377e-b56f-8029-ad37-f27bf2ee8b41" class="">Mallick, J.; Singh, R.K.; Khan, R.A.; Singh, C.K.; Kahla, N.B.; Warrag, E.I.; Islam, S.; Rahman, A. Examining the rainfall–topography</p><p id="2022377e-b56f-80d3-9775-cb47112eb565" class="">relationship using non-stationary modelling technique in semi-arid Aseer region, Saudi Arabia. <em>Arab. J. Geosci. </em><strong>2018</strong>, <em>11</em>, 1–16.</p><p id="2022377e-b56f-80cc-940b-f4142c4949f8" class="">[CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-80c6-92f7-d2382e334f9d" class="numbered-list" start="9"><li>9.<p id="2022377e-b56f-809e-bd1c-d2e7b43f24e9" class="">Buckley, J.J. Fuzzy hierarchical analysis. <em>Fuzzy Sets Syst. </em><strong>1985</strong>, <em>17</em>, 233–247. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-801c-b40e-c8ac7e0fd999" class="numbered-list" start="10"><li>10.<p id="2022377e-b56f-809e-95a5-eefd9a3d3f9e" class="">Malczewski, J.; Rinner, C. <em>Multicriteria Decision Analysis in Geographic Information Science</em>; Springer: New York, NY, USA, 2015.</p></li></ol><ol type="1" id="2022377e-b56f-805a-aae0-c50f6b727c6d" class="numbered-list" start="11"><li>11.<p id="2022377e-b56f-8055-b480-e39e455ee2f6" class="">Kumar, S.; Bansal, V.K. A GIS-based methodology for safe site selection of a building in a hilly region. <em>Front. Archit. Res. </em><strong>2016</strong>, <em>5</em>,</p><p id="2022377e-b56f-806d-976e-ce3f906b64c6" class="">39–51. [CrossRef]</p></li></ol><ol type="1" id="2022377e-b56f-801f-a1b1-d2a1bf95454a" class="numbered-list" start="12"><li>12.<p id="2022377e-b56f-8052-98cd-c0a613d54e19" class="">Duru, O.; Bulut, E.; Yoshida, S. Regime switching fuzzy AHP model for choice-varying priorities problem and expert con-sistency<br/>prioritization: A cubic fuzzy-priority matrix design. Expert Syst. Appl. 2012, 39, 4954–4964. [CrossRef]</p></li></ol><p id="2022377e-b56f-804b-a043-fd151177de89" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

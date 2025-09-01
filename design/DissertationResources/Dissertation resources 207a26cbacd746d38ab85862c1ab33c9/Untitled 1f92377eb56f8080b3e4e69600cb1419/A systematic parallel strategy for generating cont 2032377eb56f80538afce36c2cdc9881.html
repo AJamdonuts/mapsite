@@ -1,0 +1,683 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>A systematic parallel strategy for generating
+contours from large-scale DEM data using
+collaborative CPUs and GPUs</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-default { background-color: rgba(84, 72, 49, 0.08); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2032377e-b56f-8053-8afc-e36c2cdc9881" class="page sans"><header><h1 class="page-title"><strong>A systematic parallel strategy for generating<br/>contours from large-scale DEM data using<br/>collaborative CPUs and GPUs</strong></h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-text"><th><span class="icon property-icon"><div data-testid="/icons/description_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/description_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/description_gray.svg?mode=light) no-repeat center;background-color:rgba(71, 70, 68, 0.6);fill:rgba(71, 70, 68, 0.6)"></div></span>Links</th><td><a href="https://doi.org/10.1080/15230406.2020.1854862">https://doi.org/10.1080/15230406.2020.1854862</a></td></tr></tbody></table></header><div class="page-body"><ul id="2032377e-b56f-8034-8a1c-ce4f36278696" class="bulleted-list"><li style="list-style-type:disc">Contour maps play an important role in the analysis and modeling of terrains in the field of geographic informa- tion systems (GISs) (Jones, 2014). In recent years, the use of raster digital elevation models (DEMs) has increased (Jiang et al., 2013). Compared with raster DEM data, the contours in vector format are more measurable; conse- quently, generating contour lines from a DEM grid is becoming quite practical (Jones et al., 2000). However, this process is computationally intensive, and the com- monly used algorithms include the popular marching squares, Theo Pavlidis, and linear interpolation algo- rithms (Carsten, 2003; Chester et al., 1968; Pavlidis, 2012). Some researchers have investigated strategies to accelerate the process based on these algorithms through fast contour sorting (Jones et al., 2000; Nickerson et al., 1999; Yates, 1987) or contour traces (Wang, 2010; Wang et al., 2007; Zhao et al., 2014). Other researchers have also improved the accuracy of the process by using different interpolation functions, such as the polynomials and Lagrange functions (Schoenberg, 1969; Schoenberg &amp; Sharma, 1973). In addition, several research efforts have focused on the development of effective compressed encoding for contour lines (Miyatake et al., 1997), con- version from different file formats of DEM data (Hiremath &amp; Kodge, 2010), and assessment of different termination criteria during the process (Reddy et al., 2012). Other studies developed effective methods for improving the degree of smoothness of contours, includ- ing the cubic Bezier curve, cubic B-spline, and parabola (Kolingerová et al., 2009; Miao, 2004; Peters et al., 2014; Sun et al., 2000).</li></ul><ul id="2032377e-b56f-8011-a02b-fda4d99dfd0e" class="bulleted-list"><li style="list-style-type:disc">As the volume of geographic data to be processed in geospatial computation becomes larger and the compu- tational process becomes increasingly complicated, the conventional serial computing paradigm cannot con- tinue to be sufficiently applicable for timely handling of large-scale spatial data in GIS. Thus, it is essential to utilize parallel computing toolsets that can provide powerful computational capability to more efficiently generate contour lines from large-scale DEM data (Hawick et al., 2003; Healey et al., 1998). For instance, Xie (2012) utilized multicore central processing units (CPUs) to accelerate the process and considered opti- mization strategies for increasing the parallel efficiency. In particular, the message passing interface (MPI), which is a widely used standard for message-passing parallel programming, was employed to manage high- performance computing across distributed systems (MPI Forum, 1994). </li></ul><ul id="2032377e-b56f-80bd-a8b9-f27e438c66d3" class="bulleted-list"><li style="list-style-type:disc">In addition, with the wide application of graphics processing units (GPUs), the process of complicated geospatial computation is being manipulated in an efficient manner with highly concur- rent GPU threads (Guo et al., 2017; Tang, 2013). The compute unified device architecture (CUDA) designed by NVIDIA is implemented for processing on GPUs (Sanders &amp; Kandrot, 2010). It contains a number of multiprocessors and hierarchically organizes the com- puting units as threads, blocks, and grids; it executes parallel computing by coordinating the host and kernel functions (Jacobsen &amp; Senocak, 2013; Lee et al., 2014; Zhou et al., 2017). Tate and Overbye (2008) presented a GPU-based algorithm for power systems to handle scattered data and output gradient contours. Chen et al. (2010) utilized GPUs to reconstruct a contour map from DEM data for digital earth terrain platforms in real time. They also compared the parallel efficiency when these platforms run on different GPU platforms. Tan et al. (2017) introduced a GPU-based technology to solve appearance and performance issues for contour line generation. The inputted raw DEM data can be accelerated with a modern GPU pipeline, and smoothed contour lines can be achieved by using a new contour sorting method.</li></ul><ul id="2032377e-b56f-8087-b802-d5d1ba339be7" class="bulleted-list"><li style="list-style-type:disc">Although current parallel computing techniques have yielded significantly improved performance, two critical issues exist. First, existing parallel strategies usually deal with relatively small-scale DEM data that can be saved in a GPU, and are not suitably applicable for handling large-scale DEM data. Second, the proces- sing of massive DEM data has strong task dependency and thus needs iterative handling to achieve integrated results. Moreover, GPUs are intended to efficiently com- pute massive data using the single-instruction multiple data mode, whereas CPUs are more suitable for hand- ling highly dependent tasks owing to the difference in their hardware architectures. Current strategies merely employ one of them for parallelism, but the advantages of using both techniques in unison to accelerate the process have not yet been exploited.</li></ul><ul id="2032377e-b56f-804e-9e89-eb2489d687f8" class="bulleted-list"><li style="list-style-type:disc">This study employed a typical linear interpolation algo- rithm to generate contours from DEM data, which involves steps for generating interpolated points and then connecting contour lines (Xie, 2012). In this algo- rithm, the value of a raster pixel is used to represent the elevation of its central point.<br/>When interpolated points are generated, each of the 2 × 2 pixels within the DEM grid is processed in sequence. During this process, the centers of adjacent pixels that share a common edge are connected as line segments; then, target points with a specific elevation value can be linearly interpolated on the boundary of the formed line segments (Figure 1(a)). When contour lines are connected, the interpolated points with the same elevation value in the entire grid are first extracted. They are then connected as contour segments and finally merged together as integrated contour lines (Figure 1(b)). When considering no-data pixels, the middle points of the lines connected by the central points of the no-data pixel and two neighbor pixels are generated and assigned the values of the neighbor pixels. The central point of the grid of 2 × 2 pixels is assigned the average of the other three pixels. The formed middle and central points are connected for further linear interpolation.</li></ul><ul id="2032377e-b56f-80d7-b803-d0fc919ab64f" class="bulleted-list"><li style="list-style-type:disc">Then, we employed the Bresenham’s algorithm (Bresenham, 1965), which is commonly used for line drawing in the field of computer graphics, to convert the contour lines into raster at 5 m. </li></ul><ul id="2032377e-b56f-8087-bd0d-d8eea32a1589" class="bulleted-list"><li style="list-style-type:disc">1.The presented parallel algorithm can correctly<br/>address a large-scale DEM dataset with a volume<br/>of 37.81 GB and covering a total area of<br/>5,975,625.16 km2. The resultant contour lines cal-<br/>culated using our parallel algorithm were suffi-<br/>ciently good compared with those calculated using<br/>the professional ArcGIS software. In addition, the<br/>total execution time significantly decreased from<br/>332.84 min to 8.29 min, and a peak speedup value<br/>of 40.15 was achieved.<br/>2. (2)  For the experimental datasets, the parallel strate-<br/>gies are sufficiently applicable to different com-<br/>putational intensities, particularly for more<br/>intensive computations. Moreover, a rational<br/>level of decomposition granularity can further<br/>accelerate the parallel processing on GPUs.<br/>3. (3)  When dealing with a contour interval of 1,000 m<br/>or less, the proposed task scheduling process can<br/>improve the parallel performance by more than<br/>26% compared with the algorithm without the<br/>task scheduling process.<br/>4. (4)  The presented parallel strategy is not always<br/>effective for contour generation of DEM data in<br/>some cases. It may fail to save parallel CPU<br/>computation tasks when the number of comput-<br/>ing nodes used for parallel processing is large or<br/>the geographical data volume is relatively small.</li></ul><p id="2032377e-b56f-80d4-b02a-d3897953754d" class="">References</p><p id="2032377e-b56f-805e-bebf-c58ae5d0c574" class="">Abrams, M., Crippen, R., &amp; Fujisada, H. (2020). ASTER global<br/>digital elevation model (GDEM) and ASTER global water<br/>body dataset (ASTWBD). <em>Remote Sensing</em>, <em>12</em>(7), 1156.<br/>https://doi.org/10.3390/rs12071156</p><p id="2032377e-b56f-80be-ba36-cd91c2c7e701" class="">ASTER Science Team. (2011). <em>ASTER global digital elevation<br/>model</em>. Version 2. NASA EOSDIS Land Processes DAAC.<br/>https://urs.earthdata.nasa.gov.</p><p id="2032377e-b56f-8089-98ec-fae01758779a" class="">Bresenham, J. E. (1965). Algorithm for computer control of<br/>a digital plotter. <em>IBM Systems Journal</em>, <em>4</em>(1), 25–30. https://<br/>doi.org/10.1147/sj.41.0025</p><p id="2032377e-b56f-80c6-8f01-fa89cb75af94" class="">Carsten, M. (2003). Geometric designing and space planning<br/>using the marching squares and marching cube algorithms.<br/>In F. Titsworth &amp; J. Daigle (Eds.), <em>Proceedings of<br/>International Conference on Geometric Modeling and<br/>Graphics</em>, New Jersey: IEEE. https://doi.org/10.1109/<br/>GMAG.2003.1219671.</p><p id="2032377e-b56f-8096-b6eb-fedf8ccb23e5" class="">Che, S., Boyer, M., Meng, J. Y., Tarjan, D., Sheaffer, J. W., &amp;<br/>Skadron, K. (2008). A performance study of general-purpose<br/>applications on graphics processors using CUDA. <em>Journal of<br/>Parallel and Distributed Computing</em>, <em>68</em>(10), 1370–1380.<br/>https://doi.org/10.1016/j.jpdc.2008.05.014</p><p id="2032377e-b56f-80b7-9fd1-ce585e78b46b" class="">Chen, Z., Shen, L., Zhao, Y. Q., &amp; Yang, C. J. (2010). Parallel<br/>algorithm for real-time contouring from grid DEM on<br/>modern GPUs. <em>Science China Technological Sciences</em>, <em>53<br/></em>(S1), 33–37. https://doi.org/10.1007/s11431-010-3210-6</p><p id="2032377e-b56f-8086-8303-d8aa5ddd87f6" class="">Chester, R. P., Thomas, A. E., &amp; Boyd, H. A. (1968). Automatic<br/>contouring of irregularly spaced data. <em>Geophysics</em>, <em>33</em>(3),<br/>424–430. https://doi.org/10.1190/1.1439940</p><p id="2032377e-b56f-80c7-93e3-e0ddac971a9d" class="">Goodchild, M. F., Guo, H. D., Annoni, A., Bian, L., de Bie, K.,<br/>Campbell, F., Craglia, M., Ehlers, M., van Genderen, J.,<br/>Jackson, D., Lewis, A. J., Pesaresi, M., Remetey-Fulopp,<br/>G., Simpson, R., Skidmore, A., Wang, C., &amp; Woodgate, P.<br/>(2012). Next-generation digital earth. <em>Proceedings of the<br/>National Academy of Sciences of the United States of</em></p><p id="2032377e-b56f-805a-99ba-c3507bc758f1" class=""><em>America</em>, <em>109</em>(28), 11088–11094. https://doi.org/10.1073/</p><p id="2032377e-b56f-80c6-93c8-e1bafe7e4bcf" class="">pnas.1202383109<br/>Guo, M. Q., Huang, Q. Y., Guan, Q. F., Xie, Z., &amp; Wu, L. (2017).</p><p id="2032377e-b56f-80c2-a1a8-f42f03ddfe32" class="">An efficient data organization and scheduling strategy for<br/>accelerating large vector data rendering. <em>Transactions in GIS</em>,<br/><em>21</em>(6), 1217–1236. https://doi.org/10.1111/tgis.12275</p><p id="2032377e-b56f-80a3-97bb-fde526da8501" class="">Hawick, K. A., Coddington, P. D., &amp; James, H. A. (2003).<br/>Distributed frameworks and parallel algorithms for proces-<br/>sing large-scale geographic data. <em>Parallel Computing</em>, <em>29</em>(10),<br/>1297–1333. https://doi.org/10.1016/j.parco.2003.04.001</p><p id="2032377e-b56f-80a9-8ffd-c837bbeb0022" class="">Healey, R. G., Dowers, S., &amp; Minetar, M. (1998). <em>Parallel<br/>processing algorithms for GIS</em>. Taylor &amp; Francis.</p><p id="2032377e-b56f-8079-8020-e48b60dd806b" class="">Hiremath, P. S., &amp; Kodge, B. G. (2010). Generating contour<br/>lines using different elevation data file formats. <em>International<br/>Journal of Computer Science and Applications</em>, <em>3</em>(1), 19–25.<br/>https://arxiv.org/abs/1103.4914</p><p id="2032377e-b56f-80f0-bd95-dd1ec44d6c02" class="">Jacobsen, D. A., &amp; Senocak, I. (2013). Multi-level parallelism<br/>for incompressible flow computations on GPU clusters.<br/><em>Parallel Computing</em>, <em>39</em>(1), 1–20. https://doi.org/10.1016/j.<br/>parco.2012.10.002</p><p id="2032377e-b56f-8074-a55c-e4929f3f3425" class="">Ji, F., &amp; Ma, X. (2011). Using shared memory to accelerate<br/>MapReduce on graphics processing units. In A. Sussman<br/>(Ed), <em>Proceedings of the IEEE International Parallel &amp;<br/>Distributed Processing Symposium</em>, New Jersey: IEEE.<br/>https://doi.org/10.1109/IPDPS.2011.80.</p><p id="2032377e-b56f-8015-bd22-ed1deb49523a" class="">Jiang, L., Tang, G. A., Liu, X. J., Song, X. D., Yang, J. Y., &amp;<br/>Liu, K. (2013). Parallel contributing area calculation with<br/>granularity control on massive grid terrain datasets.<br/><em>Computers &amp; Geosciences</em>, <em>60</em>, 70–80. https://doi.org/10.<br/>1016/j.cageo.2013.07.003</p><p id="2032377e-b56f-80a4-84f6-c277a36ac52a" class="">Jones, C. B. (2014). <em>Geographical information systems and<br/>computer cartography</em>. Routledge.</p><p id="2032377e-b56f-80d0-a7e4-fb1a4b5064ad" class="">Jones, N. L., Kennard, M. J., &amp; Zundel, A. K. (2000). Fast<br/>algorithm for generating sorted contour strings. <em>Computers<br/>&amp; Geosciences</em>, <em>26</em>(7), 831–837. https://doi.org/10.1016/<br/>S0098-3004(00)00009-1</p><p id="2032377e-b56f-80d8-8f91-f4f3cc67f40b" class="">Kolingerová, I., Dolák, M., &amp; Strych, V. (2009). Eliminating<br/>contour line artefacts by using constrained edges.<br/><em>Computers &amp; Geosciences</em>, <em>35</em>(10), 1975–1987. https://<br/>doi.org/10.1016/j.cageo.2008.12.017</p><p id="2032377e-b56f-8036-903a-d7accdb9ee34" class="">Lee, C. M., Ro, W. W., &amp; Gaudiot, J. L. (2014). Boosting<br/>CUDA applications with CPU-GPU hybrid computing.<br/><em>International Journal of Parallel Programming</em>, <em>42</em>(2),<br/>384–404. https://doi.org/10.1007/s10766-013-0252-y</p><p id="2032377e-b56f-8048-9642-ccc2a95c12fe" class="">Liao, S. B., &amp; Bai, Y. (2010). A new grid-cell-based method for<br/>error evaluation of vector-to-raster conversion. <em>Computational<br/>Geosciences</em>, <em>14</em>(4), 539–549. https://doi.org/10.1007/s10596-<br/>009-9169-3</p><p id="2032377e-b56f-80ad-a5c6-d3821238b709" class="">Liu, K., Song, C. Q., Ke, L. H., Jiang, L., Pan, Y. Y., &amp; Ma, R. H.<br/>(2019). Global open-access DEM performances in earth’s<br/>most rugged region high mountain Asia: A multi-level<br/>assessment. <em>Geomorphology</em>, <em>338</em>, 16–26. https://doi.org/<br/>10.1016/j.geomorph.2019.04.012</p><p id="2032377e-b56f-80f7-9aa6-dc1f82de57df" class="">Mei, X. X., &amp; Chu, X. W. (2017). Dissecting GPU memory<br/>hierarchy through microbenchmarking. <em>IEEE Transactions<br/>on Parallel and Distributed Systems</em>, <em>28</em>(1), 72–86. https://<br/>doi.org/10.1109/TPDS.2016.2549523</p><p id="2032377e-b56f-80c8-a256-d5adde354a85" class="">Miao, R. Z. (2004). A new smoothed contour lines generating<br/>algorithm for quadrilateral meshes. <em>Journal of Changchun<br/>Institute of Optics &amp; Fine Mechanics</em>, <em>27</em>(1), 17–18. (In<br/>Chinese). https://doi.org/10.3969/j..1672-9870.2004.01.006</p><p id="2032377e-b56f-804c-a65d-ffd7dafb4bac" class="">Miyatake, T., Matsushima, H., &amp; Ejiri, M. (1997). Contour<br/>representation of binary images using run-type direction<br/>codes. <em>Machine Vision and Applications</em>, <em>9</em>(4), 193–200.<br/>https://doi.org/10.1007/s001380050040</p><p id="2032377e-b56f-803e-a466-e6cd7835e041" class="">MPI Forum. (1994). MPI: a message passing interface standard.<br/>Version 1.0. MPI Forum. https://www.mpi-forum.org.</p><p id="2032377e-b56f-805b-a94d-f636c56046de" class="">Nickerson, B. G., Judd, P. A., &amp; Mayer, L. A. (1999). Data<br/>structures for fast searching of SEGY seismic data.<br/><em>Computers &amp; Geosciences</em>, <em>25</em>(2), 179–190. https://doi.org/<br/>10.1016/S0098-3004(98)00111-3</p><p id="2032377e-b56f-8056-8f9e-c97a560a3c1b" class="">NVIDIA Corporation. (2019). <em>Compute unified device architec-<br/>ture programming guide</em>. Version 10.2. NVIDIA Corporation.<br/>https://docs.nvidia.com/cuda/archive/10.2.</p><p id="2032377e-b56f-804f-ab92-fa9d8dfbf812" class="">Pavlidis, T. (2012). <em>Algorithms for graphics and image proces-<br/>sing</em>. Springer</p><p id="2032377e-b56f-8024-974d-ed789c9e87e5" class="">Peters, R., Ledoux, H., &amp; Meijers, M. (2014). A voronoi-based<br/>approach to generating depth-contours for hydrographic<br/>charts. <em>Marine Geodesy</em>, <em>37</em>(2), 145–166. https://doi.org/10.<br/>1080/01490419.2014.902882</p><p id="2032377e-b56f-807b-806d-e62d64b62c19" class="">Reddy, P. R., Amarnadh, V., &amp; Bhaskar, M. (2012). Evaluation<br/>of stopping criterion in contour tracing algorithms.<br/><em>International Journal of Computer Science &amp; Information<br/>Technology</em>, <em>3</em>(3), 3888–3894. http://www.ijcsit.com/docs/<br/>Volume%203/vol3Issue3/ijcsit2012030310.pdf</p><p id="2032377e-b56f-8014-93d2-cbe4d32a8897" class="">Sanders, J., &amp; Kandrot, E. (2010). <em>CUDA by example: An<br/>introduction to general-purpose GPU programming</em>.<br/>Addison-Wesley Professional.</p><p id="2032377e-b56f-80dd-b87b-ef33c9a9793c" class="">Schoenberg, I. J. (1969). Cardinal interpolation and spline<br/>functions. <em>Journal of Approximation Theory</em>, <em>2</em>(2),<br/>167–206. https://doi.org/10.1016/0021-9045(69)90040-9</p><p id="2032377e-b56f-80fc-8729-d948e66d5451" class="">Schoenberg, I. J., &amp; Sharma, A. (1973). Cardinal inter-<br/>polation and spline functions V. The bsplines for car-<br/>dinal hermite interpolation. <em>Linear Algebra &amp; Its<br/>Applications</em>, <em>7</em>(1), 1–42. https://doi.org/10.1016/0024-<br/>3795(73)90034-7</p><p id="2032377e-b56f-8077-ab7c-fecbb2ef0a51" class="">Sun, G. R., Ma, L., Lu, D. P., Zhao, G. R., &amp; Hao, J. L. (2000).<br/>Investigation on the algorithm of making and filling isoline.<br/><em>Journal of Tianjin University</em>, <em>33</em>(6), 816–818. (In Chinese).<br/>https://doi.org/10.3969/j..0493-2137.2000.06.034</p><p id="2032377e-b56f-8028-802d-eaf853d85ba2" class="">Suresh, S., Cui, R., &amp; Hyoung, J. K. (2012). Scheduling<br/>second-order computational load in master-slave</p><p id="2032377e-b56f-8059-a970-f1bca2bb5423" class="">paradigm. <em>IEEE Transactions on Aerospace and Electronic<br/>Systems</em>, <em>48</em>(1), 780–793. https://doi.org/10.1109/TAES.<br/>2012.6129670</p><p id="2032377e-b56f-80c7-8362-ce7b437e9738" class="">Tan, L. H., Wan, G., Li, F., Chen, X. H., &amp; Du, W. L. (2017).<br/>GPU based contouring method on grid DEM data.<br/><em>Computers &amp; Geosciences</em>, <em>105</em>, 129–138. https://doi.org/<br/>10.1016/j.cageo.2017.05.007</p><p id="2032377e-b56f-8012-ad88-ea0c103aabcb" class="">Tang, W. W. (2013). Parallel construction of large circular<br/>cartograms using graphics processing units. <em>International<br/>Journal of Geographical Information Science</em>, <em>27</em>(11),<br/>2182–2206. https://doi.org/10.1080/13658816.2013.<br/>778413</p><p id="2032377e-b56f-8065-a1aa-fee75b84d4a3" class="">Tate, J. E., &amp; Overbye, T. J. (2008). Contouring for power<br/>systems using graphical processing units. In J. R. Sprague &amp;<br/>H. Ralph (Eds.), <em>Proceedings of the 41st Annual Hawaii<br/>International Conference on System Sciences</em>, IEEE. https://<br/>doi.org/10.1109/HICSS.2008.102.</p><p id="2032377e-b56f-8035-9373-ef57297659d4" class="">Wang, J. C., Qian, C. H., &amp; Rui, Y. K. (2007). A practical method<br/>for contour generation based on raster data. <em>Science of<br/>Surveying &amp; Mapping</em>, <em>32</em>(6), 88–90. (In Chinese). https://doi.<br/>org/10.3771/j..1009-2307.2007.06.031</p><p id="2032377e-b56f-8058-99e4-e3b9b3bc0037" class="">Wang, T. (2010). An algorithm for extracting contour lines<br/>based on interval tree from grid DEM. <em>Geo-spatial<br/>Information Science</em>, <em>11</em>(2), 103–106. (In Chinese). https://<br/>doi.org/10.1007/s11806-008-0029-4</p><p id="2032377e-b56f-80c3-8f24-f091a4aba714" class="">Xie, J. B. (2012). Implementation and performance optimiza-<br/>tion of a parallel contour line generation algorithm.<br/><em>Computers &amp; Geosciences</em>, <em>49</em>, 21–28. https://doi.org/10.<br/>1016/j.cageo.2012.06.011</p><p id="2032377e-b56f-8091-bd50-ee17af5e1d67" class="">Yates, S. R. (1987). CONTUR: A FORTRAN algorithm for<br/>two-dimensional high-quality contouring. <em>Computers &amp;<br/>Geosciences</em>, <em>13</em>(1), 61–76. https://doi.org/10.1016/0098-<br/>3004(87)90024-0</p><p id="2032377e-b56f-80fe-a3e1-e1c960bc8e75" class="">Zhao, J. C., Bai, R. C., Liu, G. W., &amp; Liu, W. (2014). Fast<br/>isolines generation algorithm based on TIN. <em>Computer<br/>Engineering &amp; Applications</em>, <em>50</em>(24), 10–15. (In Chinese).<br/>https://doi.org/10.3778/j..1002-8331.1404-0482</p><p id="2032377e-b56f-8038-92c1-fb706fa045d2" class="">Zhou, C., Chen, Z. J., Pian, Y. Z., Xiao, N. C., &amp; Li, M. C.<br/>(2017). A parallel scheme for large-scale polygon raster-<br/>ization on CUDA-enabled GPUs. <em>Transactions in GIS</em>, <em>21<br/></em>(3), 608–631. https://doi.org/10.1111/tgis.12213</p><p id="2032377e-b56f-8051-b1cf-eea3241a9490" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

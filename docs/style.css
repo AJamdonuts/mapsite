@@ -1,5 +1,58 @@
-
 /* Global styles */
+/*
+================================================================================
+ Comprehensive Style Guide for Mapsite Web Application
+
+This CSS file provides the complete styling for the Mapsite web application, covering global layout, navigation, sidebar, map, popups, legends, layer controls, and responsive design. Below is an overview of what is styled, how, and why:
+
+1. Global Styles:
+  - Resets default browser margins/padding for `body`, `html`, and sets a consistent font family and base font size for readability.
+  - Ensures images, iframes, and videos scale responsively.
+  - Uses `.hidden` class to toggle visibility of elements.
+
+2. Layout & Containers:
+  - `.container`, `.content`, `main`, `header`, `footer` use full width and `box-sizing: border-box` for predictable sizing.
+  - Flexbox is used for header and navigation for alignment and spacing.
+
+3. Header & Navigation:
+  - `#site-header` is fixed at the top for persistent navigation, with a subtle background and border for separation.
+  - Navigation links are styled for clarity, with active states highlighted for user feedback.
+
+4. Main Content & Sidebar:
+  - `#main-container` uses flex layout to position sidebar and map.
+  - `#sidebar` is fixed, scrollable, and visually separated with box-shadow and border, improving usability for layer/data controls.
+  - Responsive adjustments hide sidebar/navigation on small screens for a cleaner mobile experience.
+
+5. Map & Export Panel:
+  - `#map` is absolutely positioned to fill available space below the header.
+  - `#exportPanel` and related buttons are styled for clarity and accessibility, with hover effects for interactivity.
+
+6. Layer Controls:
+  - `.layer-controls` and related elements use fixed positioning, rounded corners, and subtle shadows for a modern UI.
+  - Custom scrollbars and fade effects enhance usability for long lists.
+  - Layer checkboxes and groups are styled for clarity and accessibility, with accent colors for active states.
+
+7. Popups:
+  - Popups for listed buildings and other features are styled for readability, with tables, close buttons, and responsive layouts.
+  - Popups adapt their position and style depending on whether they appear in the sidebar or as overlays.
+
+8. Legends:
+  - `.map-legend` and specific legend classes visually represent map features (e.g., land use, heritage, streetlighting) using colors, patterns, and icons.
+  - Legends are positioned for visibility and adapt to screen size.
+
+9. Search & About Page:
+  - Search bar and about content are styled for clarity, accessibility, and responsive layout.
+
+10. Responsive Design:
+  - Multiple media queries ensure the site is usable and visually appealing on all devices, adjusting font sizes, layout, and visibility as needed.
+
+11. Accessibility & Usability:
+  - Focus states, cursor styles, and transitions are used throughout for better user experience.
+  - Consistent use of spacing, color, and font weights improves readability and navigation.
+
+This styling approach was chosen to create a clean, modern, and highly usable interface for exploring map data, with clear separation of controls, content, and interactive elements. The use of flexbox, fixed positioning, and responsive design ensures the application works well on both desktop and mobile devices. Custom visual elements (legends, popups, layer controls) are designed for clarity and accessibility, supporting a wide range of user needs.
+================================================================================
+*/
 body, html {
   margin: 0;
   padding: 0;
@@ -11,7 +64,33 @@ body, html {
 .hidden {
   display: none;
 }
-
+body {
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+}
+img, iframe, video {
+  max-width: 100%;
+  height: auto;
+}
+.container, .content, main, header, footer {
+  width: 100%;
+  box-sizing: border-box;
+}
+@media (max-width: 600px) {
+  body {
+    font-size: 15px;
+  }
+  h1, h2, h3 {
+    font-size: 1.2em;
+  }
+  nav, .sidebar {
+    display: none;
+  }
+  .main {
+    padding: 8px;
+  }
+}
 
 /* Header and navigation styles */
 #site-header {
@@ -1028,4 +1107,85 @@ body, html {
     .legend-item span {
         font-size: 11px;
     }
+}
+
+/* Sidebar title styles */
+#sidebar-title {
+  margin: 0;
+  padding: 16px 16px 8px 16px;
+  font-size: 1.4em;
+  font-weight: bold;
+  background: #f7f7f7;
+  border-bottom: 1px solid #eee;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* Responsive styles for mobile sidebar and toggle button */
+@media (max-width: 600px) {
+  #sidebar {
+    position: fixed;
+    right: -80vw;
+    top: 0;
+    width: 80vw;
+    height: 100vh;
+    background: #fff;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.15);
+    z-index: 2000;
+    transition: right 0.3s ease;
+    overflow-y: auto;
+    display: block !important;
+  }
+  #sidebar.open {
+    right: 0;
+  }
+  #sidebar-toggle-btn {
+    display: block;
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 2100;
+    background: #0078d7;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 16px;
+    font-size: 18px;
+  }
+  #sidebar-close-btn {
+    position: absolute;
+    top: 58px;
+    right: 10px;
+    z-index: 2101;
+    background-color: #f5f5f5;
+    border: none;
+    padding: 8px 12px;
+    font-weight: bold;
+    border-radius: 4px;
+    font-size: 1em;
+    color: #333;
+    box-shadow: none;
+    cursor: pointer;
+    width: auto;
+    height: auto;
+    display: block;
+    text-align: left;
+  }
+  .main {
+    padding: 8px;
+  }
+}
+
+/* General responsive elements */
+img, iframe, video {
+  max-width: 100%;
+  height: auto;
+}
+.container, .content, main, header, footer {
+  width: 100%;
+  box-sizing: border-box;
+}
+body {
+  font-size: 16px;
 }

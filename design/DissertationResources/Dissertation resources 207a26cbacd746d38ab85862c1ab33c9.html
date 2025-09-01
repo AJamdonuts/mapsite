@@ -1,0 +1,692 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Dissertation resources</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-default { background-color: rgba(84, 72, 49, 0.08); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="207a26cb-acd7-46d3-8ab8-5862c1ab33c9" class="page sans"><header><img class="page-cover-image" src="https://i.pinimg.com/564x/38/0d/b2/380db2980be9410bdfa167b9bdd28757.jpg" style="object-position:center 20.030000000000005%"/><div class="page-header-icon page-header-icon-with-cover"><span class="icon">🎒</span></div><h1 class="page-title">Dissertation resources</h1><p class="page-description"></p></header><div class="page-body"><p id="1f92377e-b56f-8062-96ac-e5b6564de8e0" class="">
+</p><div id="1f92377e-b56f-8080-b3e4-e69600cb1419" class="collection-content"><h4 class="collection-title"></h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><div data-testid="/icons/font_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/font_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/font_gray.svg?mode=light) no-repeat center;background-color:rgba(71, 70, 68, 0.6);fill:rgba(71, 70, 68, 0.6)"></div></span>Paper</th><th><span class="icon property-icon"><div data-testid="/icons/description_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/description_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/description_gray.svg?mode=light) no-repeat center;background-color:rgba(71, 70, 68, 0.6);fill:rgba(71, 70, 68, 0.6)"></div></span>Links</th><th><span class="icon property-icon"><div data-testid="/icons/description_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/description_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/description_gray.svg?mode=light) no-repeat center;background-color:rgba(71, 70, 68, 0.6);fill:rgba(71, 70, 68, 0.6)"></div></span>Property</th></tr></thead><tbody><tr id="1f92377e-b56f-80cf-8596-fd1f297b5299"><td class="cell-title"><a href="Dissertation%20resources%20207a26cbacd746d38ab85862c1ab33c9/Untitled%201f92377eb56f8080b3e4e69600cb1419/A%20model-based%20approach%20to%20convert%20a%20building%20BIM-I%201f92377eb56f80cf8596fd1f297b5299.html">A model-based approach to convert a building BIM-IFC data set model into CityGML00</a></td><td class="cell-|`]c"><a href="https://www.tandfonline.com/doi/epdf/10.1080/14498596.2019.1658650?needAccess=true">https://www.tandfonline.com/doi/epdf/10.1080/14498596.2019.1658650?needAccess=true</a></td><td class="cell-|w}a">/</td></tr><tr id="1f92377e-b56f-8026-bef6-ea16fc0370e0"><td class="cell-title"><a href="Dissertation%20resources%20207a26cbacd746d38ab85862c1ab33c9/Untitled%201f92377eb56f8080b3e4e69600cb1419/An%20augmented%20reality%20study%20for%20public%20participatio%201f92377eb56f8026bef6ea16fc0370e0.html">An augmented reality study for public participation in urban planning</a></td><td class="cell-|`]c"><a href="https://doi.org/10.1080/17489725.2022.2086309">https://doi.org/10.1080/17489725.2022.2086309</a></td><td class="cell-|w}a"></td></tr><tr id="1f92377e-b56f-80eb-a91d-ce1ac6e1d82b"><td class="cell-title"><a href="Dissertation%20resources%20207a26cbacd746d38ab85862c1ab33c9/Untitled%201f92377eb56f8080b3e4e69600cb1419/Optimizing%20Residential%20Construction%20Site%20Selection%201f92377eb56f80eba91dce1ac6e1d82b.html">Optimizing Residential Construction Site Selection in Mountainous Regions Using Geospatial Data and eXplainable AI
+
+	
+</a></td><td class="cell-|`]c"><strong><a href="https://doi.org/10.3390/su16104235">https://doi.org/10.3390/su16104235</a></strong></td><td class="cell-|w}a"></td></tr><tr id="1f92377e-b56f-80b1-83cc-fb1ddd2b3ae4"><td class="cell-title"><a href="Dissertation%20resources%20207a26cbacd746d38ab85862c1ab33c9/Untitled%201f92377eb56f8080b3e4e69600cb1419/Selection%20of%20suitable%20parking%20lot%20sites%20in%20megacit%201f92377eb56f80b183ccfb1ddd2b3ae4.html">Selection of suitable parking lot sites in megacities: A case study for four districts of Istanbul</a></td><td class="cell-|`]c"><a href="https://doi.org/10.1016/j.landusepol.2021.105731">https://doi.org/10.1016/j.landusepol.2021.105731</a></td><td class="cell-|w}a"></td></tr><tr id="2032377e-b56f-8039-b65d-fd5762448401"><td class="cell-title"><a href="Dissertation%20resources%20207a26cbacd746d38ab85862c1ab33c9/Untitled%201f92377eb56f8080b3e4e69600cb1419/Extending%20CityGML%20for%20IFC-sourced%203D%20city%20models%202032377eb56f8039b65dfd5762448401.html">Extending CityGML for IFC-sourced 3D city models</a></td><td class="cell-|`]c"><a href="https://doi.org/10.1016/j.autcon.2020.103440">https://doi.org/10.1016/j.autcon.2020.103440</a></td><td class="cell-|w}a"></td></tr><tr id="2032377e-b56f-8001-81a5-e7462303f972"><td class="cell-title"><a href="Dissertation%20resources%20207a26cbacd746d38ab85862c1ab33c9/Untitled%201f92377eb56f8080b3e4e69600cb1419/Local%20government%20revenue%20mobilisation%20assessing%20pr%202032377eb56f800181a5e7462303f972.html">Local government revenue mobilisation: assessing property rate management potential of peri-urban districts using geospatial technologies</a></td><td class="cell-|`]c"><a href="https://doi.org/10.1080/00396265.2024.2434781">https://doi.org/10.1080/00396265.2024.2434781</a></td><td class="cell-|w}a"></td></tr><tr id="2032377e-b56f-8053-8afc-e36c2cdc9881"><td class="cell-title"><a href="Dissertation%20resources%20207a26cbacd746d38ab85862c1ab33c9/Untitled%201f92377eb56f8080b3e4e69600cb1419/A%20systematic%20parallel%20strategy%20for%20generating%20cont%202032377eb56f80538afce36c2cdc9881.html">A systematic parallel strategy for generating
+contours from large-scale DEM data using
+collaborative CPUs and GPUs</a></td><td class="cell-|`]c"><a href="https://doi.org/10.1080/15230406.2020.1854862">https://doi.org/10.1080/15230406.2020.1854862</a></td><td class="cell-|w}a"></td></tr><tr id="2052377e-b56f-8037-a83b-eb04d0985fdb"><td class="cell-title"><a href="Dissertation%20resources%20207a26cbacd746d38ab85862c1ab33c9/Untitled%201f92377eb56f8080b3e4e69600cb1419/4D%20Panoptic%20LiDAR%20Segmentation%202052377eb56f8037a83beb04d0985fdb.html">4D Panoptic LiDAR Segmentation</a></td><td class="cell-|`]c"><a href="https://arxiv.org/pdf/2102.12472">https://arxiv.org/pdf/2102.12472</a></td><td class="cell-|w}a"></td></tr><tr id="2252377e-b56f-80bd-a229-e99cbc0ecb2c"><td class="cell-title"><a href="Dissertation%20resources%20207a26cbacd746d38ab85862c1ab33c9/Untitled%201f92377eb56f8080b3e4e69600cb1419/RouteLAND%20An%20Integrated%20Method%20and%20a%20Geoprocessing%202252377eb56f80bda229e99cbc0ecb2c.html">RouteLAND: An Integrated Method and a Geoprocessing Tool for Characterizing the Dynamic Visual Landscape Along Highways</a></td><td class="cell-|`]c"><strong><a href="https://doi.org/10.3390/ijgi14050187">https://doi.org/10.3390/ijgi14050187</a></strong></td><td class="cell-|w}a"></td></tr><tr id="2262377e-b56f-801f-874b-ebe9c7b473f9"><td class="cell-title"><a href="Dissertation%20resources%20207a26cbacd746d38ab85862c1ab33c9/Untitled%201f92377eb56f8080b3e4e69600cb1419/l%202262377eb56f801f874bebe9c7b473f9.html">l</a></td><td class="cell-|`]c"></td><td class="cell-|w}a"></td></tr><tr id="2282377e-b56f-8065-b7bd-ea7da4fef259"><td class="cell-title"><a href="Dissertation%20resources%20207a26cbacd746d38ab85862c1ab33c9/Untitled%201f92377eb56f8080b3e4e69600cb1419/Communication%20Based%20Web%20Mapping%20A%20New%20Approach%20for%202282377eb56f8065b7bdea7da4fef259.html">Communication Based Web Mapping: A New Approach for Acquisition of Local Knowledge for Urban Planning</a></td><td class="cell-|`]c"><a href="https://doi.org/10.1145/1457199.1457229">https://doi.org/10.1145/1457199.14572</a></td><td class="cell-|w}a"></td></tr><tr id="2282377e-b56f-8057-a41d-ec345af6bebc"><td class="cell-title"><a href="Dissertation%20resources%20207a26cbacd746d38ab85862c1ab33c9/Untitled%201f92377eb56f8080b3e4e69600cb1419/USABILITY%20EVALUATION%20OF%20PUBLIC%20WEB%20MAPPING%20SITES%202282377eb56f8057a41dec345af6bebc.html">USABILITY EVALUATION OF PUBLIC WEB MAPPING SITES</a></td><td class="cell-|`]c"><a href="https://doi.org/10.5194/isprsarchives-XL-4-285-2014">https://doi.org/10.5194/isprsarchives-XL-4-285-2014</a></td><td class="cell-|w}a"></td></tr><tr id="2292377e-b56f-809e-bc7a-e871171bedcb"><td class="cell-title"><a href="Dissertation%20resources%20207a26cbacd746d38ab85862c1ab33c9/Untitled%201f92377eb56f8080b3e4e69600cb1419/WEB-BASED%20GIS%20FOR%20PUBLIC%20PARTICIPATION%20IN%20URBAN%20PL%202292377eb56f809ebc7ae871171bedcb.html">WEB-BASED GIS FOR PUBLIC PARTICIPATION IN URBAN PLANNING AND MANAGEMENT Case Study: Klang Valley Region</a></td><td class="cell-|`]c"><a href="https://d1wqtxts1xzle7.cloudfront.net/32693649/WEB-BASED_GIS_FOR_PUBLIC%282001%29Ahris_Yaakup.pdf20140106-13675-ckduff-libre-libre.pdf?1389036665=&amp;response-content-disposition=inline%3B+filename%3DWEB_BASED_GIS_FOR_PUBLIC_PARTICIPATION_I.pdf&amp;Expires=1751905092&amp;Signature=KiQq-z4yTeHD~0LJVFUkZy~0QC853uiC7n2Tv2-6yPTl6Y5pUQ5u7-CtwkfP5R6JP1TnEMi3wF7GQNMIVmIzFjOVvxuZEokX4CSIyqMmOq3-bC9udimJExYGsnllLsZbHZ7Opf1kfW3eEVtWhzwKH26KhtkHTLUB56nHNcX5GqrnRxkRYrRIOu1DGRBcCcr52xsYX19K8UXFpFFthE39vW8jQ8l-tbTcJNSba0nrV3ypSag-0HOyme7Ysghr9NPM9QtFrkV7HPv8DUH9j~g3nz5upZRO-zLu7NPoKNvrUY0weXtbl16aXLR6yQYgjbOhjG-mXrXVQbuBg1JrtoY1DA__&amp;Key-Pair-Id=APKAJLOHF5GGSLRBV4ZA">https://d1wqtxts1xzle7.cloudfront.net/32693649/WEB-BASED_GIS_FOR_PUBLIC(2001)Ahris_Yaakup.pdf20140106-13675-ckduff-libre-libre.pdf?1389036665=&amp;response-content-disposition=inline%3B+filename%3DWEB_BASED_GIS_FOR_PUBLIC_PARTICIPATION_I.pdf&amp;Expires=1751905092&amp;Signature=KiQq-z4yTeHD~0LJVFUkZy~0QC853uiC7n2Tv2-6yPTl6Y5pUQ5u7-CtwkfP5R6JP1TnEMi3wF7GQNMIVmIzFjOVvxuZEokX4CSIyqMmOq3-bC9udimJExYGsnllLsZbHZ7Opf1kfW3eEVtWhzwKH26KhtkHTLUB56nHNcX5GqrnRxkRYrRIOu1DGRBcCcr52xsYX19K8UXFpFFthE39vW8jQ8l-tbTcJNSba0nrV3ypSag-0HOyme7Ysghr9NPM9QtFrkV7HPv8DUH9j~g3nz5upZRO-zLu7NPoKNvrUY0weXtbl16aXLR6yQYgjbOhjG-mXrXVQbuBg1JrtoY1DA__&amp;Key-Pair-Id=APKAJLOHF5GGSLRBV4ZA</a></td><td class="cell-|w}a"></td></tr><tr id="2292377e-b56f-8044-afd8-e11ac3a8a34a"><td class="cell-title"><a href="Dissertation%20resources%20207a26cbacd746d38ab85862c1ab33c9/Untitled%201f92377eb56f8080b3e4e69600cb1419/An%20assessment%20of%20Public%20Participation%20GIS%20and%20Web%20%202292377eb56f8044afd8e11ac3a8a34a.html">An assessment of Public Participation GIS and Web 2.0 technologies in urban planning practice in Canela, Brazil</a></td><td class="cell-|`]c"><a href="https://doi.org/10.1016/j.cities.2009.11.008">https://doi.org/10.1016/j.cities.2009.11.008</a></td><td class="cell-|w}a"></td></tr><tr id="2292377e-b56f-80a3-83cb-fc4eac44e974"><td class="cell-title"><a href="Dissertation%20resources%20207a26cbacd746d38ab85862c1ab33c9/Untitled%201f92377eb56f8080b3e4e69600cb1419/Multidimensional%20Web%20GIS%20Approach%20for%20Citizen%20Part%202292377eb56f80a383cbfc4eac44e974.html">Multidimensional Web GIS Approach for Citizen
+Participation on Urban Evolution</a></td><td class="cell-|`]c"><strong><a href="https://doi.org/10.3390/ijgi8060253">https://doi.org/10.3390/ijgi8060253</a></strong></td><td class="cell-|w}a"></td></tr><tr id="22a2377e-b56f-80ea-95ed-d005150e5f4c"><td class="cell-title"><a href="Dissertation%20resources%20207a26cbacd746d38ab85862c1ab33c9/Untitled%201f92377eb56f8080b3e4e69600cb1419/The%20Application%20of%20Urban%20Design%20Principles%20to%20Navi%2022a2377eb56f80ea95edd005150e5f4c.html">The Application of Urban Design Principles to Navigation of Information Spaces</a></td><td class="cell-|`]c"><a href="https://link.springer.com/chapter/10.1007/978-1-4471-3754-2_7">https://link.springer.com/chapter/10.1007/978-1-4471-3754-2_7</a></td><td class="cell-|w}a"></td></tr><tr id="22a2377e-b56f-80b8-8b24-ffa5f46a5968"><td class="cell-title"><a href="Dissertation%20resources%20207a26cbacd746d38ab85862c1ab33c9/Untitled%201f92377eb56f8080b3e4e69600cb1419/Geoweb%202%200%20for%20Participatory%20Urban%20Design%20Affordan%2022a2377eb56f80b88b24ffa5f46a5968.html">Geoweb 2.0 for Participatory Urban Design: Affordances and Critical Success Factors</a></td><td class="cell-|`]c"><a href="https://journals.sagepub.com/doi/epdf/10.1260/1478-0771.12.3.283">https://journals.sagepub.com/doi/epdf/10.1260/1478-0771.12.3.283</a></td><td class="cell-|w}a"></td></tr><tr id="2352377e-b56f-80fc-8246-c6e7d074cb1a"><td class="cell-title"><a href="Dissertation%20resources%20207a26cbacd746d38ab85862c1ab33c9/Untitled%201f92377eb56f8080b3e4e69600cb1419/Information%20Technology%20for%20Creating%20Adaptive%20Geoin%202352377eb56f80fc8246c6e7d074cb1a.html">Information Technology for Creating Adaptive Geointerfaces Based on Spatial Data</a></td><td class="cell-|`]c"><a href="https://www.google.co.uk/books/edition/Digital_and_Information_Technologies_in/boRmEQAAQBAJ?hl=en&amp;gbpv=1&amp;pg=PA27&amp;printsec=frontcover">https://www.google.co.uk/books/edition/Digital_and_Information_Technologies_in/boRmEQAAQBAJ?hl=en&amp;gbpv=1&amp;pg=PA27&amp;printsec=frontcover</a></td><td class="cell-|w}a"></td></tr><tr id="2352377e-b56f-8039-b0b8-f2766a67f49c"><td class="cell-title"><a href="Dissertation%20resources%20207a26cbacd746d38ab85862c1ab33c9/Untitled%201f92377eb56f8080b3e4e69600cb1419/b%202352377eb56f8039b0b8f2766a67f49c.html">b</a></td><td class="cell-|`]c"></td><td class="cell-|w}a"></td></tr><tr id="2362377e-b56f-80e6-aeeb-c3e73b651824"><td class="cell-title"><a href="Dissertation%20resources%20207a26cbacd746d38ab85862c1ab33c9/Untitled%201f92377eb56f8080b3e4e69600cb1419/What%20is%20happening%20in%20the%20city%20A%20case%20study%20for%20use%202362377eb56f80e6aeebc3e73b651824.html">What is happening in the city? A case study for user-centred geovisualisation design</a></td><td class="cell-|`]c"> <a href="https://doi.org/10.1080/17489725.2019.1630680">https://doi.org/10.1080/17489725.2019.1630680</a></td><td class="cell-|w}a"></td></tr><tr id="23c2377e-b56f-8075-bbbe-d45493985340"><td class="cell-title"><a href="Dissertation%20resources%20207a26cbacd746d38ab85862c1ab33c9/Untitled%201f92377eb56f8080b3e4e69600cb1419/GEOVISUALIZATION%20OF%20WOODY%20PLANT%20SPECIES%20DIVERSITY%20%2023c2377eb56f8075bbbed45493985340.html">GEOVISUALIZATION OF WOODY PLANT SPECIES DIVERSITY DEPLETION IN
+RESPONSE TO LAND USE LAND COVER CHANGES IN ABIA STATE,
+SOUTHEASTERN NIGERIA</a></td><td class="cell-|`]c"><a href="https://www.researchgate.net/profile/Uchenna-Okafor-3/publication/389419233_Geovisualization_of_Woody_Plant_Species_Diversity_Depletion_in_Response_to_Land_Use_Land_Cover_Changes_in_Abia_State_Southeastern_Nigeria/links/67c1ce268311ce680c7865d9/Geovisualization-of-Woody-Plant-Species-Diversity-Depletion-in-Response-to-Land-Use-Land-Cover-Changes-in-Abia-State-Southeastern-Nigeria.pdf">https://www.researchgate.net/profile/Uchenna-Okafor-3/publication/389419233_Geovisualization_of_Woody_Plant_Species_Diversity_Depletion_in_Response_to_Land_Use_Land_Cover_Changes_in_Abia_State_Southeastern_Nigeria/links/67c1ce268311ce680c7865d9/Geovisualization-of-Woody-Plant-Species-Diversity-Depletion-in-Response-to-Land-Use-Land-Cover-Changes-in-Abia-State-Southeastern-Nigeria.pdf</a></td><td class="cell-|w}a"></td></tr><tr id="23c2377e-b56f-80ac-b783-c7fa9338d9b7"><td class="cell-title"><a href="Dissertation%20resources%20207a26cbacd746d38ab85862c1ab33c9/Untitled%201f92377eb56f8080b3e4e69600cb1419/State%E2%80%91of%E2%80%91the%E2%80%91Art%20Status%20of%20Google%20Earth%20Engine%20(GE%2023c2377eb56f80acb783c7fa9338d9b7.html">State‑of‑the‑Art Status of Google Earth Engine (GEE) Application
+in Land and Water Resource Management: A Scientometric Analysis</a></td><td class="cell-|`]c"><a href="https://doi.org/10.1007/s41651-025-00218-3">https://doi.org/10.1007/s41651-025-00218-3</a></td><td class="cell-|w}a"></td></tr><tr id="23d2377e-b56f-802c-adb1-da3d97f9ede2"><td class="cell-title"><a href="Dissertation%20resources%20207a26cbacd746d38ab85862c1ab33c9/Untitled%201f92377eb56f8080b3e4e69600cb1419/Pragmatics%20of%20visual%20variables%20in%20statistical-them%2023d2377eb56f802cadb1da3d97f9ede2.html">Pragmatics of visual variables in statistical-thematic andimmersive geovisualizations</a></td><td class="cell-|`]c"><a href="https://doi.org/10.1080/23729333.2025.2471683">https://doi.org/10.1080/23729333.2025.2471683</a></td><td class="cell-|w}a"></td></tr><tr id="23d2377e-b56f-80c1-bbdd-eb6ea072c885"><td class="cell-title"><a href="Dissertation%20resources%20207a26cbacd746d38ab85862c1ab33c9/Untitled%201f92377eb56f8080b3e4e69600cb1419/Variable%20Mapper%20Developing,%20Implementing,%20and%20Eval%2023d2377eb56f80c1bbddeb6ea072c885.html">Variable Mapper: Developing, Implementing, and Evaluating an Online Tool for Multidimensional Spatial Data Visualization</a></td><td class="cell-|`]c"><a href="https://doi.org/10.1007/s41651-025-00219-2">https://doi.org/10.1007/s41651-025-00219-2</a></td><td class="cell-|w}a"></td></tr><tr id="23e2377e-b56f-8068-bedc-f65e927c0775"><td class="cell-title"><a href="Dissertation%20resources%20207a26cbacd746d38ab85862c1ab33c9/Untitled%201f92377eb56f8080b3e4e69600cb1419/Analyzing%20the%20Joint%20Influence%20of%20Urban%20Facilities%20%2023e2377eb56f8068bedcf65e927c0775.html">Analyzing the Joint Influence of Urban Facilities and Street Perception Characteristics on Street Robbery</a></td><td class="cell-|`]c"><a href="https://doi.org/10.1007/s41651-025-00222-7">https://doi.org/10.1007/s41651-025-00222-7</a></td><td class="cell-|w}a"></td></tr></tbody></table><br/><br/></div><figure id="2092377e-b56f-808f-8afa-ff43fd90c605" class="link-to-page"><a href="Dissertation%20resources%20207a26cbacd746d38ab85862c1ab33c9/OpenStreetMap%202092377eb56f808f8afaff43fd90c605.html">OpenStreetMap</a></figure><figure id="2092377e-b56f-8046-a3e8-f1beadbfb0df" class="link-to-page"><a href="Dissertation%20resources%20207a26cbacd746d38ab85862c1ab33c9/Data%20Needed%202092377eb56f8046a3e8f1beadbfb0df.html">Data Needed</a></figure><p id="20f2377e-b56f-80ef-848c-e792e0efbed4" class="">
+</p><p id="20f2377e-b56f-80a7-bb47-c47610312c61" class="">Meeting Preps</p><figure id="20f2377e-b56f-805d-b202-dd58f7f2eda6" class="link-to-page"><a href="Dissertation%20resources%20207a26cbacd746d38ab85862c1ab33c9/Meeting%2012%2006%2020f2377eb56f805db202dd58f7f2eda6.html">Meeting 12/06</a></figure><figure id="21d2377e-b56f-80b3-a9b4-d4d22304f019" class="link-to-page"><a href="Dissertation%20resources%20207a26cbacd746d38ab85862c1ab33c9/Meeting%2025%2006%2021d2377eb56f80b3a9b4d4d22304f019.html">Meeting 25/06</a></figure><figure id="2222377e-b56f-800c-9bba-c61ae799b47b" class="link-to-page"><a href="Dissertation%20resources%20207a26cbacd746d38ab85862c1ab33c9/Dissertation%20Plan%202222377eb56f800c9bbac61ae799b47b.html">Dissertation Plan</a></figure><figure id="2222377e-b56f-803f-affe-c77b5587552f" class="link-to-page"><a href="Dissertation%20resources%20207a26cbacd746d38ab85862c1ab33c9/Dissertation%20Blurb%202222377eb56f803faffec77b5587552f.html">Dissertation Blurb</a></figure><figure id="22b2377e-b56f-80f9-a665-d4812158a651" class="link-to-page"><a href="Dissertation%20resources%20207a26cbacd746d38ab85862c1ab33c9/Planning%20Charts%2022b2377eb56f80f9a665d4812158a651.html">Planning Charts</a></figure><figure id="23f2377e-b56f-802f-b109-cb6a9b219a35" class="link-to-page"><a href="Dissertation%20resources%20207a26cbacd746d38ab85862c1ab33c9/Meeting%2030%2007%202025%2023f2377eb56f802fb109cb6a9b219a35.html">Meeting 30/07/2025</a></figure><figure id="2492377e-b56f-8012-84f5-d52b5433f1cb" class="link-to-page"><a href="Dissertation%20resources%20207a26cbacd746d38ab85862c1ab33c9/Meeting%20Notes%202492377eb56f801284f5d52b5433f1cb.html">Meeting Notes</a></figure><p id="2502377e-b56f-8001-a435-c030a0631989" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

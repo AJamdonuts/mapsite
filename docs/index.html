@@ -21,7 +21,7 @@ NOTES:
 <head>
   <meta charset="utf-8" />
   <title>InsightMap</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- MapLibre -->
   <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet" />
@@ -34,9 +34,9 @@ NOTES:
   <script src="https://unpkg.com/@turf/turf@6.5.0/turf.min.js"></script>
 
   <link rel="stylesheet" href="style.css">
-</head>
 
 <body>
+  <button id="sidebar-toggle-btn" style="display:none;">☰ Dashboard</button>
   <header id="site-header" style="display: flex; align-items: center; gap: 16px;">
   <h1 id="site-title">InsightMap</h1>
   <nav>
@@ -147,7 +147,8 @@ NOTES:
 <div id="main-container">
   <div id="map"></div>
   <div id="sidebar">
-  <h2>Viewport Dashboard</h2>
+  <button id="sidebar-close-btn" style="display:none;">×</button>
+  <h2 id="sidebar-title">Viewport Dashboard</h2>
   <div id="sidebar-messages">
     <p id="sidebar-feature-message">Select a feature on the map to view details.</p>
     <div id="landuse-chart-message" style="display:none;">No land use data in view.</div>
@@ -302,6 +303,32 @@ function positionLayerControls() {
 }
 window.addEventListener('resize', positionLayerControls);
 window.addEventListener('DOMContentLoaded', positionLayerControls);
+</script>
+<script>
+// Mobile sidebar toggle
+function updateSidebarToggleVisibility() {
+  var btn = document.getElementById('sidebar-toggle-btn');
+  var closeBtn = document.getElementById('sidebar-close-btn');
+  if (window.innerWidth <= 600) {
+    btn.style.display = 'block';
+    closeBtn.style.display = 'block';
+  } else {
+    btn.style.display = 'none';
+    closeBtn.style.display = 'none';
+    document.getElementById('sidebar').classList.remove('open');
+  }
+}
+window.addEventListener('resize', updateSidebarToggleVisibility);
+window.addEventListener('DOMContentLoaded', updateSidebarToggleVisibility);
+document.getElementById('sidebar-toggle-btn').addEventListener('click', function() {
+  var sidebar = document.getElementById('sidebar');
+  sidebar.classList.toggle('open');
+});
+document.getElementById('sidebar-close-btn').addEventListener('click', function() {
+  var sidebar = document.getElementById('sidebar');
+  sidebar.classList.remove('open');
+});
+</script>
 </script>
 
 </body>

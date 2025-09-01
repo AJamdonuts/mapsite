@@ -1,0 +1,680 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Extending CityGML for IFC-sourced 3D city models</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-default { background-color: rgba(84, 72, 49, 0.08); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2032377e-b56f-8039-b65d-fd5762448401" class="page sans"><header><h1 class="page-title"><strong>Extending CityGML for IFC-sourced 3D city models</strong></h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-text"><th><span class="icon property-icon"><div data-testid="/icons/description_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/description_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/description_gray.svg?mode=light) no-repeat center;background-color:rgba(71, 70, 68, 0.6);fill:rgba(71, 70, 68, 0.6)"></div></span>Links</th><td><a href="https://doi.org/10.1016/j.autcon.2020.103440">https://doi.org/10.1016/j.autcon.2020.103440</a></td></tr></tbody></table></header><div class="page-body"><ul id="2032377e-b56f-80e9-85be-e29c97a6ceb7" class="bulleted-list"><li style="list-style-type:disc">For extensibility, CityGML provides the Application Domain Extension (ADE), a mechanism to extend the standard data model, which among other advantages provides means to absorb rich information from IFC.</li></ul><ul id="2032377e-b56f-804f-9a0d-e89e04a43207" class="bulleted-list"><li style="list-style-type:disc">Bridging these two disparate worlds does not only involve considering different data formats, but also different mindsets, use cases, stakeholders, and dealing with different lineages of data, translating the architectural view of the world to the geospatial [23,24]. Besides ‘slimming down’ an IFC model from the spatio-semantic perspective (i.e. generalisation to obtain lightweight 3D city models facilitating use cases at the urban scale), the process of the conversion also involves adapting both the semantics and geometry to a different structure (e.g. translating the geometric representations and semantic classes). While there may be alternative approaches to BIM-GIS interoperability, such as keeping separate files with establishing links between them or having a joint database, the generally accepted technique is the conversion from one format to another, predominantly in the geospatial direction. Separate CityGML and IFC files would add a layer of complexity, as one would need to develop specific translation programs for specific applications.</li></ul><ul id="2032377e-b56f-8067-8828-c6dc9ce6a90c" class="bulleted-list"><li style="list-style-type:disc">CityGML provides a generic domain-independent data model for the spatio-semantic modelling of topographic features in 3D in the application area of cities and landscapes. At the expense of keeping things simple, it might be considered limited and might not suit a large number of use cases and situations. For this reason, the CityGML data model is often extended using the ADE mechanism. An ADE enables augmenting the CityGML data model, extending it beyond its scope benefiting use cases and particular scenarios. A particular ADE can be specified with an XML schema definition file (XSD) and/or with <a href="https://www.sciencedirect.com/topics/engineering/unified-modeling-language">Unified Modelling Language</a> (UML) [<a href="https://www.sciencedirect.com/science/article/pii/S0926580520310207#bb0185">[37]</a>, <a href="https://www.sciencedirect.com/science/article/pii/S0926580520310207#bb0190">[38]</a>, <a href="https://www.sciencedirect.com/science/article/pii/S0926580520310207#bb0195">[39]</a>]. </li></ul><ul id="2032377e-b56f-8011-84be-d7e4cfc15019" class="bulleted-list"><li style="list-style-type:disc">Many ADEs have been developed around the world for a variety of purposes [<a href="https://www.sciencedirect.com/science/article/pii/S0926580520310207#bb0185">37</a>]. For example, these include ADEs developed for a taxation use case [<a href="https://www.sciencedirect.com/science/article/pii/S0926580520310207#bb0205">41</a>], enabling metadata according to international standards [<a href="https://www.sciencedirect.com/science/article/pii/S0926580520310207#bb0210">42</a>], adapting the data model to store ancient Chinese roofs [<a href="https://www.sciencedirect.com/science/article/pii/S0926580520310207#bb0215">43</a>], extending CityGML for a national context developing a national 3D standard [<a href="https://www.sciencedirect.com/science/article/pii/S0926580520310207#bb0220">44</a>], improving the storage of terrain in CityGML [<a href="https://www.sciencedirect.com/science/article/pii/S0926580520310207#bb0225">45</a>], and facilitating the integration with other data models [<a href="https://www.sciencedirect.com/science/article/pii/S0926580520310207#bb0230">46</a>]. These few examples indicate the diversity of purposes ADEs are developed for.</li></ul><ul id="2032377e-b56f-80b8-8549-e859b7f2fa6c" class="bulleted-list"><li style="list-style-type:disc">Some disadvantages of the ADE mechanism are that in each domain there may be a specialised data format that is more suitable for each respective purpose and that most of the existing software does not support working with ADE-enabled datasets out-of-the-box. Those would have to take into account either a particular extended schema, which is not always an easy task [<a href="https://www.sciencedirect.com/science/article/pii/S0926580520310207#bb0235">47</a>], or the extension mechanisms in general, which is even more difficult. </li></ul><ul id="2032377e-b56f-8072-9c83-e3c451206367" class="bulleted-list"><li style="list-style-type:disc">The work of Kutzner et al. [<a href="https://www.sciencedirect.com/science/article/pii/S0926580520310207#bb0280">56</a>] focuses on extending CityGML to accommodate utility networks, developing the Utility Network ADE. In their early work [<a href="https://www.sciencedirect.com/science/article/pii/S0926580520310207#bb0155">31</a>], researchers investigated sourcing relevant features from BIM. A relevant conclusion is that a direct 1:1 mapping between IFC and Utility Network ADE is feasible in most cases. Another ADE not focused on buildings is the PANTURA ADE [<a href="https://www.sciencedirect.com/science/article/pii/S0926580520310207#bb0170">34</a>], concentrating on bridges and with a particular use case in mind (analysis of the disturbance induced by bridge construction). </li></ul><ul id="2032377e-b56f-8049-bb12-fda4e709acc9" class="bulleted-list"><li style="list-style-type:disc">Involves developing independent ADE data models for each use case. Therefore, each of the developed ADEs will have their data model structure with customised and new data packages, classes, and attributes. Thus, they will inevitably have an overlap, since multiple use cases may require the same subset of information. Most ADEs nowadays belong to this category as they are developed to suit a particular use case and domain, e.g. EnergyADE [<a href="https://www.sciencedirect.com/science/article/pii/S0926580520310207#bb0290">58</a>] and Cultural Heritage ADE [<a href="https://www.sciencedirect.com/science/article/pii/S0926580520310207#bb0295">59</a>].</li></ul><ul id="2032377e-b56f-8016-a4b6-e20d654946d6" class="bulleted-list"><li style="list-style-type:disc">A single ADE data model accommodating the data requirements for all use cases into a single structure. There are ADEs catering to multiple use cases, such as Dynamizer ADE [<a href="https://www.sciencedirect.com/science/article/pii/S0926580520310207#bb0300">60</a>], and they are largely found in the domain of national geographic information standards (e.g. [<a href="https://www.sciencedirect.com/science/article/pii/S0926580520310207#bb0220">44</a>,<a href="https://www.sciencedirect.com/science/article/pii/S0926580520310207#bb0305">61</a>]). </li></ul><ul id="2032377e-b56f-80ce-88b9-d652149827eb" class="bulleted-list"><li style="list-style-type:disc">An ADE data model with a shared core structure to which there are attached additional ADEs, i.e. new data packages or classes that are representative for each of the use cases (e.g. new data package with new classes/attribution for use case A, new data package with new classes/attribution for use case B and so on). This approach is in a way related to the cross-domain building models discussion by Knoth et al. [<a href="https://www.sciencedirect.com/science/article/pii/S0926580520310207#bb0310">62</a>], and it is akin to developing ADEs extending existing ADEs [<a href="https://www.sciencedirect.com/science/article/pii/S0926580520310207#bb0315">63</a>,<a href="https://www.sciencedirect.com/science/article/pii/S0926580520310207#bb0320">64</a>]. </li></ul><ul id="2032377e-b56f-8057-a514-e5701ca98134" class="bulleted-list"><li style="list-style-type:disc">Energy analyses are a topical subject in 3D GIS [<a href="https://www.sciencedirect.com/science/article/pii/S0926580520310207#bb0355">[71]</a>, <a href="https://www.sciencedirect.com/science/article/pii/S0926580520310207#bb0360">[72]</a>, <a href="https://www.sciencedirect.com/science/article/pii/S0926580520310207#bb0365">[73]</a>, <a href="https://www.sciencedirect.com/science/article/pii/S0926580520310207#bb0370">[74]</a>], for example — estimating the energy demand for heating buildings and analysing energy-efficient refurbishment of buildings on a district level. Researching cooling behaviour of households is a particularly important topic in research in the city-state [<a href="https://www.sciencedirect.com/science/article/pii/S0926580520310207#bb0375">75</a>].</li></ul><ul id="2032377e-b56f-8060-8bfe-f0363904d468" class="bulleted-list"><li style="list-style-type:disc">This is not far from a real-world scenario, as CityGML is conceived as an exchange format, and it is not always intended to be used directly in a software. </li></ul><ul id="2032377e-b56f-8040-b4d1-f6e6fe149c6c" class="bulleted-list"><li style="list-style-type:disc">First, the process of generating a dataset according to the ADE is inhibited by the availability of features in real-world IFC datasets. Conceptually the vast majority of the information required for this ADE and the use cases can be sourced from IFC. However, as it is the case with CityGML, IFC datasets in practice are not always rich with semantics, possibly leaving some required features unpopulated in practice. Second, there might be a misclassification in the semantics (e.g. it is not always stored properly, preventing to take advantage of it), and different conventions on the spatio-semantic aspects may result in different interpretations during the production of the IFC-sourced CityGML datasets [36], which is also an issue on the geospatial end [[99], [100], [101]]. Third, many features cannot be mapped 1:1 from IFC. Some features should be acquired either manually or require substantial processing. For example, the number of storeys above ground of a building and its total height including basement: as straightforward as these appear to be, they are not explicitly available in the IFC model, and they might not always be trivial to compute, as IFC geometry can be complex to work with [102]. The building height is also subject to different interpretations [103,104]. Therefore the availability of different features is highly dependent on the workflow/implementation. On the other hand, while the disadvantage of some of these attributes is that processing is required, after implementing such rules the availability of such features is virtually always warranted (e.g. it is always possible to calculate the floor area of a room, no additional semantic information is needed in the input IFC dataset).</li></ul><ul id="2032377e-b56f-80f4-af04-d43068dc9395" class="bulleted-list"><li style="list-style-type:disc">There are other use cases or applications that could be of interest in this particular geographic context to adapt the ADE to, such as outdoor thermal comfort [105], real estate valuation [70], mitigating noise [106], conforming to local standards assessing building performance [107], and aligning to 3D cadastre developments in Singapore [108]. </li></ul><p id="2032377e-b56f-80d7-904f-e3e4beded64d" class="">References</p><p id="2032377e-b56f-80af-a4f0-ed382bc72046" class="">1. [1]  X.Liu,X.Wang,G.Wright,J.Cheng,X.Li,R.Liu,Astate-of-the-artreviewonthe<br/>integration of building information modeling (BIM) and geographic information<br/>system (GIS), ISPRS Int. J. Geo Inf. 6 (2) (2017) 53, https://doi.org/10.3390/<br/>ijgi6020053.<br/><br/>2. [2]  F.Noardo,L.Harrie,K.ArroyoOhori,F.Biljecki,C.Ellul,T.Krijnen,H.Eriksson,<br/>D. Guler, D. Hintz, M.A. Jadidi, M. Pla, S. Sanchez, V.-P. Soini, R. Stouffs,<br/>J. Tekavec, J. Stoter, Tools for BIM-GIS integration (IFC Georeferencing and<br/>conversions): results from the GeoBIM benchmark 2019, ISPRS Int. J. Geo Inf. 9<br/>(9) (2020) 502, https://doi.org/10.3390/ijgi9090502.<br/><br/>3. [3]  H. Wang, Y. Pan, X. Luo, Integration of BIM and GIS in sustainable built<br/>environment: a review and bibliometric analysis, Autom. Constr. 103 (2019)<br/>41–52, https://doi.org/10.1016/j.autcon.2019.03.005.<br/><br/>4. [4]  R. Stouffs, H. Tauscher, F. Biljecki, Achieving complete and near-lossless<br/>conversion from IFC to CityGML, ISPRS Int. J. Geo Inf. 7 (9) (2018) 355, https://<br/>doi.org/10.3390/ijgi7090355.<br/><br/>5. [5]  T.W. Kang, C.H. Hong, A study on software architecture for effective BIM/GIS-<br/>based facility management data integration, Autom. Constr. 54 (2015) 25–38,<br/>https://doi.org/10.1016/j.autcon.2015.03.019.<br/><br/>6. [6]  Y. Deng, J.C.P. Cheng, C. Anumba, A framework for 3D traffic noise mapping<br/>using data from BIM and GIS integration, Struct. Infrastruct. Eng. 12 (10) (2016)<br/>1267–1280, https://doi.org/10.1080/15732479.2015.1110603.<br/><br/>7. [7]  buildingSMART,Industryfoundationclasses,Tech.Rep.Version4,Addendum2,<br/>buildingSMART International Limited [cited 15 August 2017], http://www.<br/>buildingsmart-tech.org/ifc/IFC4/Add2/, 2016.<br/><br/>8. [8]  ISO, Industry Foundation Classes (IFC) for Data Sharing in the Construction and<br/>Facility Management Industries [cited 13 April 2019], https://www.iso.org/<br/>standard/70303.html, 2013.<br/><br/>9. [9]  Open Geospatial Consortium, OGC City Geography Markup Language (CityGML)<br/>Encoding Standard 2.0.0, Tech. rep. [cited 13 April 2019], http://www.opengeo<br/>spatial.org/standards/citygml, 2012.<br/><br/>10. [10]  G.Gro ̈ger,L.Plümer,CityGML–Interoperablesemantic3Dcitymodels,ISPRSJ.<br/>Photogramm. Remote Sens. 71 (2012) 12–33, https://doi.org/10.1016/j.<br/>isprsjprs.2012.04.004.<br/><br/>11. [11]  Z. Zhu, L. Zhou, C. Zhang, B. Lin, Y. Cui, M. Che, Modeling of macroscopic<br/>building evacuation using IFC data, ISPRS Int. J. Geo Inf. 7 (8) (2018) 302–325,<br/>https://doi.org/10.3390/ijgi7080302.<br/><br/>12. [12]  Y. Chen, E. Shooraj, A. Rajabifard, S. Sabri, From IFC to 3D tiles: an integrated<br/>open-source solution for visualising BIMs on cesium, ISPRS Int. J. Geo Inf. 7 (10)<br/>(2018) 393, https://doi.org/10.3390/ijgi7100393.<br/><br/>13. [13]  Y. Deng, V.J.L. Gan, M. Das, J.C.P. Cheng, C. Anumba, Integrating 4D BIM and<br/>GIS for construction supply chain management, J. Constr. Eng. Manag. 145 (4)<br/>(2019) 04019016, https://doi.org/10.1061/(asce)co.1943-7862.0001633.<br/><br/>14. [14]  J. Stoter, H. Ploeger, R. Roes, E. van der Riet, F. Biljecki, H. Ledoux, D. Kok,<br/>S. Kim, Registration of multi-level property rights in 3D in the Netherlands: two<br/>cases and next steps in further implementation, ISPRS Int. J. Geo Inf. 6 (6) (2017)<br/>158, https://doi.org/10.3390/ijgi6060158.<br/><br/>15. [15]  R. Southall, F. Biljecki, The VI-suite: a set of environmental analysis tools with<br/>geospatial data applications, open geospatial data, Softw. Standards 2 (2017) 23,<br/>https://doi.org/10.1186/s40965-017-0036-1.<br/><br/>16. [16]  T.-A.Teo,K.-H.Cho,BIM-orientedindoornetworkmodelforindoorandoutdoor<br/>combined route planning, Adv. Eng. Inform. 30 (3) (2016) 268–282.<br/><br/>17. [17]  U. Isikdag, S. Zlatanova, J. Underwood, A BIM-oriented model for supporting<br/>indoor navigation requirements, computers, Environ. Urban Syst. 41 (2013)<br/>112–123, https://doi.org/10.1016/j.compenvurbsys.2013.05.001.<br/><br/>18. [18]  H. Tashakkori, A. Rajabifard, M. Kalantari, A new 3D indoor/outdoor spatial<br/>model for indoor emergency response facilitation, Build. Environ. 89 (2015)<br/>170–182, https://doi.org/10.1016/j.buildenv.2015.02.036.<br/><br/>19. [19]  H. Tauscher, R. Stouffs, An IFC-to-CityGML triple graph grammar, in: eCAADe<br/>Vol. 1, 2018, pp. 517–524 [cited 13 April 2019], http://papers.cumincad.<br/>org/data/works/att/ecaade2018_265.pdf.<br/><br/>20. [20]  A. Konde, H. Tauscher, F. Biljecki, J. Crawford, Floor plans in CityGML, ISPRS<br/>Ann. Photogramm. Remote Sens. Spatial Inf. Sci. IV-4 (W6) (2018) 25–32,<br/>https://doi.org/10.5194/isprs-annals-iv-4-w6-25-2018.<br/><br/>21. [21]  J. Lim, H. Tauscher, F. Biljecki, Graph transformation rules for IFC-to-CityGML<br/>attribute conversion, ISPRS Ann. Photogramm. Remote Sens. Spatial Inf. Sci. IV-4<br/>(W8) (2019) 83–90, https://doi.org/10.5194/isprs-annals-iv-4-w8-83-2019.<br/><br/>22. [22]  H. Tauscher, Creating and maintaining IFC–CityGML conversion rules, ISPRS<br/>Ann. Photogramm. Remote Sens. Spatial Inf. Sci. IV-4 (W8) (2019) 115–122,<br/>https://doi.org/10.5194/isprs-annals-iv-4-w8-115-2019.<br/><br/>23. [23]  Y. Song, X. Wang, Y. Tan, P. Wu, M. Sutrisna, J. Cheng, K. Hampson, Trends and<br/>opportunities of BIM-GIS integration in the architecture, engineering and<br/>construction industry: a review from a Spatio-temporal statistical perspective,<br/>ISPRS Int. J. Geo Inf. 6 (12) (2017) 397, https://doi.org/10.3390/ijgi6120397.<br/><br/>24. [24]  J.Zhu,X.Wang,P.Wang,Z.Wu,M.J.Kim,IntegrationofBIMandGIS:geometry<br/>from IFC to shapefile using open-source technology, Autom. Constr. 102 (2019)<br/>105–119, https://doi.org/10.1016/j.autcon.2019.02.014.<br/><br/>25. [25]  R. De Laat, L. Van Berlo, Integration of BIM and GIS: The Development of the<br/>CityGML GeoBIM Extension, Advances in 3D Geo-Information Sciences, Springer,<br/>Berlin Heidelberg, 2011, pp. 211–225, https://doi.org/10.1007/978-3-642-<br/>12670-3_13.<br/><br/>26. [26]  Y.Deng,J.C.P.Cheng,C.Anumba,MappingbetweenBIMand3DGISindifferent<br/>levels of detail using schema mediation and instance comparison, Autom. Constr.<br/>67 (2016) 1–21, https://doi.org/10.1016/j.autcon.2016.03.006.</p><ol type="1" id="2032377e-b56f-8038-b64c-c0e264c99bc0" class="numbered-list" start="1"><li>1.<p id="2032377e-b56f-8024-8093-dd62a194799b" class="">[1]  X.Liu,X.Wang,G.Wright,J.Cheng,X.Li,R.Liu,Astate-of-the-artreviewonthe<br/>integration of building information modeling (BIM) and geographic information<br/>system (GIS), ISPRS Int. J. Geo Inf. 6 (2) (2017) 53, https://doi.org/10.3390/<br/>ijgi6020053.</p></li></ol><ol type="1" id="2032377e-b56f-80f2-893f-e8303ca124bb" class="numbered-list" start="2"><li>2.<p id="2032377e-b56f-806a-9527-ccfcdcde98e0" class="">[2]  F.Noardo,L.Harrie,K.ArroyoOhori,F.Biljecki,C.Ellul,T.Krijnen,H.Eriksson,<br/>D. Guler, D. Hintz, M.A. Jadidi, M. Pla, S. Sanchez, V.-P. Soini, R. Stouffs,<br/>J. Tekavec, J. Stoter, Tools for BIM-GIS integration (IFC Georeferencing and<br/>conversions): results from the GeoBIM benchmark 2019, ISPRS Int. J. Geo Inf. 9<br/>(9) (2020) 502, https://doi.org/10.3390/ijgi9090502.</p></li></ol><ol type="1" id="2032377e-b56f-800e-ad23-fa360ba460bd" class="numbered-list" start="3"><li>3.<p id="2032377e-b56f-802c-8561-d71c696a72a0" class="">[3]  H. Wang, Y. Pan, X. Luo, Integration of BIM and GIS in sustainable built<br/>environment: a review and bibliometric analysis, Autom. Constr. 103 (2019)<br/>41–52, https://doi.org/10.1016/j.autcon.2019.03.005.</p></li></ol><ol type="1" id="2032377e-b56f-8021-9dd4-c215be7dae92" class="numbered-list" start="4"><li>4.<p id="2032377e-b56f-80c7-90b9-e16d7705bf42" class="">[4]  R. Stouffs, H. Tauscher, F. Biljecki, Achieving complete and near-lossless<br/>conversion from IFC to CityGML, ISPRS Int. J. Geo Inf. 7 (9) (2018) 355, https://<br/>doi.org/10.3390/ijgi7090355.</p></li></ol><ol type="1" id="2032377e-b56f-8056-8fba-d15a1169ba4e" class="numbered-list" start="5"><li>5.<p id="2032377e-b56f-808e-9fad-eb785d59a1bc" class="">[5]  T.W. Kang, C.H. Hong, A study on software architecture for effective BIM/GIS-<br/>based facility management data integration, Autom. Constr. 54 (2015) 25–38,<br/>https://doi.org/10.1016/j.autcon.2015.03.019.</p></li></ol><ol type="1" id="2032377e-b56f-80b2-b618-c085ee125145" class="numbered-list" start="6"><li>6.<p id="2032377e-b56f-80a4-8da3-fed6ee71bb86" class="">[6]  Y. Deng, J.C.P. Cheng, C. Anumba, A framework for 3D traffic noise mapping<br/>using data from BIM and GIS integration, Struct. Infrastruct. Eng. 12 (10) (2016)<br/>1267–1280, https://doi.org/10.1080/15732479.2015.1110603.</p></li></ol><ol type="1" id="2032377e-b56f-8086-98e8-c415a1765b0d" class="numbered-list" start="7"><li>7.<p id="2032377e-b56f-8034-9aab-dd5e81993d56" class="">[7]  buildingSMART,Industryfoundationclasses,Tech.Rep.Version4,Addendum2,<br/>buildingSMART International Limited [cited 15 August 2017], http://www.<br/>buildingsmart-tech.org/ifc/IFC4/Add2/, 2016.</p></li></ol><ol type="1" id="2032377e-b56f-80fa-8650-ee1e0fdc5b0c" class="numbered-list" start="8"><li>8.<p id="2032377e-b56f-80c4-8069-cd3633ea0b89" class="">[8]  ISO, Industry Foundation Classes (IFC) for Data Sharing in the Construction and<br/>Facility Management Industries [cited 13 April 2019], https://www.iso.org/<br/>standard/70303.html, 2013.</p></li></ol><ol type="1" id="2032377e-b56f-8084-a6db-eb15384db1d1" class="numbered-list" start="9"><li>9.<p id="2032377e-b56f-80e3-b1fa-cb6554971833" class="">[9]  Open Geospatial Consortium, OGC City Geography Markup Language (CityGML)<br/>Encoding Standard 2.0.0, Tech. rep. [cited 13 April 2019], http://www.opengeo<br/>spatial.org/standards/citygml, 2012.</p></li></ol><ol type="1" id="2032377e-b56f-809f-a994-d5ff738ffd41" class="numbered-list" start="10"><li>10.<p id="2032377e-b56f-80d3-8fc1-e12d58a7666d" class="">[10]  G.Gro ̈ger,L.Plümer,CityGML–Interoperablesemantic3Dcitymodels,ISPRSJ.<br/>Photogramm. Remote Sens. 71 (2012) 12–33, https://doi.org/10.1016/j.<br/>isprsjprs.2012.04.004.</p></li></ol><ol type="1" id="2032377e-b56f-80e2-bb48-ea9981bf8817" class="numbered-list" start="11"><li>11.<p id="2032377e-b56f-8008-92ab-d34b7174ec1e" class="">[11]  Z. Zhu, L. Zhou, C. Zhang, B. Lin, Y. Cui, M. Che, Modeling of macroscopic<br/>building evacuation using IFC data, ISPRS Int. J. Geo Inf. 7 (8) (2018) 302–325,<br/>https://doi.org/10.3390/ijgi7080302.</p></li></ol><ol type="1" id="2032377e-b56f-80d5-94e0-d6bde385ded6" class="numbered-list" start="12"><li>12.<p id="2032377e-b56f-80bd-86bb-c27416ed20c0" class="">[12]  Y. Chen, E. Shooraj, A. Rajabifard, S. Sabri, From IFC to 3D tiles: an integrated<br/>open-source solution for visualising BIMs on cesium, ISPRS Int. J. Geo Inf. 7 (10)<br/>(2018) 393, https://doi.org/10.3390/ijgi7100393.</p></li></ol><ol type="1" id="2032377e-b56f-8016-957b-faafc89326da" class="numbered-list" start="13"><li>13.<p id="2032377e-b56f-8009-9dcc-df82179e05d1" class="">[13]  Y. Deng, V.J.L. Gan, M. Das, J.C.P. Cheng, C. Anumba, Integrating 4D BIM and<br/>GIS for construction supply chain management, J. Constr. Eng. Manag. 145 (4)<br/>(2019) 04019016, https://doi.org/10.1061/(asce)co.1943-7862.0001633.</p></li></ol><ol type="1" id="2032377e-b56f-80de-ac87-d3e44f673f45" class="numbered-list" start="14"><li>14.<p id="2032377e-b56f-80a1-bac2-f6756a242c87" class="">[14]  J. Stoter, H. Ploeger, R. Roes, E. van der Riet, F. Biljecki, H. Ledoux, D. Kok,<br/>S. Kim, Registration of multi-level property rights in 3D in the Netherlands: two<br/>cases and next steps in further implementation, ISPRS Int. J. Geo Inf. 6 (6) (2017)<br/>158, https://doi.org/10.3390/ijgi6060158.</p></li></ol><ol type="1" id="2032377e-b56f-80b5-8f90-c0ef0e1a9590" class="numbered-list" start="15"><li>15.<p id="2032377e-b56f-808a-9c2b-ec4090cd5e86" class="">[15]  R. Southall, F. Biljecki, The VI-suite: a set of environmental analysis tools with<br/>geospatial data applications, open geospatial data, Softw. Standards 2 (2017) 23,<br/>https://doi.org/10.1186/s40965-017-0036-1.</p></li></ol><ol type="1" id="2032377e-b56f-8062-be05-f8aada0ea9e4" class="numbered-list" start="16"><li>16.<p id="2032377e-b56f-80ec-ac76-de73a19aba23" class="">[16]  T.-A.Teo,K.-H.Cho,BIM-orientedindoornetworkmodelforindoorandoutdoor<br/>combined route planning, Adv. Eng. Inform. 30 (3) (2016) 268–282.</p></li></ol><ol type="1" id="2032377e-b56f-80df-9826-e11d70f3bde1" class="numbered-list" start="17"><li>17.<p id="2032377e-b56f-803a-ac8f-fa2354e4fbbe" class="">[17]  U. Isikdag, S. Zlatanova, J. Underwood, A BIM-oriented model for supporting<br/>indoor navigation requirements, computers, Environ. Urban Syst. 41 (2013)<br/>112–123, https://doi.org/10.1016/j.compenvurbsys.2013.05.001.</p></li></ol><ol type="1" id="2032377e-b56f-8035-bf50-f0e9f7283baa" class="numbered-list" start="18"><li>18.<p id="2032377e-b56f-807f-9f7e-dfab7cfd55f6" class="">[18]  H. Tashakkori, A. Rajabifard, M. Kalantari, A new 3D indoor/outdoor spatial<br/>model for indoor emergency response facilitation, Build. Environ. 89 (2015)<br/>170–182, https://doi.org/10.1016/j.buildenv.2015.02.036.</p></li></ol><ol type="1" id="2032377e-b56f-80cd-bd6c-c982357af535" class="numbered-list" start="19"><li>19.<p id="2032377e-b56f-807b-a78d-de77e85c4c6e" class="">[19]  H. Tauscher, R. Stouffs, An IFC-to-CityGML triple graph grammar, in: eCAADe<br/>Vol. 1, 2018, pp. 517–524 [cited 13 April 2019], http://papers.cumincad.<br/>org/data/works/att/ecaade2018_265.pdf.</p></li></ol><ol type="1" id="2032377e-b56f-808f-af28-cbcfb92c6988" class="numbered-list" start="20"><li>20.<p id="2032377e-b56f-80ab-84b2-d525b339fd07" class="">[20]  A. Konde, H. Tauscher, F. Biljecki, J. Crawford, Floor plans in CityGML, ISPRS<br/>Ann. Photogramm. Remote Sens. Spatial Inf. Sci. IV-4 (W6) (2018) 25–32,<br/>https://doi.org/10.5194/isprs-annals-iv-4-w6-25-2018.</p></li></ol><ol type="1" id="2032377e-b56f-80f9-8106-ca7308b12c32" class="numbered-list" start="21"><li>21.<p id="2032377e-b56f-80bb-bf1d-fcfa0b60c6a4" class="">[21]  J. Lim, H. Tauscher, F. Biljecki, Graph transformation rules for IFC-to-CityGML<br/>attribute conversion, ISPRS Ann. Photogramm. Remote Sens. Spatial Inf. Sci. IV-4<br/>(W8) (2019) 83–90, https://doi.org/10.5194/isprs-annals-iv-4-w8-83-2019.</p></li></ol><ol type="1" id="2032377e-b56f-8010-ac5b-d0f57ab31f9d" class="numbered-list" start="22"><li>22.<p id="2032377e-b56f-8030-bf2f-de43d26b6fcd" class="">[22]  H. Tauscher, Creating and maintaining IFC–CityGML conversion rules, ISPRS<br/>Ann. Photogramm. Remote Sens. Spatial Inf. Sci. IV-4 (W8) (2019) 115–122,<br/>https://doi.org/10.5194/isprs-annals-iv-4-w8-115-2019.</p></li></ol><ol type="1" id="2032377e-b56f-80d0-ae3c-d354d15c7a79" class="numbered-list" start="23"><li>23.<p id="2032377e-b56f-80f2-8631-d55ae381898b" class="">[23]  Y. Song, X. Wang, Y. Tan, P. Wu, M. Sutrisna, J. Cheng, K. Hampson, Trends and<br/>opportunities of BIM-GIS integration in the architecture, engineering and<br/>construction industry: a review from a Spatio-temporal statistical perspective,<br/>ISPRS Int. J. Geo Inf. 6 (12) (2017) 397, https://doi.org/10.3390/ijgi6120397.</p></li></ol><ol type="1" id="2032377e-b56f-8005-b9b2-de652bf05fc2" class="numbered-list" start="24"><li>24.<p id="2032377e-b56f-801b-ac76-f45d038bd80e" class="">[24]  J.Zhu,X.Wang,P.Wang,Z.Wu,M.J.Kim,IntegrationofBIMandGIS:geometry<br/>from IFC to shapefile using open-source technology, Autom. Constr. 102 (2019)<br/>105–119, https://doi.org/10.1016/j.autcon.2019.02.014.</p></li></ol><ol type="1" id="2032377e-b56f-801c-bc24-e59a0f58eabe" class="numbered-list" start="25"><li>25.<p id="2032377e-b56f-80e6-b402-e78e1a116f10" class="">[25]  R. De Laat, L. Van Berlo, Integration of BIM and GIS: The Development of the<br/>CityGML GeoBIM Extension, Advances in 3D Geo-Information Sciences, Springer,<br/>Berlin Heidelberg, 2011, pp. 211–225, https://doi.org/10.1007/978-3-642-<br/>12670-3_13.</p></li></ol><ol type="1" id="2032377e-b56f-80b7-afd9-d7d4301bf5a6" class="numbered-list" start="26"><li>26.<p id="2032377e-b56f-80c7-a3ff-f942980cb441" class="">[26]  Y.Deng,J.C.P.Cheng,C.Anumba,MappingbetweenBIMand3DGISindifferent<br/>levels of detail using schema mediation and instance comparison, Autom. Constr.<br/>67 (2016) 1–21, https://doi.org/10.1016/j.autcon.2016.03.006.</p></li></ol><p id="2032377e-b56f-8080-9fcf-d6ba464f07ff" class="">1. [27]  S. Donkers, H. Ledoux, J. Zhao, J. Stoter, Automatic conversion of IFC datasets to<br/>geometrically and semantically correct CityGML LOD3 buildings, Trans. GIS 20<br/>(4) (2016) 547–569, https://doi.org/10.1111/tgis.12162.<br/><br/>2. [28]  M. El-Mekawy, A. O ̈stman, I. Hijazi, A unified building model for 3D urban GIS,<br/>ISPRS Int. J. Geo Inf. 1 (3) (2012) 120–145, https://doi.org/10.3390/<br/>ijgi1020120.<br/><br/>3. [29]  C. Ellul, G. Boyes, C. Thomson, D. Backes, Towards Integrating BIM and GIS—An<br/>End-to-End Example from Point Cloud to Analysis, Vol. 15 of Advances in 3D<br/>Geoinformation, 2017, pp. 495–512.<br/><br/>4. [30]  A. Geiger, J. Benner, K.H. Haefele, Generalization of 3D IFC Building Models, 3D<br/>Geoinformation Science, Springer International Publishing, 2015, pp. 19–35,<br/>https://doi.org/10.1007/978-3-319-12181-9_2.<br/><br/>5. [31]  I. Hijazi, M. Ehlers, S. Zlatanova, T. Becker, L. Van Berlo, Initial investigations for<br/>modeling interior utilities within 3D geo context: Transforming IFC-interior<br/>utility to CityGML/UtilityNetworkADE, in: T. Kolbe, G. Ko ̈nig, C. Nagel (Eds.),<br/>Advances in 3D Geo-Information Sciences, Springer, Berlin, Heidelberg, 2011,<br/>pp. 95–113, https://doi.org/10.1007/978-3-642-12670-3_6.<br/><br/>6. [32]  U. Isikdag, S. Zlatanova, Towards defining a framework for automatic generation<br/>of buildings in CityGML using building information models, in: J. Lee,<br/>S. Zlatanova (Eds.), 3D Geo-Information Sciences, Springer, Berlin Heidelberg,<br/>2009, pp. 79–96, https://doi.org/10.1007/978-3-540-87395-2_6.<br/><br/>7. [33]  S. Jusuf, B. Mousseau, G. Godfroid, J. Soh, Path to an integrated modelling<br/>between IFC and CityGML for neighborhood scale Modelling, Urban Sci. 1 (3)<br/>(2017) 25, https://doi.org/10.3390/urbansci1030025.<br/><br/>8. [34]  R. Sebastian, M. Bo ̈hms, P. van den Helm, BIM and GIS for low-disturbance<br/>construction, in: Proceedings of the 13th International Conference on<br/>Construction Applications of Virtual Reality, 2013, pp. 469–479 [cited 13 April<br/>2019], https://repository.tudelft.nl/view/tno/uuid:1ed10694-572f-433c-9<br/>5be-f726c7704086.<br/><br/>9. [35]  T. Gilbert, S. Barr, P. James, J. Morley, Q. Ji, Software systems approach to multi-<br/>scale GIS-BIM utility infrastructure network integration and resource flow<br/>simulation, ISPRS Int. J. Geo Inf. 7 (8) (2018) 310, https://doi.org/10.3390/<br/>ijgi7080310.<br/><br/>10. [36]  H. Tauscher, R. Stouffs, Extracting different spatio-semantic structures from IFC<br/>using a triple graph grammar, in: Intelligent and Informed, Proceedings of the<br/>24th International Conference of the Association for Computer-Aided<br/>Architectural Design Research in Asia (CAADRIA) 2019, 2019, pp. 605–614 [cited<br/>13 April 2019], http://papers.cumincad.org/data/works/att/caadria2019_038.<br/>pdf.<br/><br/>11. [37]  F. Biljecki, K. Kumar, C. Nagel, CityGML application domain extension (ADE):<br/>overview of developments, Open geospatial data, Softw. Standards 3 (1) (2018)<br/>13, https://doi.org/10.1186/s40965-018-0055-6.<br/><br/>12. [38]  L. Van den Brink, J. Stoter, S. Zlatanova, Modeling an application domain<br/>extension of CityGML in UML, Int. Arch. Photogramm. Remote. Sens. Spat. Inf.<br/>Sci. XXXVIII-4 (C26) (2012) 11–14, https://doi.org/10.5194/isprsarchives-<br/>xxxviii-4-c26-11-2012.<br/><br/>13. [39]  L. Van den Brink, J. Stoter, S. Zlatanova, UML-based approach to developing a<br/>CityGML application domain extension, Trans. GIS 17 (6) (2013) 920–942,<br/>https://doi.org/10.1111/tgis.12026.<br/><br/>14. [40]  A. Czerwinski, S. Sandmann, L. Elke, Sto ̈ümer, Sustainable SDI for EU noise<br/>mapping in NRW – best practice for INSPIRE, Int. J. Spatial Data Infrastr. Res. 2<br/>(1) (2007) 1–18. http://www.ikg.uni-bonn.de/uploads/tx_ikgpublication/07<br/>1105_EC_GI_GIS_fullpaper_Czerwinski.pdf.<br/><br/>15. [41]  V. Çag ̆das ̧, An application domain extension to CityGML for immovable property<br/>taxation: a Turkish case study, Int. J. Appl. Earth Obs. Geoinf. 21 (2013)<br/>545–555, https://doi.org/10.1016/j.jag.2012.07.013.<br/><br/>16. [42]  A. Labetski, K. Kumar, H. Ledoux, J. Stoter, A metadata ADE for CityGML, open<br/>geospatial data, Softw. Standards 3 (1) (2018) 42, https://doi.org/10.1186/<br/>s40965-018-0057-4.<br/><br/>17. [43]  L. Li, L. Tang, H. Zhu, H. Zhang, F. Yang, W. Qin, Semantic 3D modeling based on<br/>CityGML for ancient Chinese-style architectural roofs of digital heritage, ISPRS<br/>Int. J. Geo Inf. 6 (5) (2017) 132, https://doi.org/10.3390/ijgi6050132.<br/><br/>18. [44]  L. Van den Brink, J. Stoter, S. Zlatanova, Establishing a national standard for 3D<br/>topographic data compliant to CityGML, Int. J. Geogr. Inf. Sci. 27 (1) (2013)<br/>92–113, https://doi.org/10.1080/13658816.2012.667105.<br/><br/>19. [45]  K. Kumar, H. Ledoux, J. Stoter, A CityGML extension for handling very large TINs,<br/>ISPRS Ann. Photogramm. Remote Sens. Spatial Inf. Sci. IV-2-W1 (2016) 137–143,<br/>https://doi.org/10.5194/isprs-annals-iv-2-w1–137-2016.<br/><br/>20. [46]  L. Li, J. Wu, H. Zhu, X. Duan, F. Luo, 3D modeling of the ownership structure of<br/>condominium units, Comput. Environ. Urban. Syst. 59 (2016) 50–63, https://doi.<br/>org/10.1016/j.compenvurbsys.2016.05.004.<br/><br/>21. [47]  Z. Yao, C. Nagel, F. Kunde, G. Hudra, P. Willkomm, A. Donaubauer, T. Adolphi, T.<br/>H. Kolbe, 3DCityDB - a 3D geodatabase solution for the management, analysis,<br/>and visualization of semantic 3D city models based on CityGML, Open geospatial<br/>data, Softw. Standards 3 (1) (2018) 208, https://doi.org/10.1186/s40965-018-<br/>0046-7.<br/><br/>22. [48]  H. Eriksson, T. Johansson, P.-O. Olsson, M. Andersson, J. Engvall, I. Hast,<br/>L. Harrie, Requirements, development, and evaluation of a national building<br/>standard—A Swedish case study, ISPRS Int. J. Geo Inf. 9 (2) (2020) 78, https://<br/>doi.org/10.3390/ijgi9020078.<br/><br/>23. [49]  S.A. Aydar, T. Yomraliog ̆lu, E.D. Ozbek, Modeling Turkey national 2D geo-data<br/>model as a CityGML application domain extension in UML, Int. J. Environ.<br/>Geoinform. 3 (3) (2016) 1–10 [cited 13 April 2019], https://dergipark.org.tr/tr/<br/>download/article-file/294320.<br/><br/>24. [50]  O.G. Ling, T.T. Tan, The Social Significance of Public Spaces in Public Housing<br/>Estates, Public Space Design, Use and Management, NUS Press, 1992, pp. 69–81</p><ol type="1" id="2032377e-b56f-8053-8876-f2cb6d2da288" class="numbered-list" start="1"><li>1.<p id="2032377e-b56f-8079-b753-fc7d130dc385" class="">[27]  S. Donkers, H. Ledoux, J. Zhao, J. Stoter, Automatic conversion of IFC datasets to<br/>geometrically and semantically correct CityGML LOD3 buildings, Trans. GIS 20<br/>(4) (2016) 547–569, https://doi.org/10.1111/tgis.12162.</p></li></ol><ol type="1" id="2032377e-b56f-8060-93f7-f3e49ab88134" class="numbered-list" start="2"><li>2.<p id="2032377e-b56f-8026-a5cf-dd99175e6172" class="">[28]  M. El-Mekawy, A. O ̈stman, I. Hijazi, A unified building model for 3D urban GIS,<br/>ISPRS Int. J. Geo Inf. 1 (3) (2012) 120–145, https://doi.org/10.3390/<br/>ijgi1020120.</p></li></ol><ol type="1" id="2032377e-b56f-8098-a25f-e2fa7ff9c246" class="numbered-list" start="3"><li>3.<p id="2032377e-b56f-801a-9e94-f35caa596125" class="">[29]  C. Ellul, G. Boyes, C. Thomson, D. Backes, Towards Integrating BIM and GIS—An<br/>End-to-End Example from Point Cloud to Analysis, Vol. 15 of Advances in 3D<br/>Geoinformation, 2017, pp. 495–512.</p></li></ol><ol type="1" id="2032377e-b56f-80f7-baa9-d954ae3ac0be" class="numbered-list" start="4"><li>4.<p id="2032377e-b56f-801c-a675-f05951a25fba" class="">[30]  A. Geiger, J. Benner, K.H. Haefele, Generalization of 3D IFC Building Models, 3D<br/>Geoinformation Science, Springer International Publishing, 2015, pp. 19–35,<br/>https://doi.org/10.1007/978-3-319-12181-9_2.</p></li></ol><ol type="1" id="2032377e-b56f-8086-906d-e991332f5b03" class="numbered-list" start="5"><li>5.<p id="2032377e-b56f-8094-9b19-ccf1a794e2a0" class="">[31]  I. Hijazi, M. Ehlers, S. Zlatanova, T. Becker, L. Van Berlo, Initial investigations for<br/>modeling interior utilities within 3D geo context: Transforming IFC-interior<br/>utility to CityGML/UtilityNetworkADE, in: T. Kolbe, G. Ko ̈nig, C. Nagel (Eds.),<br/>Advances in 3D Geo-Information Sciences, Springer, Berlin, Heidelberg, 2011,<br/>pp. 95–113, https://doi.org/10.1007/978-3-642-12670-3_6.</p></li></ol><ol type="1" id="2032377e-b56f-8022-a883-e5b687e29433" class="numbered-list" start="6"><li>6.<p id="2032377e-b56f-8003-a5c4-f4ae1664df03" class="">[32]  U. Isikdag, S. Zlatanova, Towards defining a framework for automatic generation<br/>of buildings in CityGML using building information models, in: J. Lee,<br/>S. Zlatanova (Eds.), 3D Geo-Information Sciences, Springer, Berlin Heidelberg,<br/>2009, pp. 79–96, https://doi.org/10.1007/978-3-540-87395-2_6.</p></li></ol><ol type="1" id="2032377e-b56f-8043-ac94-e4832469b738" class="numbered-list" start="7"><li>7.<p id="2032377e-b56f-80e7-ab04-fdf0ac0913e2" class="">[33]  S. Jusuf, B. Mousseau, G. Godfroid, J. Soh, Path to an integrated modelling<br/>between IFC and CityGML for neighborhood scale Modelling, Urban Sci. 1 (3)<br/>(2017) 25, https://doi.org/10.3390/urbansci1030025.</p></li></ol><ol type="1" id="2032377e-b56f-80fb-82b0-e8e13e63325a" class="numbered-list" start="8"><li>8.<p id="2032377e-b56f-80f3-8e10-e6a98909ec25" class="">[34]  R. Sebastian, M. Bo ̈hms, P. van den Helm, BIM and GIS for low-disturbance<br/>construction, in: Proceedings of the 13th International Conference on<br/>Construction Applications of Virtual Reality, 2013, pp. 469–479 [cited 13 April<br/>2019], https://repository.tudelft.nl/view/tno/uuid:1ed10694-572f-433c-9<br/>5be-f726c7704086.</p></li></ol><ol type="1" id="2032377e-b56f-8007-a53a-ff860e87eef5" class="numbered-list" start="9"><li>9.<p id="2032377e-b56f-803f-abce-d3482b49b5ff" class="">[35]  T. Gilbert, S. Barr, P. James, J. Morley, Q. Ji, Software systems approach to multi-<br/>scale GIS-BIM utility infrastructure network integration and resource flow<br/>simulation, ISPRS Int. J. Geo Inf. 7 (8) (2018) 310, https://doi.org/10.3390/<br/>ijgi7080310.</p></li></ol><ol type="1" id="2032377e-b56f-8087-809c-d81427197e84" class="numbered-list" start="10"><li>10.<p id="2032377e-b56f-80f3-af73-f09b5b48f8dc" class="">[36]  H. Tauscher, R. Stouffs, Extracting different spatio-semantic structures from IFC<br/>using a triple graph grammar, in: Intelligent and Informed, Proceedings of the<br/>24th International Conference of the Association for Computer-Aided<br/>Architectural Design Research in Asia (CAADRIA) 2019, 2019, pp. 605–614 [cited<br/>13 April 2019], http://papers.cumincad.org/data/works/att/caadria2019_038.<br/>pdf.</p></li></ol><ol type="1" id="2032377e-b56f-8059-b152-ea1431927f50" class="numbered-list" start="11"><li>11.<p id="2032377e-b56f-80b1-b4f8-f3a3fdf4b327" class="">[37]  F. Biljecki, K. Kumar, C. Nagel, CityGML application domain extension (ADE):<br/>overview of developments, Open geospatial data, Softw. Standards 3 (1) (2018)<br/>13, https://doi.org/10.1186/s40965-018-0055-6.</p></li></ol><ol type="1" id="2032377e-b56f-806d-9b9c-e83d2b95b0ec" class="numbered-list" start="12"><li>12.<p id="2032377e-b56f-8093-98bb-daad5aee7547" class="">[38]  L. Van den Brink, J. Stoter, S. Zlatanova, Modeling an application domain<br/>extension of CityGML in UML, Int. Arch. Photogramm. Remote. Sens. Spat. Inf.<br/>Sci. XXXVIII-4 (C26) (2012) 11–14, https://doi.org/10.5194/isprsarchives-<br/>xxxviii-4-c26-11-2012.</p></li></ol><ol type="1" id="2032377e-b56f-8058-a6c9-c26f4f56626b" class="numbered-list" start="13"><li>13.<p id="2032377e-b56f-80c0-b79d-d31df91ce0ff" class="">[39]  L. Van den Brink, J. Stoter, S. Zlatanova, UML-based approach to developing a<br/>CityGML application domain extension, Trans. GIS 17 (6) (2013) 920–942,<br/>https://doi.org/10.1111/tgis.12026.</p></li></ol><ol type="1" id="2032377e-b56f-80b7-8996-daee5201f7b8" class="numbered-list" start="14"><li>14.<p id="2032377e-b56f-80f7-9e0c-d3dc9e2284d5" class="">[40]  A. Czerwinski, S. Sandmann, L. Elke, Sto ̈ümer, Sustainable SDI for EU noise<br/>mapping in NRW – best practice for INSPIRE, Int. J. Spatial Data Infrastr. Res. 2<br/>(1) (2007) 1–18. http://www.ikg.uni-bonn.de/uploads/tx_ikgpublication/07<br/>1105_EC_GI_GIS_fullpaper_Czerwinski.pdf.</p></li></ol><ol type="1" id="2032377e-b56f-80da-bb1e-d3d149f95a23" class="numbered-list" start="15"><li>15.<p id="2032377e-b56f-8091-b058-ed0e1d0f8670" class="">[41]  V. Çag ̆das ̧, An application domain extension to CityGML for immovable property<br/>taxation: a Turkish case study, Int. J. Appl. Earth Obs. Geoinf. 21 (2013)<br/>545–555, https://doi.org/10.1016/j.jag.2012.07.013.</p></li></ol><ol type="1" id="2032377e-b56f-80a1-842d-ce4bbf19b6ad" class="numbered-list" start="16"><li>16.<p id="2032377e-b56f-803a-af92-ef7d90336a24" class="">[42]  A. Labetski, K. Kumar, H. Ledoux, J. Stoter, A metadata ADE for CityGML, open<br/>geospatial data, Softw. Standards 3 (1) (2018) 42, https://doi.org/10.1186/<br/>s40965-018-0057-4.</p></li></ol><ol type="1" id="2032377e-b56f-80b0-bc04-cc1633c2bfe4" class="numbered-list" start="17"><li>17.<p id="2032377e-b56f-800a-aa7e-c667601538b5" class="">[43]  L. Li, L. Tang, H. Zhu, H. Zhang, F. Yang, W. Qin, Semantic 3D modeling based on<br/>CityGML for ancient Chinese-style architectural roofs of digital heritage, ISPRS<br/>Int. J. Geo Inf. 6 (5) (2017) 132, https://doi.org/10.3390/ijgi6050132.</p></li></ol><ol type="1" id="2032377e-b56f-800a-9e68-daeab0a7ab12" class="numbered-list" start="18"><li>18.<p id="2032377e-b56f-802d-a20c-fe0f4a37861c" class="">[44]  L. Van den Brink, J. Stoter, S. Zlatanova, Establishing a national standard for 3D<br/>topographic data compliant to CityGML, Int. J. Geogr. Inf. Sci. 27 (1) (2013)<br/>92–113, https://doi.org/10.1080/13658816.2012.667105.</p></li></ol><ol type="1" id="2032377e-b56f-80d1-80ac-e158e74d89da" class="numbered-list" start="19"><li>19.<p id="2032377e-b56f-80bd-957e-d2ac00af920c" class="">[45]  K. Kumar, H. Ledoux, J. Stoter, A CityGML extension for handling very large TINs,<br/>ISPRS Ann. Photogramm. Remote Sens. Spatial Inf. Sci. IV-2-W1 (2016) 137–143,<br/>https://doi.org/10.5194/isprs-annals-iv-2-w1–137-2016.</p></li></ol><ol type="1" id="2032377e-b56f-8057-aead-dda8313e4a7b" class="numbered-list" start="20"><li>20.<p id="2032377e-b56f-807f-9aaf-ccb7c01417cf" class="">[46]  L. Li, J. Wu, H. Zhu, X. Duan, F. Luo, 3D modeling of the ownership structure of<br/>condominium units, Comput. Environ. Urban. Syst. 59 (2016) 50–63, https://doi.<br/>org/10.1016/j.compenvurbsys.2016.05.004.</p></li></ol><ol type="1" id="2032377e-b56f-8000-9c96-d6e15daaf890" class="numbered-list" start="21"><li>21.<p id="2032377e-b56f-8083-991b-e5df2c3dd034" class="">[47]  Z. Yao, C. Nagel, F. Kunde, G. Hudra, P. Willkomm, A. Donaubauer, T. Adolphi, T.<br/>H. Kolbe, 3DCityDB - a 3D geodatabase solution for the management, analysis,<br/>and visualization of semantic 3D city models based on CityGML, Open geospatial<br/>data, Softw. Standards 3 (1) (2018) 208, https://doi.org/10.1186/s40965-018-<br/>0046-7.</p></li></ol><ol type="1" id="2032377e-b56f-8008-8559-c278a2f4face" class="numbered-list" start="22"><li>22.<p id="2032377e-b56f-8043-9c37-d22349cedfdc" class="">[48]  H. Eriksson, T. Johansson, P.-O. Olsson, M. Andersson, J. Engvall, I. Hast,<br/>L. Harrie, Requirements, development, and evaluation of a national building<br/>standard—A Swedish case study, ISPRS Int. J. Geo Inf. 9 (2) (2020) 78, https://<br/>doi.org/10.3390/ijgi9020078.</p></li></ol><ol type="1" id="2032377e-b56f-8079-becd-c690cbf0c5e0" class="numbered-list" start="23"><li>23.<p id="2032377e-b56f-800a-8eca-c373f28e2902" class="">[49]  S.A. Aydar, T. Yomraliog ̆lu, E.D. Ozbek, Modeling Turkey national 2D geo-data<br/>model as a CityGML application domain extension in UML, Int. J. Environ.<br/>Geoinform. 3 (3) (2016) 1–10 [cited 13 April 2019], https://dergipark.org.tr/tr/<br/>download/article-file/294320.</p></li></ol><ol type="1" id="2032377e-b56f-80da-8262-d86f417f8a2b" class="numbered-list" start="24"><li>24.<p id="2032377e-b56f-80b9-9354-f9ce60372d30" class="">[50]  O.G. Ling, T.T. Tan, The Social Significance of Public Spaces in Public Housing<br/>Estates, Public Space Design, Use and Management, NUS Press, 1992, pp. 69–81 </p><p id="2032377e-b56f-80f3-86a7-df3a8ec2ef1d" class="">[cited 13 April 2019], http://www.worldcat.org/title/public-space-design-use-</p><p id="2032377e-b56f-8099-8b0e-c16193b5ae85" class="">and-management/oclc/930609565.</p><ol type="1" id="2032377e-b56f-80e9-af5c-c2ba80bdae56" class="numbered-list" start="1"><li>[51] K. Soon, V. Khoo, CityGML modelling for Singapore 3D national mapping, Int.<p id="2032377e-b56f-809d-99cb-d52e2eb54f59" class="">Arch. Photogramm. Remote. Sens. Spat. Inf. Sci. XLII-4 (W7) (2017) 37–42,</p><p id="2032377e-b56f-8055-96ad-ef3fefd97c9e" class="">https://doi.org/10.5194/isprs-archives-xlii-4-w7-37-2017.</p></li></ol><ol type="1" id="2032377e-b56f-80f4-9811-f2a32e45dc35" class="numbered-list" start="2"><li>[52] L. Gobeawan, E.S. Lin, A. Tandon, A.T.K. Yee, V. Khoo, S.N. Teo, S. Yi, C.W. Lim,<p id="2032377e-b56f-8066-a926-c42d7d3442d3" class="">S.T. Wong, D.J. Wise, P. Cheng, S.C. Liew, X. Huang, Q.H. Li, L.S. Teo, G.<br/>S. Fekete, M.T. Poto, Modeling trees for virtual Singapore: from data acquisition<br/>to CityGML models, Int. Arch. Photogramm. Remote. Sens. Spat. Inf. Sci. XLII-4<br/>(W10) (2018) 55–62, https://doi.org/10.5194/isprs-archives-xlii-4-w10-55-<br/>2018.</p></li></ol><ol type="1" id="2032377e-b56f-8054-a718-ef00d368512f" class="numbered-list" start="3"><li>[53] R. Van Son, S. Jaw, J. Yan, V. Khoo, R. Loo, S. Teo, G. Schrotter, A framework for<br/>reliable three-dimensional underground utility mapping for urban planning, Int.<br/>Arch. Photogramm. Remote. Sens. Spat. Inf. Sci. XLII-4 (W10) (2018) 209–214,<br/>https://doi.org/10.5194/isprs-archives-xlii-4-w10-209-2018.</li></ol><ol type="1" id="2032377e-b56f-8014-be20-d39aa07f34c7" class="numbered-list" start="4"><li>[54] J. Yan, S. Jaw, R. Van Son, K. Soon, G. Schrotter, Three-dimensional data<br/>modelling for underground utility network mapping, Int. Arch. Photogramm.<br/>Remote. Sens. Spat. Inf. Sci. XLII-4 (2018) 711–715, https://doi.org/10.5194/<br/>isprs-archives-xlii-4-711-2018.</li></ol><ol type="1" id="2032377e-b56f-80bf-8f26-f9fa9b4d85e7" class="numbered-list" start="5"><li>[55] S. Ho, A. Rajabifard, Towards 3D-enabled urban land administration: strategic<br/>lessons from the BIM initiative in Singapore, Land Use Policy 57 (2016) 1–10,<br/>https://doi.org/10.1016/j.landusepol.2016.05.011.</li></ol><ol type="1" id="2032377e-b56f-80ea-87b4-dba5e700fbfb" class="numbered-list" start="6"><li>[56] T. Kutzner, I. Hijazi, T.H. Kolbe, Semantic modelling of 3D multi-utility networks<br/>for urban analyses and simulations, Int. J. 3-D Inform. Model. 7 (2) (2018) 1–34,<br/>https://doi.org/10.4018/ij3dim.2018040101.</li></ol><ol type="1" id="2032377e-b56f-808d-b2ac-ce7ca7408a16" class="numbered-list" start="7"><li>[57] K. Wong, C. Ellul, User requirements gathering for a national 3D mapping product<br/>in the United Kingdom, ISPRS Ann. Photogramm. Remote Sens. Spatial Inf. Sci.<br/>IV-4 (W6) (2018) 89–96, https://doi.org/10.5194/isprs-annals-iv-4-w6-89-2018.</li></ol><ol type="1" id="2032377e-b56f-809e-94c0-e4ae7763a3ef" class="numbered-list" start="8"><li>[58] G. Agugiaro, J. Benner, P. Cipriano, R. Nouvel, The energy application domain<br/>extension for CityGML: enhancing interoperability for urban energy simulations,<br/>Open geospatial data, Softw. Standards 3 (1) (2018) 139, https://doi.org/<br/>10.1186/s40965-018-0042-y.</li></ol><ol type="1" id="2032377e-b56f-8013-b390-c84e89626389" class="numbered-list" start="9"><li>[59] I. Prieto, J.L. Izkara, F.J.D. Hoyo, Efficient Visualization of the Geometric<br/>Information of CityGML: Application for the Documentation of Built Heritage,<br/>Vol. 7333 of Computational Science and Its Applications – ICCSA 2012, 2012,<br/>pp. 529–544.</li></ol><ol type="1" id="2032377e-b56f-802d-b04b-ddabbb886d55" class="numbered-list" start="10"><li>[60] K. Chaturvedi, Z. Yao, T.H. Kolbe, Integrated management and visualization of<br/>static and dynamic properties of semantic 3D city models, Int. Arch. Photogramm.<br/>Remote. Sens. Spat. Inf. Sci. XLII-4 (W17) (2019) 7–14, https://doi.org/10.5194/<br/>isprs-archives-xlii-4-w17-7-2019.</li></ol><ol type="1" id="2032377e-b56f-802e-be7e-efd66b253878" class="numbered-list" start="11"><li>[61] P.O. Olsson, T. Johansson, H. Eriksson, T. Lith ́en, L.H. Bengtsson, J. Axelsson,<br/>U. Roos, K. Neland, B. Ryd ́en, L. Harrie, Unbroken digital data flow in the built<br/>environment process – a case study in Sweden, Int. Arch. Photogramm. Remote.<br/>Sens. Spat. Inf. Sci. XLII-2 (W13) (2019) 1347–1352, https://doi.org/10.5194/<br/>isprs-archives-xlii-2-w13-1347-2019.</li></ol><ol type="1" id="2032377e-b56f-803c-9a6d-d8937cd929c4" class="numbered-list" start="12"><li>[62] L. Knoth, J. Scholz, J. Strobl, M. Mittlbo ̈ck, B. Vockner, C. Atzl, A. Rajabifard,<br/>B. Atazadeh, Cross-domain building models—a step towards interoperability,<br/>ISPRS Int. J. Geo Inf. 7 (9) (2018) 363, https://doi.org/10.3390/ijgi7090363.</li></ol><ol type="1" id="2032377e-b56f-8030-b848-cfa8dc82aac1" class="numbered-list" start="13"><li>[63] K. Kumar, H. Ledoux, T.J.F. Commandeur, J.E. Stoter, Modelling urban noise in<br/>CityGML ADE: case of the Netherlands, ISPRS Ann. Photogramm. Remote Sens.<br/>Spatial Inf. Sci. IV-4-W5 (2017) 73–81, https://doi.org/10.5194/isprs-annals-iv-<br/>4-w5-73-2017.</li></ol><ol type="1" id="2032377e-b56f-8015-bb36-ced96ebc8cee" class="numbered-list" start="14"><li>[64] L.L.O. Scholtenhuis, X.D. Duijn, S. Zlatanova, Representing geographical<br/>uncertainties of utility location data in 3D, Autom. Constr. 96 (2018) 483–493,<br/>https://doi.org/10.1016/j.autcon.2018.09.012.</li></ol><ol type="1" id="2032377e-b56f-805a-be8b-df1557a7cae1" class="numbered-list" start="15"><li>[65] Open IFC Model Repository, House Sr. Dubal Herrera (Publishable under cc-by-<br/>3.0 licence). http://openifcmodel.cs.auckland.ac.nz/Model/Details/314, 2018.</li></ol><ol type="1" id="2032377e-b56f-80b6-8769-cb62c8f52969" class="numbered-list" start="16"><li>[66] T. Kutzner, T.H. Kolbe, CityGML 3.0: Sneak Preview, in: 38. Wissenschaftlich-<p id="2032377e-b56f-80ca-a8d7-d22bcad651cd" class="">Technische Jahrestagung der DGPF und PFGK18 Tagung in München—</p><p id="2032377e-b56f-80b7-bbed-ee3b88d82d99" class="">Publikationen der DGPF, Vol. 27, 2018, pp. 835–839.</p></li></ol><ol type="1" id="2032377e-b56f-80a8-b73a-d6aecef0eb0b" class="numbered-list" start="17"><li>[67] M.O. Lo ̈wner, G. Gro ̈ger, J. Benner, F. Biljecki, C. Nagel, Proposal for a new LOD<p id="2032377e-b56f-8093-b704-de3455358020" class="">and multi-representation concept for CityGML, ISPRS Ann. Photogramm. Remote<br/>Sens. Spatial Inf. Sci. IV-2 (W1) (2016) 3–12, https://doi.org/10.5194/isprs-<br/>annals-iv-2-w1-3-2016.</p></li></ol><ol type="1" id="2032377e-b56f-80e7-a3c2-f36d737228a2" class="numbered-list" start="18"><li>[68] T. Kutzner, K. Chaturvedi, T.H. Kolbe, CityGML 3.0: new functions open up new<br/>applications, PFG – J. Photogrammetr. Remote Sens. Geoinform. Sci. (2020)<br/>1–19, https://doi.org/10.1007/s41064-020-00095-z.</li></ol><ol type="1" id="2032377e-b56f-800d-bd3c-ec6d24553ede" class="numbered-list" start="19"><li>[69] P.P. Yang, S.Y. Putra, W. Li, Viewsphere: a GIS-based 3D visibility analysis for<br/>urban design evaluation, Environ. Plan. B: Plan. Design 34 (6) (2007) 971–992,<br/>https://doi.org/10.1068/b32142.</li></ol><ol type="1" id="2032377e-b56f-80e7-a500-c61224e29989" class="numbered-list" start="20"><li>[70] S.-M. Yu, S.-S. Han, C.-H. Chai, Modeling the value of view in high-rise<br/>apartments: a 3D GIS approach, Environ. Plan. B: Plan. Design 34 (1) (2007)<br/>139–153, https://doi.org/10.1068/b32116.</li></ol><ol type="1" id="2032377e-b56f-80e5-bd78-f6e7b86d4fcc" class="numbered-list" start="21"><li>[71] S. Paiho, J. Ketoma ̈ki, L. Kannari, T. H ̈akkinen, J. Shemeikka, A new procedure<br/>for assessing the energy-efficient refurbishment of buildings on district scale,<br/>Sustain. Cities Soc. (2019) 101454, https://doi.org/10.1016/j.scs.2019.101454.</li></ol><ol type="1" id="2032377e-b56f-804b-9e00-f5ab7031b9a4" class="numbered-list" start="22"><li>[72] Y. Chen, T. Hong, X. Luo, B. Hooper, Development of city buildings dataset for<br/>urban building energy modeling, Energy and Buildings 183 (2019) 252–265,<br/>https://doi.org/10.1016/j.enbuild.2018.11.008.</li></ol><ol type="1" id="2032377e-b56f-8025-9ca0-de0c59ab5d70" class="numbered-list" start="23"><li>[73] S.M. Murshed, S. Picard, A. Koch, Modelling, validation and quantification of<br/>climate and other sensitivities of building energy model on 3D city models, ISPRS<br/>Int. J. Geo Inf. 7 (11) (2018) 447–452, https://doi.org/10.3390/ijgi7110447.</li></ol><ol type="1" id="2032377e-b56f-80f8-ad1f-c2f6884d218a" class="numbered-list" start="24"><li>[74] M. Bizjak, B. Zˇalik, G. Sˇtumberger, N. Lukaˇc, Estimation and optimisation of<br/>buildings’ thermal load using LiDAR data, Build. Environ. 128 (2018) 12–21,<br/>https://doi.org/10.1016/j.buildenv.2017.11.016.</li></ol></li></ol><p id="2032377e-b56f-80cb-bbde-cee64d015c49" class="">1. [75]  A. Salvo, Electrical appliances moderate households’ water demand response to<br/>heat, Nat. Commun. 9 (1) (2018) 5408, https://doi.org/10.1038/s41467-018-<br/>07833-3.<br/><br/>2. [76]  T. Agius, S. Sabri, M. Kalantari, Three-dimensional rule-based City Modelling to<br/>support urban redevelopment process, ISPRS Int. J. Geo Inf. 7 (10) (2018) 413,<br/>https://doi.org/10.3390/ijgi7100413.<br/><br/>3. [77]  G. Herbert, X. Chen, A comparison of usefulness of 2D and 3D representations of<br/>urban planning, Cartogr. Geogr. Inf. Sci. 42 (1) (2015) 22–32, https://doi.org/<br/>10.1080/15230406.2014.987694.<br/><br/>4. [78]  M. Ranzinger, G. Gleixner, GIS datasets for 3D urban planning, Comput. Environ.<br/>Urban. Syst. 21 (2) (1997) 159–173, https://doi.org/10.1016/S0198-9715(97)<br/>10005-9.<br/><br/>5. [79]  R. Trubka, S. Glackin, O. Lade, C. Pettit, A web-based 3D visualisation and<br/>assessment system for urban precinct scenario modelling, ISPRS J. Photogramm.<br/>Remote Sens. 117 (2016) 175–186, https://doi.org/10.1016/j.<br/>isprsjprs.2015.12.003.<br/><br/>6. [80]  M. Brasebin, J. Perret, S. Mustiere, C. Weber, 3D urban data to assess local urban<br/>regulation influence, Comput. Environ. Urban. Syst. 68 (2018) 37–52, https://<br/>doi.org/10.1016/j.compenvurbsys.2017.10.002.<br/><br/>7. [81]  F.C. Ahmed, S.P. Sekar, Using three-dimensional volumetric analysis in everyday<br/>urban planning processes, Appl. Spatial Anal. Policy 8 (4) (2015) 393–408,<br/>https://doi.org/10.1007/s12061-014-9122-2.<br/><br/>8. [82]  K.W. Chen, L. Norford, Evaluating urban forms for comparison studies in the<br/>massing design stage, Sustainability 9 (6) (2017) 987, https://doi.org/10.3390/<br/>su9060987.<br/><br/>9. [83]  A. Koltsova, B. Tunçer, G. Schmitt, Visibility analysis for 3D Urban environments,<br/>in: Proceedings of the 31st International Conference on Education and research in<br/>Computer Aided Architectural Design in Europe, 2013, pp. 375–384.<br/><br/>10. [84]  S. Yu, B. Yu, W. Song, B. Wu, J. Zhou, Y. Huang, J. Wu, F. Zhao, W. Mao, View-<br/>based greenery: a three-dimensional assessment of city buildings’ green visibility<br/>using floor green view index, Landsc. Urban Plan. 152 (2016) 13–26, https://doi.<br/>org/10.1016/j.landurbplan.2016.04.004.<br/><br/>11. [85]  J. Chen, K.C. Clarke, Indoor cartography, Cartogr. Geogr. Inf. Sci. 1 (114) (2019)<br/>1–15, https://doi.org/10.1080/15230406.2019.1619482.<br/><br/>12. [86]  K.-J. Li, G. Conti, E. Konstantinidis, S. Zlatanova, P. Bamidis, OGC IndoorGML: a<br/>standard approach for indoor maps, in: Geographical and Fingerprinting Data to<br/>Create Systems for Indoor Positioning and Indoor/Outdoor Navigation, Elsevier,<br/>2019, pp. 187–207, https://doi.org/10.1016/B978-0-12-813189-3.00010-1.<br/><br/>13. [87]  C. Nagel (Ed.), Spatio-semantic Modelling of Indoor Environments for Indoor<br/>Navigation, TU Berlin, 2014. Ph.D. thesis, https://www.dgk.badw.de/fileadmin/<br/>user_upload/Files/DGK/docs/c-727.pdf.<br/><br/>14. [88]  A.A. Khan, Constraints and Concepts for the Support of Different Locomotion<br/>Types in Indoor Navigation, Ph.D. thesis, Technische Universit ̈at München,<br/>München, 2015, https://mediatum.ub.tum.de/?id=1233285.<br/><br/>15. [89]  A. Vanclooster, N.V.D. Weghe, P.D. Maeyer, Integrating indoor and outdoor<br/>spaces for pedestrian navigation guidance: a review, Trans. GIS 20 (4) (2016)<br/>491–525, https://doi.org/10.1111/tgis.12178.<br/><br/>16. [90]  M.-P. Kwan, J. Lee, Emergency response after 9/11: the potential of real-time 3D<br/>GIS for quick emergency response in micro-spatial environments, Comput.<br/>Environ. Urban. Syst. 29 (2) (2005) 93–113, https://doi.org/10.1016/j.<br/>compenvurbsys.2003.08.002.<br/><br/>17. [91]  L. Liu, S. Zlatanova, A “door-to-door” path-finding approach for indoor<br/>navigation, ISPRS Ann. Photogramm. Remote Sens. Spatial Inf. Sci. II-4 (2011)<br/>45–51, https://doi.org/10.5194/isprsannals-ii-4-45-2014.<br/><br/>18. [92]  K. Kim, J.P. Wilson, Planning and visualising 3D routes for indoor and outdoor<br/>spaces using CityEngine, J. Spat. Sci. 60 (1) (2014) 179–193, https://doi.org/<br/>10.1080/14498596.2014.911126.<br/><br/>19. [93]  J.-C. Thill, T.H.D. Dao, Y. Zhou, Traveling in the three-dimensional city:<br/>applications in route planning, accessibility assessment, location analysis and<br/>beyond, J. Transp. Geogr. 19 (3) (2011) 405–421, https://doi.org/10.1016/j.<br/>jtrangeo.2010.11.007.<br/><br/>20. [94]  B. Elias, Pedestrian Navigation - Creating a tailored geodatabase for routing, in:<br/>2007 4th Workshop on Positioning, Navigation and Communication, 2007,<br/>pp. 41–47, https://doi.org/10.1109/wpnc.2007.353611.<br/><br/>21. [95]  J. Lee, A three-dimensional navigable data model to support emergency response<br/>in microspatial built-environments, Ann. Assoc. Am. Geogr. 97 (3) (2007)<br/>512–529, https://doi.org/10.1111/j.1467-8306.2007.00561.x.<br/><br/>22. [96]  M. Aleksandrov, C. Cheng, A. Rajabifard, M. Kalantari, Modelling and finding<br/>optimal evacuation strategy for tall buildings, Saf. Sci. 115 (2019) 247–255,<br/>https://doi.org/10.1016/j.ssci.2019.02.017.<br/><br/>23. [97]  A.A. Diakit ́e, S. Zlatanova, K.J. Li, About the subdivision of indoor spaces in<br/>IndoorGML, ISPRS Ann. Photogramm. Remote Sens. Spatial Inf. Sci. IV-4 (W5)<br/>(2017) 41–48, https://doi.org/10.5194/isprs-annals-iv-4-w5-41-2017.</p><ol type="1" id="2032377e-b56f-80f0-9f53-de8738ad6a35" class="numbered-list" start="1"><li>1.<p id="2032377e-b56f-80bb-9d9f-fdff7f18efbc" class="">[75]  A. Salvo, Electrical appliances moderate households’ water demand response to<br/>heat, Nat. Commun. 9 (1) (2018) 5408, https://doi.org/10.1038/s41467-018-<br/>07833-3.</p></li></ol><ol type="1" id="2032377e-b56f-8013-b228-f19edf7537a7" class="numbered-list" start="2"><li>2.<p id="2032377e-b56f-80c1-854e-ef137fc0087d" class="">[76]  T. Agius, S. Sabri, M. Kalantari, Three-dimensional rule-based City Modelling to<br/>support urban redevelopment process, ISPRS Int. J. Geo Inf. 7 (10) (2018) 413,<br/>https://doi.org/10.3390/ijgi7100413.</p></li></ol><ol type="1" id="2032377e-b56f-801a-93cc-f73cd7b67913" class="numbered-list" start="3"><li>3.<p id="2032377e-b56f-8045-be14-d2d6ea208d99" class="">[77]  G. Herbert, X. Chen, A comparison of usefulness of 2D and 3D representations of<br/>urban planning, Cartogr. Geogr. Inf. Sci. 42 (1) (2015) 22–32, https://doi.org/<br/>10.1080/15230406.2014.987694.</p></li></ol><ol type="1" id="2032377e-b56f-8090-9cac-ca0f6f117954" class="numbered-list" start="4"><li>4.<p id="2032377e-b56f-8099-bf7c-df0ae8d8842b" class="">[78]  M. Ranzinger, G. Gleixner, GIS datasets for 3D urban planning, Comput. Environ.<br/>Urban. Syst. 21 (2) (1997) 159–173, https://doi.org/10.1016/S0198-9715(97)<br/>10005-9.</p></li></ol><ol type="1" id="2032377e-b56f-80fe-836b-e16ea1febeb7" class="numbered-list" start="5"><li>5.<p id="2032377e-b56f-806d-a923-f6f23073a2f5" class="">[79]  R. Trubka, S. Glackin, O. Lade, C. Pettit, A web-based 3D visualisation and<br/>assessment system for urban precinct scenario modelling, ISPRS J. Photogramm.<br/>Remote Sens. 117 (2016) 175–186, https://doi.org/10.1016/j.<br/>isprsjprs.2015.12.003.</p></li></ol><ol type="1" id="2032377e-b56f-80a1-b20b-c638f8d77ddd" class="numbered-list" start="6"><li>6.<p id="2032377e-b56f-80a5-984a-e7253a2ac547" class="">[80]  M. Brasebin, J. Perret, S. Mustiere, C. Weber, 3D urban data to assess local urban<br/>regulation influence, Comput. Environ. Urban. Syst. 68 (2018) 37–52, https://<br/>doi.org/10.1016/j.compenvurbsys.2017.10.002.</p></li></ol><ol type="1" id="2032377e-b56f-80ec-a006-fdda5e7d1294" class="numbered-list" start="7"><li>7.<p id="2032377e-b56f-80cd-8850-db0a75566405" class="">[81]  F.C. Ahmed, S.P. Sekar, Using three-dimensional volumetric analysis in everyday<br/>urban planning processes, Appl. Spatial Anal. Policy 8 (4) (2015) 393–408,<br/>https://doi.org/10.1007/s12061-014-9122-2.</p></li></ol><ol type="1" id="2032377e-b56f-8098-aca4-d65b95e7f8b3" class="numbered-list" start="8"><li>8.<p id="2032377e-b56f-80f8-ab42-f338136ae17e" class="">[82]  K.W. Chen, L. Norford, Evaluating urban forms for comparison studies in the<br/>massing design stage, Sustainability 9 (6) (2017) 987, https://doi.org/10.3390/<br/>su9060987.</p></li></ol><ol type="1" id="2032377e-b56f-8033-ab35-fee31a3ea498" class="numbered-list" start="9"><li>9.<p id="2032377e-b56f-80d3-9ba9-daa6d7ba7e14" class="">[83]  A. Koltsova, B. Tunçer, G. Schmitt, Visibility analysis for 3D Urban environments,<br/>in: Proceedings of the 31st International Conference on Education and research in<br/>Computer Aided Architectural Design in Europe, 2013, pp. 375–384.</p></li></ol><ol type="1" id="2032377e-b56f-8013-82d1-e410c3f89096" class="numbered-list" start="10"><li>10.<p id="2032377e-b56f-8011-a8a4-e690f89c72cf" class="">[84]  S. Yu, B. Yu, W. Song, B. Wu, J. Zhou, Y. Huang, J. Wu, F. Zhao, W. Mao, View-<br/>based greenery: a three-dimensional assessment of city buildings’ green visibility<br/>using floor green view index, Landsc. Urban Plan. 152 (2016) 13–26, https://doi.<br/>org/10.1016/j.landurbplan.2016.04.004.</p></li></ol><ol type="1" id="2032377e-b56f-8043-90fc-e17dba7467d2" class="numbered-list" start="11"><li>11.<p id="2032377e-b56f-80ca-b217-ee4045b0a371" class="">[85]  J. Chen, K.C. Clarke, Indoor cartography, Cartogr. Geogr. Inf. Sci. 1 (114) (2019)<br/>1–15, https://doi.org/10.1080/15230406.2019.1619482.</p></li></ol><ol type="1" id="2032377e-b56f-8011-94a5-c72a759ef56c" class="numbered-list" start="12"><li>12.<p id="2032377e-b56f-80bd-ba34-de91a2f0bd84" class="">[86]  K.-J. Li, G. Conti, E. Konstantinidis, S. Zlatanova, P. Bamidis, OGC IndoorGML: a<br/>standard approach for indoor maps, in: Geographical and Fingerprinting Data to<br/>Create Systems for Indoor Positioning and Indoor/Outdoor Navigation, Elsevier,<br/>2019, pp. 187–207, https://doi.org/10.1016/B978-0-12-813189-3.00010-1.</p></li></ol><ol type="1" id="2032377e-b56f-80f1-948c-c9562d159713" class="numbered-list" start="13"><li>13.<p id="2032377e-b56f-80ff-ad56-f7443fd158f7" class="">[87]  C. Nagel (Ed.), Spatio-semantic Modelling of Indoor Environments for Indoor<br/>Navigation, TU Berlin, 2014. Ph.D. thesis, https://www.dgk.badw.de/fileadmin/<br/>user_upload/Files/DGK/docs/c-727.pdf.</p></li></ol><ol type="1" id="2032377e-b56f-80cc-900a-da8e642f5610" class="numbered-list" start="14"><li>14.<p id="2032377e-b56f-8091-a50a-e3c90fa7e89e" class="">[88]  A.A. Khan, Constraints and Concepts for the Support of Different Locomotion<br/>Types in Indoor Navigation, Ph.D. thesis, Technische Universit ̈at München,<br/>München, 2015, https://mediatum.ub.tum.de/?id=1233285.</p></li></ol><ol type="1" id="2032377e-b56f-806d-a762-ee5ff5ab564a" class="numbered-list" start="15"><li>15.<p id="2032377e-b56f-80f4-8c2e-e83fa2d9b47f" class="">[89]  A. Vanclooster, N.V.D. Weghe, P.D. Maeyer, Integrating indoor and outdoor<br/>spaces for pedestrian navigation guidance: a review, Trans. GIS 20 (4) (2016)<br/>491–525, https://doi.org/10.1111/tgis.12178.</p></li></ol><ol type="1" id="2032377e-b56f-8030-8ccb-fe71787739f1" class="numbered-list" start="16"><li>16.<p id="2032377e-b56f-801c-ad2d-c4f318d8ae99" class="">[90]  M.-P. Kwan, J. Lee, Emergency response after 9/11: the potential of real-time 3D<br/>GIS for quick emergency response in micro-spatial environments, Comput.<br/>Environ. Urban. Syst. 29 (2) (2005) 93–113, https://doi.org/10.1016/j.<br/>compenvurbsys.2003.08.002.</p></li></ol><ol type="1" id="2032377e-b56f-805e-9f27-e75a3e91fad9" class="numbered-list" start="17"><li>17.<p id="2032377e-b56f-80b9-b931-e001ddbb79b9" class="">[91]  L. Liu, S. Zlatanova, A “door-to-door” path-finding approach for indoor<br/>navigation, ISPRS Ann. Photogramm. Remote Sens. Spatial Inf. Sci. II-4 (2011)<br/>45–51, https://doi.org/10.5194/isprsannals-ii-4-45-2014.</p></li></ol><ol type="1" id="2032377e-b56f-80e2-ba62-fd852f69433f" class="numbered-list" start="18"><li>18.<p id="2032377e-b56f-804c-bc78-cbc64ded0ee8" class="">[92]  K. Kim, J.P. Wilson, Planning and visualising 3D routes for indoor and outdoor<br/>spaces using CityEngine, J. Spat. Sci. 60 (1) (2014) 179–193, https://doi.org/<br/>10.1080/14498596.2014.911126.</p></li></ol><ol type="1" id="2032377e-b56f-807e-a6ea-e5e8090b294a" class="numbered-list" start="19"><li>19.<p id="2032377e-b56f-805b-a69e-d52c46c0e753" class="">[93]  J.-C. Thill, T.H.D. Dao, Y. Zhou, Traveling in the three-dimensional city:<br/>applications in route planning, accessibility assessment, location analysis and<br/>beyond, J. Transp. Geogr. 19 (3) (2011) 405–421, https://doi.org/10.1016/j.<br/>jtrangeo.2010.11.007.</p></li></ol><ol type="1" id="2032377e-b56f-80cc-a54c-fe6c8f7a2b61" class="numbered-list" start="20"><li>20.<p id="2032377e-b56f-8098-a5f5-c3c1e76f3540" class="">[94]  B. Elias, Pedestrian Navigation - Creating a tailored geodatabase for routing, in:<br/>2007 4th Workshop on Positioning, Navigation and Communication, 2007,<br/>pp. 41–47, https://doi.org/10.1109/wpnc.2007.353611.</p></li></ol><ol type="1" id="2032377e-b56f-80de-8ab3-f35893eaae19" class="numbered-list" start="21"><li>21.<p id="2032377e-b56f-808b-b845-d8ac046135c6" class="">[95]  J. Lee, A three-dimensional navigable data model to support emergency response<br/>in microspatial built-environments, Ann. Assoc. Am. Geogr. 97 (3) (2007)<br/>512–529, https://doi.org/10.1111/j.1467-8306.2007.00561.x.</p></li></ol><ol type="1" id="2032377e-b56f-80f2-8d70-d6059111cb86" class="numbered-list" start="22"><li>22.<p id="2032377e-b56f-80f4-96d1-dce03f025457" class="">[96]  M. Aleksandrov, C. Cheng, A. Rajabifard, M. Kalantari, Modelling and finding<br/>optimal evacuation strategy for tall buildings, Saf. Sci. 115 (2019) 247–255,<br/>https://doi.org/10.1016/j.ssci.2019.02.017.</p></li></ol><ol type="1" id="2032377e-b56f-8080-b249-db187435d5ca" class="numbered-list" start="23"><li>23.<p id="2032377e-b56f-804b-b35f-c55f9a284f82" class="">[97]  A.A. Diakit ́e, S. Zlatanova, K.J. Li, About the subdivision of indoor spaces in<br/>IndoorGML, ISPRS Ann. Photogramm. Remote Sens. Spatial Inf. Sci. IV-4 (W5)<br/>(2017) 41–48, https://doi.org/10.5194/isprs-annals-iv-4-w5-41-2017.</p></li></ol><p id="2032377e-b56f-800f-b23e-ed7924d3b954" class="">J. Lim, P. Janssen, F. Biljecki, Visualising detailed CityGML and ADE at the<br/>building scale, Int. Arch. Photogramm. Remote. Sens. Spat. Inf. Sci. XLIV-4<br/>(W1–2020) (2020) 83–90, https://doi.org/10.5194/isprs-archives-xliv-4-w1-<br/>2020-83-2020.</p><p id="2032377e-b56f-80d7-b140-e22045a145c7" class="">G.S. Floros, C. Ellul, E. Dimopoulou, Investigating interoperability capabilities<br/>between IFC and CityGML LOD 4 – retaining semantic information, Int. Arch.<br/>Photogramm. Remote. Sens. Spat. Inf. Sci. XLII-4 (W10) (2018) 33–40, https://<br/>doi.org/10.5194/isprs-archives-xlii-4-w10-33-2018.</p><p id="2032377e-b56f-80ee-aece-d6a896c001db" class="">H. Eriksson, L. Harrie, J.M. Paasch, What is the need for building parts? – a<br/>comparison of CityGML, INSPIRE building and a Swedish building standard, Int.<br/>Arch. Photogramm. Remote. Sens. Spat. Inf. Sci. XLII-4 (W10) (2018) 27–32,<br/>https://doi.org/10.5194/isprs-archives-xlii-4-w10-27-2018.</p><p id="2032377e-b56f-8007-a4ba-c8c7c4d3514c" class="">K. Arroyo Ohori, F. Biljecki, A. Diakit ́e, T. Krijnen, H. Ledoux, J. Stoter, Towards<br/>an integration of GIS and BIM data: what are the geometric and topological<br/>issues? ISPRS Ann. Photogramm. Remote Sens. Spatial Inf. Sci. IV-4-W5 (2017)<br/>1–8, https://doi.org/10.5194/isprs-annals-iv-4-w5-1-2017.</p><p id="2032377e-b56f-8058-9c98-dcb973618cbb" class="">K. Arroyo Ohori, A. Diakit ́e, T. Krijnen, H. Ledoux, J. Stoter, Processing BIM and<br/>GIS models in practice: experiences and recommendations from a GeoBIM project<br/>in the Netherlands, ISPRS Int. J. Geo Inf. 7 (8) (2018) 311, https://doi.org/<br/>10.3390/ijgi7080311.</p><p id="2032377e-b56f-809f-bfea-e0b7bf6445ba" class="">F. Biljecki, H. Ledoux, J. Stoter, G. Vosselman, The variants of an LOD of a 3D<br/>building model and their influence on spatial analyses, ISPRS J. Photogramm.<br/>Remote Sens. 116 (2016) 42–54, https://doi.org/10.1016/j.<br/>isprsjprs.2016.03.003.</p><p id="2032377e-b56f-804a-86d9-d7cb632499d1" class="">INSPIRE Thematic Working Group on Buildings, D2.8.III.2 INSPIRE Data<br/>Specification on Buildings – Technical Guidelines, Tech. rep. [cited 13 April<br/>2019], https://inspire.ec.europa.eu/id/document/tg/bu, 2013.<br/>N. Nazarian, T. Sin, L. Norford, Numerical modeling of outdoor thermal comfort<br/>in 3D, Urban Clim. 26 (2018) 212–230, https://doi.org/10.1016/j.<br/>uclim.2018.09.001.</p><p id="2032377e-b56f-809e-a585-c24310b7c0d5" class="">W.-J. Zhao, E.-X. Liu, H.J. Poh, B. Wang, S.-P. Gao, C.E. Png, K.W. Li, S.H. Chong,<br/>3D traffic noise mapping using unstructured surface mesh representation of<br/>buildings and roads, Appl. Acoust. 127 (2017) 297–304, https://doi.org/<br/>10.1016/j.apacoust.2017.06.025.</p><p id="2032377e-b56f-80d8-9f90-f5b3bee5a057" class="">R. Bozovic-Stamenovic, N. Kishnani, B.K. Tan, D. Prasad, F. Faizal, Assessment of<br/>awareness of green mark (GM) rating tool by occupants of GM buildings and<br/>general public, Energy and Buildings 115 (2016) 55–62, https://doi.org/<br/>10.1016/j.enbuild.2015.01.003.</p><p id="2032377e-b56f-80a0-8480-d7107efc4d78" class="">J. Stoter, S. Ho, F. Biljecki, Considerations for a contemporary 3D cadastre for our<br/>times, Int. Arch. Photogramm. Remote. Sens. Spat. Inf. Sci. XLII-4 (W15) (2019)<br/>81–88, https://doi.org/10.5194/isprs-archives-xlii-4-w15-81-2019.<br/>R. Yaagoubi, A. Al-Gilani, A. Baik, E. Alhomodi, Y. Miky, SEH-SDB: a semantically<br/>enriched historical spatial database for documentation and preservation of<br/>monumental heritage based on CityGML, Appl. Geomatics 1 (5) (2018) 41,<br/>https://doi.org/10.1007/s12518-018-0238-y.</p><p id="2032377e-b56f-8031-98f1-e5d7f7a22c0b" class="">E. Colucci, V.D. Ruvo, A. Lingua, F. Matrone, G. Rizzo, HBIM-GIS integration:<br/>from IFC to CityGML standard for damaged cultural heritage in a multiscale 3D<br/>GIS, Appl. Sci. 10 (4) (2020) 1356–1360, https://doi.org/10.3390/app10041356.<br/>R. Boeters, K. Arroyo Ohori, F. Biljecki, S. Zlatanova, Automatically enhancing<br/>CityGML LOD2 models with a corresponding indoor geometry, Int. J. Geogr. Inf.<br/>Sci. 29 (12) (2015) 2248–2268, https://doi.org/10.1080/<br/>13658816.2015.1072201.</p><p id="2032377e-b56f-80cf-b0c1-f0c909f9c725" class="">B. Hagedorn, M. Trapp, T. Glander, J. Do ̈llner, Towards an indoor level-of-detail<br/>model for route visualization, in: 10th International Conference on Mobile Data<br/>Management: Systems, Services and Middleware, 2009, pp. 692–697, https://doi.<br/>org/10.1109/mdm.2009.118.</p><p id="2032377e-b56f-80b4-bc5f-fa07363bdfc5" class="">S. Kemec, S. Zlatanova, S. Duzgun, A new LoD definition hierarchy for 3D city<br/>models used for natural disaster risk communication tool, in: Proceedings of the<br/>4th International Conference on Cartography GIS, 2012, pp. 95–104.<br/>H.-Y. Kang, J. Lee, A study on the LOD(level of detail) model for applications<br/>based on indoor space data, J. Korean Soc. Surv. Geod. Photogramm. Cartogr. 32<br/>(2) (2014) 143–151, https://doi.org/10.7848/ksgpc.2014.32.2.143.</p><p id="2032377e-b56f-8020-a6d9-dd615cf81b79" class="">L. Tang, L. Li, S. Ying, Y. Lei, A full level-of-detail specification for 3D building<br/>models combining indoor and outdoor scenes, ISPRS Int. J. Geo Inf. 7 (11) (2018)<br/>419–420, https://doi.org/10.3390/ijgi7110419.<br/>A. Labetski, S.V. Gerwen, G. Tamminga, H. Ledoux, J. Stoter, A proposal for an<br/>improved transportation model in CityGML, Int. Arch. Photogramm. Remote<br/>Sens. Spatial Inf. Sci. XLII-4/W10 (2018) 89–96, https://doi.org/10.5194/isprs-<br/>archives-xlii-4-w10-89-2018.</p><p id="2032377e-b56f-802a-9d76-d32b83762e36" class="">H. Ledoux, K. Arroyo Ohori, K. Kumar, B. Dukai, A. Labetski, S. Vitalis, CityJSON:<br/>a compact and easy-to-use encoding of the CityGML data model, Open geospatial<br/>data, Softw. Standards 4 (2019) 4, https://doi.org/10.1186/s40965-019-0064-0.</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

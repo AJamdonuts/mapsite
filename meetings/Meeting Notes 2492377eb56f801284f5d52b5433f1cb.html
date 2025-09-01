@@ -1,0 +1,683 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Meeting Notes</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-default { background-color: rgba(84, 72, 49, 0.08); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2492377e-b56f-8012-84f5-d52b5433f1cb" class="page sans"><header><h1 class="page-title">Meeting Notes</h1><p class="page-description"></p></header><div class="page-body"><h2 id="24d2377e-b56f-8079-b13a-e7c82c84b8fc" class="">1. Principles of Good Design</h2><h3 id="24d2377e-b56f-80b5-940a-eeb6f1d261ea" class="">Dieter Rams – Ten Principles</h3><ol type="1" id="24d2377e-b56f-8058-9e88-fc9970af0400" class="numbered-list" start="1"><li><strong>Innovative</strong> – Not dependent on technological advances; design is adaptable and remains relevant over time.</li></ol><ol type="1" id="24d2377e-b56f-8082-bf40-f02d8ff15dc8" class="numbered-list" start="2"><li><strong>Useful</strong> – Meets functional, psychological, and aesthetic criteria.</li></ol><ol type="1" id="24d2377e-b56f-80fe-a230-dd101e5a459d" class="numbered-list" start="3"><li><strong>Aesthetic</strong> – Well executed and visually appealing.</li></ol><ol type="1" id="24d2377e-b56f-8032-a60d-f9e7bc585a75" class="numbered-list" start="4"><li><strong>Understandable</strong> – Self-explanatory and easy to interpret.</li></ol><ol type="1" id="24d2377e-b56f-8048-b002-f8ae0aa4c866" class="numbered-list" start="5"><li><strong>Unobtrusive</strong> – Neutral and restrained, allowing space for user self-expression.</li></ol><ol type="1" id="24d2377e-b56f-80c1-aedf-ff372a5a6347" class="numbered-list" start="6"><li><strong>Honest</strong> – Does not attempt to deceive or manipulate.</li></ol><ol type="1" id="24d2377e-b56f-800b-aef6-ef81c376fa00" class="numbered-list" start="7"><li><strong>Long-lasting</strong> – Avoids trends and short-lived fashions.</li></ol><ol type="1" id="24d2377e-b56f-80a3-bd04-f1a04c082a27" class="numbered-list" start="8"><li><strong>Thorough</strong> – Accurate, showing respect for the user.</li></ol><ol type="1" id="24d2377e-b56f-808d-b323-cf90cc7a5d1b" class="numbered-list" start="9"><li><strong>Environmentally friendly</strong> – Conserves resources; minimises physical and visual pollution.</li></ol><ol type="1" id="24d2377e-b56f-80bb-ae88-ed4fcab9e973" class="numbered-list" start="10"><li><strong>Minimal</strong> – “Less but better”; focuses on essential aspects, aiming for purity and simplicity.</li></ol><h3 id="24d2377e-b56f-804d-9d92-c7fc41c128a9" class="">UX Honeycomb (Morville, 2004 – Semantic Studios)</h3><ul id="24d2377e-b56f-800f-a913-ce1423a15fc4" class="bulleted-list"><li style="list-style-type:disc"><strong>Useful</strong></li></ul><ul id="24d2377e-b56f-809e-baed-dfe2e1b00940" class="bulleted-list"><li style="list-style-type:disc"><strong>Usable</strong></li></ul><ul id="24d2377e-b56f-80d2-b829-c15e83997055" class="bulleted-list"><li style="list-style-type:disc"><strong>Findable</strong></li></ul><ul id="24d2377e-b56f-80c2-b76d-fefaae96ad10" class="bulleted-list"><li style="list-style-type:disc"><strong>Valuable</strong></li></ul><ul id="24d2377e-b56f-809c-8c09-d491299306d6" class="bulleted-list"><li style="list-style-type:disc"><strong>Desirable</strong></li></ul><ul id="24d2377e-b56f-8061-b5d7-e2e791e401ec" class="bulleted-list"><li style="list-style-type:disc"><strong>Accessible</strong></li></ul><ul id="24d2377e-b56f-8093-a7fc-cbadcd3eb810" class="bulleted-list"><li style="list-style-type:disc"><strong>Credible</strong></li></ul><hr id="24d2377e-b56f-8096-a431-e5588f5fb149"/><h2 id="24d2377e-b56f-80a4-82fc-c379d139d626" class="">2. Cartographic Design Principles</h2><h3 id="24d2377e-b56f-8081-a496-c52c8e43b09c" class="">GIS Contributors – Five Principles (GIS Lounge, 1999)</h3><ol type="1" id="24d2377e-b56f-8046-9a8d-dc2b483e0b8f" class="numbered-list" start="1"><li>Concept before compilation</li></ol><ol type="1" id="24d2377e-b56f-8036-aa1e-e9861a854839" class="numbered-list" start="2"><li>Hierarchy with harmony</li></ol><ol type="1" id="24d2377e-b56f-8027-a03c-c1f2c06dceed" class="numbered-list" start="3"><li>Simplicity from sacrifice</li></ol><ol type="1" id="24d2377e-b56f-8099-8846-ea2f4c5fc25f" class="numbered-list" start="4"><li>Maximum information at minimum cost</li></ol><ol type="1" id="24d2377e-b56f-8033-a912-efa2b1096c3d" class="numbered-list" start="5"><li>Engage emotion to engage understanding</li></ol><h3 id="24d2377e-b56f-80a7-ba7d-d9a9d14c71e9" class="">General Cartographic Design Principles</h3><ul id="24d2377e-b56f-8066-9d95-c98b61297766" class="bulleted-list"><li style="list-style-type:disc">Understanding user requirements</li></ul><ul id="24d2377e-b56f-8024-b68c-c7e30f3a74b5" class="bulleted-list"><li style="list-style-type:disc">Considering display format</li></ul><ul id="24d2377e-b56f-8011-afed-d4ba4f25a2c8" class="bulleted-list"><li style="list-style-type:disc">Clear visual hierarchy</li></ul><ul id="24d2377e-b56f-8011-9ee7-e9e028afbba3" class="bulleted-list"><li style="list-style-type:disc">Simplicity</li></ul><ul id="24d2377e-b56f-804a-a294-d183592c57f0" class="bulleted-list"><li style="list-style-type:disc">Legibility</li></ul><ul id="24d2377e-b56f-80cf-a2a7-ccf825d22348" class="bulleted-list"><li style="list-style-type:disc">Consistency</li></ul><ul id="24d2377e-b56f-80eb-9463-c3dc9f1cf3ca" class="bulleted-list"><li style="list-style-type:disc">Accessibility</li></ul><ul id="24d2377e-b56f-804e-a886-e666b7fd5d75" class="bulleted-list"><li style="list-style-type:disc">Good composition</li></ul><hr id="24d2377e-b56f-8033-a696-e5c4c66e4de7"/><h2 id="24d2377e-b56f-8061-83c2-dbbf8d3115d4" class="">3. Design Philosophy</h2><ul id="24d2377e-b56f-80cf-a9cd-ca18e5e40a84" class="bulleted-list"><li style="list-style-type:disc">Good cartographic design is about effective communication, not rigid rules or tradition.</li></ul><ul id="24d2377e-b56f-805d-8ebd-df5ac2813459" class="bulleted-list"><li style="list-style-type:disc">Aim to inform and, where possible, delight the user (Rosenfeld, 2010).</li></ul><ul id="24d2377e-b56f-80f7-9d3d-e0eda957e68d" class="bulleted-list"><li style="list-style-type:disc">Consider:<ul id="24d2377e-b56f-8016-9807-dc722cb85959" class="bulleted-list"><li style="list-style-type:circle">Map scale and resolution</li></ul><ul id="24d2377e-b56f-80f9-8fd5-ee29c05ffca9" class="bulleted-list"><li style="list-style-type:circle">Colour mode (RGB for screen, CMYK for print)</li></ul><ul id="24d2377e-b56f-8022-81b9-c58b37581c9a" class="bulleted-list"><li style="list-style-type:circle">Paper/screen size and type</li></ul><ul id="24d2377e-b56f-8038-baa6-e7f0352c4f26" class="bulleted-list"><li style="list-style-type:circle">Interactivity and functionality</li></ul></li></ul><ul id="24d2377e-b56f-80ac-baf8-e031679b7c6b" class="bulleted-list"><li style="list-style-type:disc">Use desaturated base map colours so overlaid data stands out.</li></ul><ul id="24d2377e-b56f-80c3-9267-e848263f9aa1" class="bulleted-list"><li style="list-style-type:disc">Ensure location names are clear for quick recognition during searches.</li></ul><ul id="24d2377e-b56f-8081-ad7d-f31e40e60826" class="bulleted-list"><li style="list-style-type:disc">Select line weights, fonts, and symbol sizes that remain legible at the given scale.</li></ul><ul id="24d2377e-b56f-8022-b798-c5c4dba42abb" class="bulleted-list"><li style="list-style-type:disc">Consider overlapping products or datasets and how they interact visually.</li></ul><hr id="24d2377e-b56f-802c-ac92-d63c95006aed"/><h2 id="24d2377e-b56f-809a-ae42-f760bc36ff07" class="">4. Data Quality, Accessibility, and Compliance</h2><ul id="24d2377e-b56f-80aa-98f4-f121fb90c4e6" class="bulleted-list"><li style="list-style-type:disc"><strong>Existence metadata</strong> – Whether datasets and services have associated metadata.</li></ul><ul id="24d2377e-b56f-8002-9d4b-f8f1ea5e1b32" class="bulleted-list"><li style="list-style-type:disc"><strong>Conformity metadata</strong> – Whether metadata and spatial data meet implementing rules.</li></ul><ul id="24d2377e-b56f-80f4-a9e8-dda8f7d9182b" class="bulleted-list"><li style="list-style-type:disc"><strong>Coverage</strong> – Percentage of relevant territory covered by datasets.</li></ul><ul id="24d2377e-b56f-8070-97c3-e37d7bcc91d2" class="bulleted-list"><li style="list-style-type:disc"><strong>Accessibility</strong> – Ability to view and download datasets.</li></ul><ul id="24d2377e-b56f-80b0-b9c6-cdf7a5b82883" class="bulleted-list"><li style="list-style-type:disc"><strong>WCAG compliance</strong> – Colour contrast, keyboard navigation, alt text (audited via Lighthouse, axe, DevTools).</li></ul><ul id="24d2377e-b56f-8080-80c3-c62fceb998f6" class="bulleted-list"><li style="list-style-type:disc"><strong>Legal certainty</strong> – Compliance with laws and cultural norms.</li></ul><ul id="24d2377e-b56f-80bf-b0ea-e1449294ffc6" class="bulleted-list"><li style="list-style-type:disc"><strong>Independence</strong> – Extent of independent data sources and author control.</li></ul><ul id="24d2377e-b56f-80fa-a7ac-cbc53adae3e5" class="bulleted-list"><li style="list-style-type:disc"><strong>Corruption prevention</strong> – Protection from private interest abuse.</li></ul><ul id="24d2377e-b56f-80ad-8822-f5775a2b4542" class="bulleted-list"><li style="list-style-type:disc"><strong>Public participation</strong> – Mechanisms for user involvement.</li></ul><ul id="24d2377e-b56f-80f3-bd9d-ef0bd11bfdd4" class="bulleted-list"><li style="list-style-type:disc"><strong>Social inclusion</strong> – Trustworthiness and openness.</li></ul><ul id="24d2377e-b56f-8022-9684-f16925648c01" class="bulleted-list"><li style="list-style-type:disc"><strong>Societal mediation</strong> – Ability for users to communicate.</li></ul><ul id="24d2377e-b56f-8097-9929-cd4779f3207f" class="bulleted-list"><li style="list-style-type:disc"><strong>Conflict management</strong> – Support, cross-checking, feedback channels.</li></ul><ul id="24d2377e-b56f-8048-8e8f-cd03f82165f4" class="bulleted-list"><li style="list-style-type:disc"><strong>Education</strong> – Provision of new or overlooked information.</li></ul><ul id="24d2377e-b56f-8037-b7d8-d41ef2e47ec6" class="bulleted-list"><li style="list-style-type:disc"><strong>Research and innovation</strong> – Support for further development and new products/services.</li></ul><ul id="24d2377e-b56f-805e-a759-f98c745bbe1c" class="bulleted-list"><li style="list-style-type:disc"><strong>Employment</strong> – Integration with existing workflows; ease of training.</li></ul><ul id="24d2377e-b56f-8053-b521-cf1baf0bcaf9" class="bulleted-list"><li style="list-style-type:disc"><strong>Environmental sustainability</strong> – Inclusion of environmental considerations.</li></ul><hr id="24d2377e-b56f-807b-a738-e8cd3bb46a67"/><h2 id="24d2377e-b56f-802a-a565-e09811c3360c" class="">5. Usability and Performance Testing</h2><p id="24d2377e-b56f-80c2-b108-e2f28fe10cdd" class=""><strong>Performance Metrics</strong></p><ul id="24d2377e-b56f-80f0-bad2-c750c05925ff" class="bulleted-list"><li style="list-style-type:disc">Load time: &lt;4s on broadband, &lt;8s on 4G mobile.</li></ul><ul id="24d2377e-b56f-80c0-832c-ec3f66c7bf7d" class="bulleted-list"><li style="list-style-type:disc">Interaction lag: ≤0.5s when toggling layers or moving the map.</li></ul><ul id="24d2377e-b56f-8090-ad55-f26cd757f960" class="bulleted-list"><li style="list-style-type:disc">Export time: &lt;10s for medium datasets.</li></ul><ul id="24d2377e-b56f-802e-a162-deb5da1e548c" class="bulleted-list"><li style="list-style-type:disc">Task simulation: Locate a dataset layer within 20 seconds.</li></ul><ul id="24d2377e-b56f-80b8-92cd-d8db580876cb" class="bulleted-list"><li style="list-style-type:disc">Reduction in time to find/export datasets compared to existing portals.</li></ul><p id="24d2377e-b56f-80da-b90e-cfaf5c8f0cce" class=""><strong>Functionality Checks</strong></p><ul id="24d2377e-b56f-8005-a287-c881ba6b25fe" class="bulleted-list"><li style="list-style-type:disc">Side-by-side comparison of exported vs in-platform maps.</li></ul><ul id="24d2377e-b56f-80c0-8b6a-d20538c3537a" class="bulleted-list"><li style="list-style-type:disc">Test layer clarity against OS, Bertin, and Tufte guidelines.</li></ul><ul id="24d2377e-b56f-80ed-8770-ffc62efbfc8d" class="bulleted-list"><li style="list-style-type:disc">Evaluate user success rates for planners vs public.</li></ul><ul id="24d2377e-b56f-8004-9217-d6e63ad0af37" class="bulleted-list"><li style="list-style-type:disc">Check mobile responsiveness (desktop, tablet, smartphone).</li></ul><ul id="24d2377e-b56f-800b-9907-e829ddf3653e" class="bulleted-list"><li style="list-style-type:disc">Map layer switching: road map, satellite, other views.</li></ul><ul id="24d2377e-b56f-809a-a8f6-f24604df640d" class="bulleted-list"><li style="list-style-type:disc">Prioritisation for urban designers.</li></ul><ul id="24d2377e-b56f-8038-9f43-d4acd112a15a" class="bulleted-list"><li style="list-style-type:disc">Policy coordination: Combining layers to support planning policies.</li></ul><p id="24d2377e-b56f-8059-8f9a-e4675ba2167f" class=""><strong>Data Verification</strong></p><ul id="24d2377e-b56f-8096-a969-e1862552b9f6" class="bulleted-list"><li style="list-style-type:disc">Compare intended vs integrated datasets.</li></ul><ul id="24d2377e-b56f-80c9-8c8f-ce956e72e038" class="bulleted-list"><li style="list-style-type:disc">Check timestamps against original sources.</li></ul><ul id="24d2377e-b56f-8073-85ed-ea06cadf10ce" class="bulleted-list"><li style="list-style-type:disc">Identify formats, licences, and APIs for data integration.</li></ul><ul id="24d2377e-b56f-80cd-89cc-c13857371cc4" class="bulleted-list"><li style="list-style-type:disc">Document inconsistencies in naming, CRS, and metadata.</li></ul><hr id="24d2377e-b56f-804e-a96b-ec74871790dd"/><h2 id="24d2377e-b56f-80d9-9f89-c343fd16faa1" class="">6. Feature Exploration</h2><ul id="24d2377e-b56f-8096-a802-d9bc4d146a07" class="bulleted-list"><li style="list-style-type:disc">Prototype in-platform commenting tied to coordinates/polygons.</li></ul><ul id="24d2377e-b56f-80d5-b3f3-d0e6824e43e6" class="bulleted-list"><li style="list-style-type:disc">Investigate annotation workflows in planning (planners, architects, public).</li></ul><ul id="24d2377e-b56f-80f5-bdae-f4e2d39b7708" class="bulleted-list"><li style="list-style-type:disc">Symbology tooltips, legends, and simplified views to improve map literacy.</li></ul><ul id="24d2377e-b56f-8026-84cb-eb881ec315c1" class="bulleted-list"><li style="list-style-type:disc">Compare government map styling to Bertin’s semiology and Tufte’s clarity principles for standardisation.</li></ul><ul id="24d2377e-b56f-80a2-b0c9-e9509f4fab7f" class="bulleted-list"><li style="list-style-type:disc">Explore multiple authority data publishing: local councils, Historic England, Environment Agency, OS OpenData.</li></ul><ul id="24d2377e-b56f-80bf-a8cb-e4e02cdc4bf3" class="bulleted-list"><li style="list-style-type:disc">Urban analytics data infrastructure: critical spatial data infrastructure for urban management.</li></ul><ul id="24d2377e-b56f-80d5-8e1a-ed05e3107176" class="bulleted-list"><li style="list-style-type:disc">Measure and compare data transfer workflows (QGIS, ArcGIS, AutoCAD, web viewers).</li></ul><hr id="24d2377e-b56f-8007-bfad-f90e6c137f06"/><h2 id="24d2377e-b56f-8064-aac1-ed4c48c3731c" class="">7. Broader Questions</h2><ul id="24d2377e-b56f-80e4-91d8-d357d3bed39c" class="bulleted-list"><li style="list-style-type:disc">Why are new technologies essential for urban design and planning, locally (e.g., Canterbury) and more generally?</li></ul><ul id="24d2377e-b56f-80e8-a0fc-c1170c8dfb2a" class="bulleted-list"><li style="list-style-type:disc">What are the positive and negative impacts?</li></ul><ul id="24d2377e-b56f-8014-9565-ea841268c07c" class="bulleted-list"><li style="list-style-type:disc">What issues could arise in future implementation?</li></ul><ul id="24d2377e-b56f-8002-9ce5-edc04bccb62d" class="bulleted-list"><li style="list-style-type:disc">How innovative and flexible is the platform?</li></ul><ul id="24d2377e-b56f-80b9-a296-c970d8278e90" class="bulleted-list"><li style="list-style-type:disc">Is it easy to implement and master?</li></ul><ul id="24d2377e-b56f-80c0-93ed-eac83860be69" class="bulleted-list"><li style="list-style-type:disc">Is it timely, clear, and free from confusion?</li></ul><p id="24d2377e-b56f-80d5-b7d7-d4eca0bb9499" class="">
+</p><p id="24d2377e-b56f-80ab-af1d-de2076697b7f" class="">
+</p><h2 id="24d2377e-b56f-809c-8ffc-e0935a3405b4" class=""><strong>Master Evaluation Framework for Web Mapping Platform</strong></h2><h3 id="24d2377e-b56f-8093-8e3b-ecb7510a5353" class=""><strong>A. Principles-Based Expert Review</strong></h3><p id="24d2377e-b56f-80e0-8053-e83ed6674a5d" class=""><em>(Experts or advanced peers score the platform against established design principles)</em></p><ol type="1" id="24d2377e-b56f-80e0-9d10-d5fe25864b29" class="numbered-list" start="1"><li><strong>Dieter Rams – Ten Principles</strong><ul id="24d2377e-b56f-8080-8e7a-f96c0a79acbd" class="bulleted-list"><li style="list-style-type:disc">Innovative</li></ul><ul id="24d2377e-b56f-8036-b580-fe84515bc6b3" class="bulleted-list"><li style="list-style-type:disc">Useful</li></ul><ul id="24d2377e-b56f-80a0-9954-ef5e600013d7" class="bulleted-list"><li style="list-style-type:disc">Aesthetic</li></ul><ul id="24d2377e-b56f-807a-ab4e-c485ae577a3b" class="bulleted-list"><li style="list-style-type:disc">Understandable</li></ul><ul id="24d2377e-b56f-80fc-92b9-cb7c96968efa" class="bulleted-list"><li style="list-style-type:disc">Unobtrusive</li></ul><ul id="24d2377e-b56f-80bc-a05a-fd8b8248b55c" class="bulleted-list"><li style="list-style-type:disc">Honest</li></ul><ul id="24d2377e-b56f-80c4-9aca-f13eb712dd6b" class="bulleted-list"><li style="list-style-type:disc">Long-lasting</li></ul><ul id="24d2377e-b56f-8064-9f74-dcc4175031bf" class="bulleted-list"><li style="list-style-type:disc">Thorough</li></ul><ul id="24d2377e-b56f-8042-97ec-ea69af2a9269" class="bulleted-list"><li style="list-style-type:disc">Environmentally friendly</li></ul><ul id="24d2377e-b56f-805f-8516-d1c85a0ac349" class="bulleted-list"><li style="list-style-type:disc">Minimal</li></ul><p id="24d2377e-b56f-8007-abd4-f42b3daf8402" class=""><strong>Scoring</strong>: 1–5 scale per principle, plus comments.</p></li></ol><ol type="1" id="24d2377e-b56f-8004-a890-e04fcee890bb" class="numbered-list" start="2"><li><strong>UX Honeycomb (Morville, 2004)</strong><ul id="24d2377e-b56f-800c-9a77-f8a7b2eac6d5" class="bulleted-list"><li style="list-style-type:disc">Useful</li></ul><ul id="24d2377e-b56f-8037-9cb2-e951fcef4e20" class="bulleted-list"><li style="list-style-type:disc">Usable</li></ul><ul id="24d2377e-b56f-80bc-9c06-d1cbd17e9776" class="bulleted-list"><li style="list-style-type:disc">Findable</li></ul><ul id="24d2377e-b56f-803b-b51e-f172e99eabd6" class="bulleted-list"><li style="list-style-type:disc">Valuable</li></ul><ul id="24d2377e-b56f-8017-bea7-fe1b0caf82d0" class="bulleted-list"><li style="list-style-type:disc">Desirable</li></ul><ul id="24d2377e-b56f-8065-80fd-fdbf552d3f93" class="bulleted-list"><li style="list-style-type:disc">Accessible</li></ul><ul id="24d2377e-b56f-802e-84ce-f742cf5494a5" class="bulleted-list"><li style="list-style-type:disc">Credible</li></ul><p id="24d2377e-b56f-8051-be46-ce8f95b4136d" class=""><strong>Scoring</strong>: 1–5 scale per attribute, plus examples.</p></li></ol><ol type="1" id="24d2377e-b56f-8002-9ab9-f011eb42092d" class="numbered-list" start="3"><li><strong>Cartographic Design Principles</strong><ul id="24d2377e-b56f-8014-8acf-dc4db99f86be" class="bulleted-list"><li style="list-style-type:disc">Clear visual hierarchy</li></ul><ul id="24d2377e-b56f-8023-879e-d95944b9ea98" class="bulleted-list"><li style="list-style-type:disc">Simplicity &amp; legibility</li></ul><ul id="24d2377e-b56f-80cd-ae37-c7bd8b34d9fb" class="bulleted-list"><li style="list-style-type:disc">Consistency</li></ul><ul id="24d2377e-b56f-80a3-b7b1-ecb89169ebb6" class="bulleted-list"><li style="list-style-type:disc">Accessibility</li></ul><ul id="24d2377e-b56f-8020-b3c4-e365cb9a9022" class="bulleted-list"><li style="list-style-type:disc">Good composition</li></ul><ul id="24d2377e-b56f-8067-b499-c70e2fbbdd04" class="bulleted-list"><li style="list-style-type:disc">Appropriate symbology &amp; colours</li></ul><ul id="24d2377e-b56f-8078-914e-d81dcff750d3" class="bulleted-list"><li style="list-style-type:disc">User requirements met</li></ul></li></ol><hr id="24d2377e-b56f-80b2-999f-e3344aa2ed54"/><h3 id="24d2377e-b56f-80d2-acf0-ccec9ddc0026" class=""><strong>B. Usability &amp; Performance Testing</strong></h3><p id="24d2377e-b56f-80c3-91d7-c51eeba6a2df" class=""><em>(Task-based sessions with peers, professionals, or public testers)</em></p><ol type="1" id="24d2377e-b56f-80cb-b2d7-d92c5029e995" class="numbered-list" start="1"><li><strong>Scenario-Based Tasks</strong> (record time, clicks, success rate)<ul id="24d2377e-b56f-8043-812e-ddf7e8a56a6f" class="bulleted-list"><li style="list-style-type:disc">Find all schools in a given area.</li></ul><ul id="24d2377e-b56f-8098-93f4-ea0f700c2f48" class="bulleted-list"><li style="list-style-type:disc">Export school data.</li></ul><ul id="24d2377e-b56f-808f-aa81-eb715bbb64f2" class="bulleted-list"><li style="list-style-type:disc">Compare land use types in two neighbourhoods.</li></ul><ul id="24d2377e-b56f-8019-a065-f5305b284286" class="bulleted-list"><li style="list-style-type:disc">Toggle between base maps and thematic layers.</li></ul><ul id="24d2377e-b56f-80a3-ae19-dda745609cea" class="bulleted-list"><li style="list-style-type:disc">Annotate a location and share it.</li></ul></li></ol><ol type="1" id="24d2377e-b56f-8099-ac1a-d9d5fbf5adce" class="numbered-list" start="2"><li><strong>Performance Metrics</strong><ul id="24d2377e-b56f-8072-84b5-d144c7bc77b8" class="bulleted-list"><li style="list-style-type:disc">Load time (goal: &lt;4s broadband / &lt;8s 4G)</li></ul><ul id="24d2377e-b56f-8064-a737-fd2f68572856" class="bulleted-list"><li style="list-style-type:disc">Interaction lag (goal: ≤0.5s)</li></ul><ul id="24d2377e-b56f-8052-b861-e33cf0528b0a" class="bulleted-list"><li style="list-style-type:disc">Export time (goal: &lt;10s for medium datasets)</li></ul><ul id="24d2377e-b56f-8080-8bff-dc956f3410da" class="bulleted-list"><li style="list-style-type:disc">Time to locate a dataset (goal: ≤20s)</li></ul></li></ol><ol type="1" id="24d2377e-b56f-80a9-92ad-f7bf199e6abd" class="numbered-list" start="3"><li><strong>Device Responsiveness Checks</strong><ul id="24d2377e-b56f-80ba-8cec-dee6877923f3" class="bulleted-list"><li style="list-style-type:disc">Desktop, tablet, smartphone display</li></ul><ul id="24d2377e-b56f-8003-b3b5-e2bcff4a32c4" class="bulleted-list"><li style="list-style-type:disc">Touch controls vs mouse</li></ul><ul id="24d2377e-b56f-806b-83b0-d9c1a6c8f10e" class="bulleted-list"><li style="list-style-type:disc">Layer switching speed and clarity</li></ul></li></ol><hr id="24d2377e-b56f-803a-9162-f727c7f78119"/><h3 id="24d2377e-b56f-8054-bc03-d0d7f0066964" class=""><strong>C. Data Quality &amp; Accessibility Audit</strong></h3><p id="24d2377e-b56f-80e9-a055-eb9e6b310802" class=""><em>(Systematic check against data and web standards)</em></p><ol type="1" id="24d2377e-b56f-8001-893e-eaa9ce4cf237" class="numbered-list" start="1"><li><strong>Data Quality</strong><ul id="24d2377e-b56f-80ce-a12a-e9df72e62dbe" class="bulleted-list"><li style="list-style-type:disc">Metadata existence &amp; completeness</li></ul><ul id="24d2377e-b56f-8030-883c-d0370a761443" class="bulleted-list"><li style="list-style-type:disc">Data currency (timestamps)</li></ul><ul id="24d2377e-b56f-806c-81d4-f876e9a15ee2" class="bulleted-list"><li style="list-style-type:disc">Coverage of relevant territory</li></ul><ul id="24d2377e-b56f-8081-9968-c47fa63bfcb0" class="bulleted-list"><li style="list-style-type:disc">Naming consistency</li></ul><ul id="24d2377e-b56f-8039-bcc9-f9d24a1c7211" class="bulleted-list"><li style="list-style-type:disc">CRS (coordinate system) consistency</li></ul></li></ol><ol type="1" id="24d2377e-b56f-8044-a0c8-c971da9c646d" class="numbered-list" start="2"><li><strong>Accessibility Compliance (WCAG)</strong><ul id="24d2377e-b56f-803a-82d2-f3ffae5db84c" class="bulleted-list"><li style="list-style-type:disc">Colour contrast checks</li></ul><ul id="24d2377e-b56f-80f7-93c2-d8f1296385f5" class="bulleted-list"><li style="list-style-type:disc">Keyboard navigation</li></ul><ul id="24d2377e-b56f-8039-85be-db97e81c95fa" class="bulleted-list"><li style="list-style-type:disc">Alt text for non-text elements</li></ul><ul id="24d2377e-b56f-800a-8a08-de5577cee48e" class="bulleted-list"><li style="list-style-type:disc">Screen reader compatibility</li></ul></li></ol><ol type="1" id="24d2377e-b56f-8095-9367-d3388371aaa4" class="numbered-list" start="3"><li><strong>Legal &amp; Ethical Compliance</strong><ul id="24d2377e-b56f-804f-b0a8-d610b714edca" class="bulleted-list"><li style="list-style-type:disc">Licensing of datasets</li></ul><ul id="24d2377e-b56f-8009-89d1-fe1201851421" class="bulleted-list"><li style="list-style-type:disc">Privacy considerations</li></ul><ul id="24d2377e-b56f-804b-a63c-d2f0fb5a9096" class="bulleted-list"><li style="list-style-type:disc">Independence of sources</li></ul></li></ol><hr id="24d2377e-b56f-8045-9efe-c77d0ead0220"/><h3 id="24d2377e-b56f-809a-b7da-ea3953999d3e" class=""><strong>D. Comparative Analysis</strong></h3><p id="24d2377e-b56f-80f3-959a-c086570108ea" class=""><em>(Benchmarking against existing platforms)</em></p><ol type="1" id="24d2377e-b56f-80b8-86e8-fb5ea27107e9" class="numbered-list" start="1"><li>Compare workflows with:<ul id="24d2377e-b56f-806d-b278-f5ed8d3daed8" class="bulleted-list"><li style="list-style-type:disc">QGIS</li></ul><ul id="24d2377e-b56f-80e6-aecf-c09f117af8f0" class="bulleted-list"><li style="list-style-type:disc">ArcGIS Online</li></ul><ul id="24d2377e-b56f-805e-8abb-fc0971ec3ea9" class="bulleted-list"><li style="list-style-type:disc">Local council mapping tools</li></ul><ul id="24d2377e-b56f-803e-8ba1-d0731c42618a" class="bulleted-list"><li style="list-style-type:disc">Historic England map portal</li></ul></li></ol><ol type="1" id="24d2377e-b56f-8051-8622-c2a124fb5f40" class="numbered-list" start="2"><li>Evaluate differences in:<ul id="24d2377e-b56f-8040-8eff-d14c4541f9fe" class="bulleted-list"><li style="list-style-type:disc">Ease of use</li></ul><ul id="24d2377e-b56f-8012-82a3-e79d3439708f" class="bulleted-list"><li style="list-style-type:disc">Clarity of layers</li></ul><ul id="24d2377e-b56f-808b-9176-ca9d7bb05104" class="bulleted-list"><li style="list-style-type:disc">Export functionality</li></ul><ul id="24d2377e-b56f-80bd-916b-cdaa77497cd5" class="bulleted-list"><li style="list-style-type:disc">Collaboration features</li></ul></li></ol><hr id="24d2377e-b56f-8010-a3e1-ebf7a520c36d"/><h3 id="24d2377e-b56f-807d-8a49-c5c21c3d79a5" class=""><strong>E. Feature Exploration &amp; Innovation Check</strong></h3><p id="24d2377e-b56f-8073-a662-f1df5065cb8b" class=""><em>(Exploring unique or value-added elements)</em></p><ol type="1" id="24d2377e-b56f-80de-970b-f9b30a65cede" class="numbered-list" start="1"><li>Annotation &amp; commenting workflow effectiveness</li></ol><ol type="1" id="24d2377e-b56f-80af-a5ce-d070d2be8ea5" class="numbered-list" start="2"><li>Symbology &amp; legend clarity for non-specialists</li></ol><ol type="1" id="24d2377e-b56f-80b3-b60f-f0ca8cb0746f" class="numbered-list" start="3"><li>Multi-authority data integration capability</li></ol><ol type="1" id="24d2377e-b56f-803f-978d-d2a39048a798" class="numbered-list" start="4"><li>Environmental and sustainability data inclusion</li></ol><ol type="1" id="24d2377e-b56f-8066-86d5-ed7fae1e4b99" class="numbered-list" start="5"><li>Ability to combine datasets for policy or design decisions</li></ol><hr id="24d2377e-b56f-80ba-9a20-cbc6012e79ac"/><h3 id="24d2377e-b56f-80a3-9f67-e5f6d7a1fb55" class=""><strong>F. Feedback Collection</strong></h3><p id="24d2377e-b56f-8059-9a0c-cca5a6d6bae3" class=""><em>(Different audiences – different focus)</em></p><ol type="1" id="24d2377e-b56f-807e-bbb5-e22efad7a0bc" class="numbered-list" start="1"><li><strong>Professional Audience</strong> (urban designers, architects, planners, local authority)<ul id="24d2377e-b56f-8081-9069-ecafceb9e9f1" class="bulleted-list"><li style="list-style-type:disc">Does the platform fill a gap in your workflow?</li></ul><ul id="24d2377e-b56f-80cc-baf7-c893babaee9e" class="bulleted-list"><li style="list-style-type:disc">Is it faster/easier than existing tools?</li></ul><ul id="24d2377e-b56f-807e-8805-f56ffe1a6d78" class="bulleted-list"><li style="list-style-type:disc">What is missing for real-world adoption?</li></ul></li></ol><ol type="1" id="24d2377e-b56f-809a-8fb2-d47f5afea211" class="numbered-list" start="2"><li><strong>Student Peers</strong> (built environment courses)<ul id="24d2377e-b56f-80dc-8a95-deab1b2290d5" class="bulleted-list"><li style="list-style-type:disc">Was the platform easy to learn?</li></ul><ul id="24d2377e-b56f-80fa-b066-ee371d997716" class="bulleted-list"><li style="list-style-type:disc">Did the map make sense visually?</li></ul><ul id="24d2377e-b56f-80c1-b528-d356e1246278" class="bulleted-list"><li style="list-style-type:disc">Could you complete tasks without help?</li></ul></li></ol><ol type="1" id="24d2377e-b56f-809e-94ac-dac3d6948815" class="numbered-list" start="3"><li><strong>Public Audience</strong><ul id="24d2377e-b56f-8026-b10d-d70e94d418f0" class="bulleted-list"><li style="list-style-type:disc">Could you find and understand the information?</li></ul><ul id="24d2377e-b56f-805d-baf5-e3ec2cd33dac" class="bulleted-list"><li style="list-style-type:disc">Would you use this again to learn about your area?</li></ul><ul id="24d2377e-b56f-80e7-82c1-c0dc19b9dc46" class="bulleted-list"><li style="list-style-type:disc">What would make it easier to use?</li></ul></li></ol><hr id="24d2377e-b56f-8060-8c1d-e13d5f5e29f8"/><h3 id="24d2377e-b56f-807a-b5f5-c0324e4295fd" class=""><strong>G. Broader Reflection Questions</strong> </h3><ul id="24d2377e-b56f-80b4-8de3-e6346137343a" class="bulleted-list"><li style="list-style-type:disc">Why is this platform important for urban design now?</li></ul><ul id="24d2377e-b56f-80af-9ec7-fc4eed6146b0" class="bulleted-list"><li style="list-style-type:disc">What positive/negative impacts might it have?</li></ul><ul id="24d2377e-b56f-807e-91e8-f4b5d7dc2840" class="bulleted-list"><li style="list-style-type:disc">How could it be scaled or adapted?</li></ul><ul id="24d2377e-b56f-804d-9bbe-ff729bce1031" class="bulleted-list"><li style="list-style-type:disc">How flexible and innovative is it compared to the status quo?</li></ul><ul id="24d2377e-b56f-8094-8d0a-e92cd6e57f2a" class="bulleted-list"><li style="list-style-type:disc">Is it truly accessible to all audiences?</li></ul><p id="24d2377e-b56f-809f-b219-e7d0fedf796d" class="">
+</p><p id="24d2377e-b56f-8089-a686-c572b80fa704" class="">Are the datasets provided relevant to your decision making processes?</p><p id="24d2377e-b56f-8035-8094-f060c1d2efd9" class="">Are there any key datasets missing that you would expect to see?</p><p id="24d2377e-b56f-80c2-9a35-fcde62eefcd6" class="">does the combination of datasets in one platform save you time compare</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

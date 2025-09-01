@@ -1,0 +1,683 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Local government revenue mobilisation: assessing property rate management potential of peri-urban districts using geospatial technologies</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-default { background-color: rgba(84, 72, 49, 0.08); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2032377e-b56f-8001-81a5-e7462303f972" class="page sans"><header><h1 class="page-title"><strong>Local government revenue mobilisation: assessing property rate management potential of peri-urban districts using geospatial technologies</strong></h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-text"><th><span class="icon property-icon"><div data-testid="/icons/description_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/description_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/description_gray.svg?mode=light) no-repeat center;background-color:rgba(71, 70, 68, 0.6);fill:rgba(71, 70, 68, 0.6)"></div></span>Links</th><td><a href="https://doi.org/10.1080/00396265.2024.2434781">https://doi.org/10.1080/00396265.2024.2434781</a></td></tr></tbody></table></header><div class="page-body"><ul id="2032377e-b56f-803f-8823-dbb9a8360d1b" class="bulleted-list"><li style="list-style-type:disc">Jones (2014) defines GIS as a computer-based system consisting of software, people, hardware and procedures for creating, editing, querying, analysing and displaying spatial information on a computer. GIS components as indicated by Figure 1 are the prerequisite for any operation as together they make data acquisition, pre-processing, data management, manipulation of data and product generation possible. Remote sensing deals with the science of acquiring information about objects, an area or a phenomenon by using sensors from a distance. These sensors usually include satellites, Unmanned Aerial Vehicles (UAV) or drones, and Light Detection and Ranging systems that collect data in the form of aerial imagery, land cover and point cloud respectively. As a result of recent advancements in remote sensing technology, satellites, UAVs and navigational systems have emerged to offer promising prospects as compared to the traditional approach to mapping and surveying.<br/>Navigation systems are mostly systems that provide directional and mapping services. With the aid of a navi- gation system, users can obtain locational coordinates of any feature in space either for mapping or direction pur- poses. One common navigation system being used in sev- eral disciplines is the Global Positioning System (GPS), a constellation of 24 satellites developed by the United States Department of Defence to give an accurate three-dimensional positioning in space (Perez-Ruiz et al. 2021). GPS is currently being used in the field of transport, agriculture, surveying, and environmental management. Many remote sensing applications make use of GPS. For instance, GPS embedded in UAVs make it possible to autonomously deploy UAVs for map- ping the position of features in space.</li></ul><ul id="2032377e-b56f-80f6-a418-ebf463a05efe" class="bulleted-list"><li style="list-style-type:disc">At the heart of any property rate management system is geo-data. This is because the rate levied takes into con- sideration the location and description of buildings or properties. With a proper property database in place detailing the location, size and address of properties, data can easily be retrieved and analysed. In developing countries and transitional economies, due to low technol- ogy use, the compilation of such geo-data and the build- ing of property databases is often difficult (Dillinger 2002). Most often than not, in such countries or econom- ies, property information respecting ownership, size, use and address does not exist because of the difficulties sur- rounding their compilation. This situation mostly pre- sents a challenge to capturing the exact properties that need to be valued for property rating.<br/>As a result of the inadequacy of geo-information data on rateable buildings, property rate assessment is often inaccurate. As a result, the worth of the total amount of assets or properties that constitute property rate potential in a particular jurisdiction cannot be deter- mined. Also, the valuation process is greatly hindered. To ascertain the value of properties in a particular juris- diction, information on the geometry, location and use of these properties is very crucial. A good valuation process somehow depends on robust cadastre data on the size, use and location of properties since assessors often rely on this data to determine the value of properties.</li></ul><ul id="2032377e-b56f-802f-a26d-e41e1c4bd10e" class="bulleted-list"><li style="list-style-type:disc">Geo-data are data with spatial dimensions such as location, size and attributes which are often generated through mapping and digitization. Due to the time-con- suming and expensive nature of the traditional manual approach to mapping, it is difficult to obtain comprehen- sive geo-data on a large tract of properties. Unlike the manual approach to mapping, the use of geospatial tech- nology such as satellites and drones (UAVs) have paved way to generate geo-data on a large scale. Ratable prop- erties required for valuation purposes in Kigali was derived from remotely sensed satellite images (Bachofer 2019). The data extracted from satellite imagery included parcel boundary, building and height data. These were useful to the property valuation exercise conducted. As a result of the limitations posed by satellite data in terms of spatial resolution and cloud cover which impede both the quality and cost of image acquisition, the use of UAV technology has gained recognition (Van der Molen 2015). UAVs can provide timely and high-resolution images of urban and suburban areas (Spatalas et al. 2006). Figures 2 and 3 show satellite and UAV data respectively. Mass Valuation Another area in property rate manage- ment where geospatial technology has proven to be useful is mass valuation. A major challenge of property valua- tion in developing countries has been the use of manual methods that are often time-consuming and expensive. When many properties need to be valued within a given period, mass valuation approaches such as Computer Assisted Mass Appraisal (CAMA) modelling are often used (IAAO 2014). This approach mostly involves the use of computers and statistical methods such as Mul- tiple Regression Analysis (MRA) for estimating the value of properties. Not until recently, many valuers and appraisers have recognised the fundamental role that time, space and property characteristics also play in the valuation process. Hence, geospatial technology such as GIS is often integrated into CAMA modelling to assist in mass valuation. Such integration has made it possible for the introduction of spatial elements in the valuation process as compared to previous approaches that were mainly based on statistical analysis.</li></ul><ul id="2032377e-b56f-80d5-9274-d8dc76291109" class="bulleted-list"><li style="list-style-type:disc">Photogrammetric approach was adopted with the aid of Agisoft Metashape software to process drone images. Identification and mapping of buildings with their precise boundary (parcel) were essential to this study in that the geometry and location of buildings influence property rate. Although several approaches exist for extracting building data from satellite and aerial images, in this study building footprint extraction was done using pic- terra plugging within the Quantum GIS software environment. Database of rateable properties illustrating the type, ownership and payment status was created. Additionally, the software also supports real-time field data collection. Ofield app was synchronised to the cen- tral database system to support. This architecture served as the basis for the mock-up application design using Figma software.</li></ul><ul id="2032377e-b56f-80a4-8bb2-ee763a90fee0" class="bulleted-list"><li style="list-style-type:disc"> In preparing the geodata- base the ArcMap GIS software was used. Shapefiles and raster data showing parcels, buildings and the high- resolution aerial image were imported respectively. Additionally, the attribute data compiled as indicated by Figure 14 were also included. The geodatabase hosting all the relevant data for property rate management in the district were embedded in the property rate management application system.</li></ul><ul id="2032377e-b56f-80f9-a0a1-dac969c5b643" class="bulleted-list"><li style="list-style-type:disc">The mock-up application was designed using Figma which is a prototyping application tool. The application incorporates two main functionalities namely the man- agement platform functionality and the collection plat- form functionality. The collection platform functionality was designed in the form of a mobile app application that could be operated on mobile devices for collection and receipting purposes. The administra- tive platform functionality was designed to have manage- ment responsibilities in mind. Thus, this platform would make it possible for management to monitor property rate payments, assess the performance of collectors and generate reports among others.</li></ul><p id="2032377e-b56f-801d-b2dd-c8d96b1e6768" class="">
+</p><p id="2032377e-b56f-8099-930c-e55d1251f9d9" class="">References<br/></p><p id="2032377e-b56f-80c9-8ca3-c6f9432535d2" class="">Abebrese, K., 2019. Implementing street addressing system in an evolving<br/>urban centre. A case study of the Kumasi metropolitan area in Ghana<br/>(Master’s thesis). Ames, Iowa: Iowa State University.</p><p id="2032377e-b56f-80ed-9406-e794eb713bc5" class="">Awasthi, R., Nagarajan, M., and Deininger, K.W., 2021. Property taxa-<br/>tion in India: issues impacting revenue performance and sugges-<br/>tions for reform. Land use policy, 110 (March 2020), 104539.<br/>doi:10.1016/j.landusepol.2020.104539.</p><p id="2032377e-b56f-80e3-a60e-ef7a4c990eab" class="">Ayee, J.R.A., 2008. The balance sheet of decentralization in Ghana. In: S<br/>Fumihiko, ed. Foundations for local governance decentralization in<br/>comparative perspective. Heidelberg: Physica-Verlag, 223–258.</p><p id="2032377e-b56f-8064-a524-cdec42b45854" class="">Bachofer, F., et al., 2019. Building stock and building typology of Kigali,<br/>Rwanda. Data, 4 (3), 105.</p><p id="2032377e-b56f-80eb-8d52-c49fdc1f46d3" class="">Bidanset, P., et al., 2019. An exploratory approach for enhancing vertical<br/>and horizontal equity tests for ad valorem property tax valuations<br/>using geographically weighted regression. Journal of financial man-<br/>agement of property and construction, 24 (2), 231–250.</p><p id="2032377e-b56f-80d3-b8a6-c846251f6d63" class="">Blochliger, H., 2015. Reforming the tax on immovable property: taking<br/>care of the unloved. Paris: OECD Economics Department<br/>Working Papers, No. 1205, OECD Publishing.</p><p id="2032377e-b56f-8002-8777-df221013bed7" class="">Boamah, N.A., 2013. Land use controls and residential land values in the<br/>Offinso South municipality, Ghana. Land use policy, 33, 111–117.<br/>doi:10.1016/j.landusepol.2012.12.016.</p><p id="2032377e-b56f-8004-ad77-eded9d0ccf35" class="">De Vaus, D.A., 2001. Research design in social research. London: SAGE.<br/>Trochim, William M.K. Research methods knowledge base. 2006.<br/>Dillinger, W., 2002. Urban property tax reform guidelines and recommen-</p><p id="2032377e-b56f-806d-9163-c5b82ad8fbb4" class="">dations. Washington, DC: The World Bank.<br/>Dornfest, A., 2010. In search of an optimal revaluation policy. In: R. Bahl,</p><p id="2032377e-b56f-809d-8865-dfa8c5b6f7d9" class="">J. Martinez Vazquez, and J. Youngman, eds. Challenging the con-<br/>ventional wisdom on the property tax. Cambridge, MA: Lincoln<br/>Institute of Land Policy, 75–107.</p><p id="2032377e-b56f-80e8-835d-f9405f202e25" class="">Dzansi, J., et al. 2018. Survey of government taxation capacity, 2017.<br/>Finding s and policy implications.</p><p id="2032377e-b56f-805b-8982-e8730cbe0aef" class="">Fish, P., 2015. Practical aspects of mobilising property tax: experience in<br/>Sierra Leone and Malawi. Commonwealth journal of local govern-<br/>ance, 16/17 (June), 242–262.</p><p id="2032377e-b56f-80ff-a4fa-c5bae8e6c03f" class="">Franzsen, R., and McCluskey, W.J. 2012. Value-based approaches to<br/>property taxation. In: A primer on property tax: administration<br/>and policy, 41–68.</p><p id="2032377e-b56f-8079-ac82-e95190f555c0" class="">Franzsen, R.C.D., and McCluskey, W.J., eds. 2017. Property tax in<br/>Africa: status, challenges and prospects. Cambridge, MA: Lincoln<br/>Institute of Land Polic.</p><p id="2032377e-b56f-80a0-ad8f-d345880642ec" class="">Freire, M.E., and Garzon, H. 2014. Managing local revenues. In:<br/>Municipal finances: a handbook for local governments, 147–214.</p><p id="2032377e-b56f-8074-953e-f165aac165b5" class="">Gemmell, N., Grimes, A., and Skidmore, M., 2019. Do local property<br/>taxes affect new building development? Results from a quasi-natu-<br/>ral experiment in New Zealand. The Journal of real estate finance<br/>and economics, 58, 310–333.</p><p id="2032377e-b56f-80b4-adf1-ecc266fcfabd" class="">Hancock, D.R., Algozzine, B., and Lim, J.H. 2021. Doing case study<br/>research: a practical guide for beginning researchers.</p><p id="2032377e-b56f-80f2-a6f3-e1694aee9c0a" class="">IAAO. 2014. Guidance on international mass appraisal and related tax<br/>policy. Available from: http://docs.iaao.org/media /Standards/<br/>International_Guidance.pdf [Accessed 27 January 2015].</p><p id="2032377e-b56f-80f9-b647-e70f2421bddd" class="">Jones, C. B, 2014. Geographical information systems and computer carto-<br/>graphy. Routledge.</p><p id="2032377e-b56f-80a6-a8c2-ffb5f7e3a379" class="">Karikari, I., Stillwell, J., and Carver, S., 2005. The application of GIS in<br/>the lands sector of a developing country: challenges facing land<br/>administrators in Ghana. International journal of geographical </p><p id="2032377e-b56f-8094-aac9-c7d13d52195e" class="">information science, 19 (3), 343–362. doi:10.1080/</p><p id="2032377e-b56f-80ff-9525-e8d0526a6d14" class="">13658810412331280149.<br/>Kelly, R., 2012. Property tax collection and enforcement. In: W. J.</p><p id="2032377e-b56f-8092-b7b0-f924ef6f8b60" class="">McCluskey, G. C. Cornia, and L. C. Walters, eds. A primer on</p><p id="2032377e-b56f-8066-9aa7-e174e83fb082" class="">property tax, 141–171.<br/>Kitchen, H., McMillan, M., and Shah, A., 2019. Local public finance and</p><p id="2032377e-b56f-80f2-841d-d8fc12da4914" class="">economics. An International perspective. Cham: Springer Books.<br/>Lyons, E. and Coyle, A., eds. 2021. Analysing qualitative data in psychol-</p><p id="2032377e-b56f-8071-9118-ec71740b1343" class="">ogy. Los Angeles: Sage.<br/>Malme, J. H. and Youngman, J. M., eds., 2001. The development of prop-</p><p id="2032377e-b56f-805b-9ab7-d5973585c85c" class="">erty taxation in economies in transition: case studies from Central</p><p id="2032377e-b56f-805e-8d91-f3872c798fce" class="">and Eastern Europe. World Bank Publications<br/>McCluskey, W.J., and Bevc, I., 2017. Fiscal decentralisation in the</p><p id="2032377e-b56f-80cc-8fb0-c65fd698b41d" class="">Republic of Slovenia: an opportunity for the property tax.</p><p id="2032377e-b56f-8047-b9e7-ca44704d93ff" class="">Property management, 25 (4), 400–419.<br/>McCluskey, W., and Franzsen, R., 2005. An evaluation of the property</p><p id="2032377e-b56f-80bd-9534-cb1acee01e1a" class="">tax in Tanzania: an untapped fiscal resource or administrative</p><p id="2032377e-b56f-800a-b74e-cec691270bcd" class="">headache? Property management, 23 (1), 45–69.<br/>McIlhatton, D., et al., 2013. Geographic information systems and the</p><p id="2032377e-b56f-8085-8465-f06186958e71" class="">importance of location: integrating property and place for better<br/>informed decision making. In: William J. McCluskey, Gary C.<br/>Cornia, and Lawrence C. Walters, eds. Chap. 15 in A primer on prop-<br/>erty tax administration and policy. 1st ed. John Wiley &amp; Sons Ltd,<br/>339–357.</p><p id="2032377e-b56f-8025-9270-d38c13848dcb" class="">Metoyer, S.K., Bednarz, S.W., and Bednarz, R.S. 2015. Spatial thinking<br/>in education: concepts, development, and assessment. In:<br/>Geospatial technologies and geography education in a changing<br/>world: Geospatial practices and lessons learned, 21–33.</p><p id="2032377e-b56f-809b-bee7-f1e1b70e1d62" class="">Perez-Ruiz, M., Martínez-Guanter, J., and Upadhyaya, S.K., 2021.<br/>High-precision GNSS for agricultural operations. In:<br/>George P. Petropoulos and Prashant K. Srivastava, eds. GPS<br/>and GNSS technology in geosciences. Amsterdam: Elsevier, 299–<br/>335.</p><p id="2032377e-b56f-80ae-9b5d-e0e0fc709cb1" class="">Prichard, W., 2014. Using local IT solutions to improve local government<br/>tax reforms, IDS policy briefing 58. Brighton, UK: Institute of<br/>Development Studies.</p><p id="2032377e-b56f-8096-9b31-f5b350485747" class="">Republic of Ghanan, 2023. Local government bulletin. Accra: Assembly.<br/>Republic of Ghanan, 2016. Local governance act of 2016 (Act 936). Accra:</p><p id="2032377e-b56f-8063-bf50-ea2c361c81f2" class="">Assembly Press.<br/>Rosengard, J.K., 2012. The tax everyone loves to hate. In W.J.</p><p id="2032377e-b56f-8025-b5ca-c9001b296fcf" class="">McCluskey, G.C. Cornia and L.C. Walters, eds. A primer on prop-</p><p id="2032377e-b56f-80e1-a15f-f57d85b808af" class="">erty tax. https://doi.org/10.1002/9781118454343.ch7.<br/>Spatalas, S., Tsioukas, V., and Daniil, M. 2006. The use of remote-con-<br/>trolled helicopter for the recording of large scale urban and suburban</p><p id="2032377e-b56f-807f-8a79-cde16f9cf03e" class="">sites. In: Culture of representation, Xanthi, Greece. March, 2006.<br/>Tahiru, F., Agbesi, S., and Osei-Owusu, A., 2014. Investigating the chal-<br/>lenges in revenue collection process: the case study of Ghana AMA<br/>property rate collection. International journal of innovation and</p><p id="2032377e-b56f-80c9-9b47-d6a7021ec74f" class="">scientific research, 11 (2), 566–576.<br/>Van der Molen, P., 2015. Rapid urbanisation and slum upgrading: what</p><p id="2032377e-b56f-8085-94c7-ce694f4363e4" class="">can land surveyors do? Survey review, 47 (343), 231–240.<br/>Yeboah, E.N., and Andrew, M., 2020. Challenges faced by metropolitan,<br/>municipal and district assembles (MMDA’S) in internal revenue<br/>mobilization in Ghana. International journal of asian social science,</p><p id="2032377e-b56f-80c4-a18e-e074121e0362" class="">10 (1), 68–80.<br/>Yeboah, K., Johanson, L., and Fiatornu, S. 2008. Urban management</p><p id="2032377e-b56f-80c4-bcef-f59159dc32eb" class="">land information system (UMLIS)-possibilities and benefits. In:<br/>The FIG Congress 2008 Facing the Challenges. Building the<br/>Capacity, Austria, 11 −16 April, 2008, 11−16.</p><p id="2032377e-b56f-8010-9dbf-ec810552f1b1" class="">
+</p><p id="2032377e-b56f-808d-b805-deadfb5c5afa" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

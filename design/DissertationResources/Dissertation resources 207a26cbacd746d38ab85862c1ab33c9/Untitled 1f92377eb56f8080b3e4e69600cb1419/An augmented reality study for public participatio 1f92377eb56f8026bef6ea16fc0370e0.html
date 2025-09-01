@@ -1,0 +1,681 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>An augmented reality study for public participation in urban planning</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-default { background-color: rgba(84, 72, 49, 0.08); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="1f92377e-b56f-8026-bef6-ea16fc0370e0" class="page sans"><header><h1 class="page-title">An augmented reality study for public participation in urban planning</h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-text"><th><span class="icon property-icon"><div data-testid="/icons/description_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/description_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/description_gray.svg?mode=light) no-repeat center;background-color:rgba(71, 70, 68, 0.6);fill:rgba(71, 70, 68, 0.6)"></div></span>Links</th><td><a href="https://doi.org/10.1080/17489725.2022.2086309">https://doi.org/10.1080/17489725.2022.2086309</a></td></tr></tbody></table></header><div class="page-body"><ul id="2022377e-b56f-80be-a203-c61533562351" class="bulleted-list"><li style="list-style-type:disc">A peculiarity in Switzerland is the erection of construction spans or profiles to visualise the dimensions of a planned building and how it fits into the environment (Figure 1). These spans remain during the building application until a legally binding building permit is granted. Since these building spans are rather difficult to interpret by untrained citizens, novel methods are recently applied in urban planning. A peculiarity in Switzerland is the erection of construction spans or profiles to visualise the dimensions of a planned building and how it fits into the environ-ment (Figure 1). These spans remain during the building application until a legally binding building permit is granted. Since these building spans are rather difficult to interpret by untrained citizens, novel methods are recently applied in urban planning.</li></ul><ul id="2022377e-b56f-8049-b516-d6fd576db8d9" class="bulleted-list"><li style="list-style-type:disc">Cirulis and Brigmanis (2013) found that AR applications can reduce financial resources before construction works are commenced or completed<br/>and can increase citizens’ satisfaction, as the public interests are integrated in discussion processes and decision-making processes are made more transparent. The opportunity to intuitively engage with a planned project in the real urban context and obtain additional information has been identified as a major advantage of mobile AR applications (Kaji et al. 2018). Fonseca et al. (2014) mentioned the ability to easily see and compare alternative project proposals and scenarios before construction work starts as another benefit of mobile AR applications. Along the same lines, Baek, Ha, and Kim (2019) emphasise that AR applications may ‘compensate for the weaknesses of ineffective verbal commu-<br/>nication, time-consuming data accessibility, and distraction caused by domain switching’. Chu, Matthews, and Love (2018) could show that information retrieval processes improved as the mental workloads were lowered thanks to the AR<br/>applications and users were able to complete tasks with minimal error. However, research also documents caveats and unsolved challenges of using AR. For one, current AR applications are still too abstract for most users (Schaffers et al. 2011). In studying the use of AR in education, Wu et al. (2013)<br/>reported that students might show a very high extraneous cognitive load introduced by technology, the large amount of presented information, or task<br/>complexity. For many applications AR devices (e.g. head mounted devices) still only recognise limited user gestures, which can cause user exhaustion (Zhang et al. 2018).</li></ul><ul id="2022377e-b56f-8094-8d36-e34326e23ae6" class="bulleted-list"><li style="list-style-type:disc"></li></ul><ul id="2022377e-b56f-80ad-9eaa-edf5c2163b85" class="bulleted-list"><li style="list-style-type:disc">CityGML is an Open Geospatial Consortium standard2 and stores 3D building models in Geography Markup Language (GML), an XML<br/>dialect for spatial data encoding, or as JSON files. The CityGML concept discerns five LODs, ranging from LOD 0 to LOD 4 (Biljecki et al. 2016). The lowest level of detail, LOD 0, is simply a 2D footprint of a building. LOD 1 represents a building<br/>as a simple 3D block. LOD 2 adds further elements to the block, such as a roof, and LOD3 represents the exterior hull, as well as features, such as windows and doors. The most detailed level, LOD 4, includes also interior structures (Löwner<br/>et al., 2018). LODs have very practical implications, since increasing the level of abstraction means less information to be represented and usually yields smaller file sizes which may be useful for mobile applications (Jahnke, Krisp, and Kumke<br/>2011). Other popular file formats for 3D models to be visualised in AR apps are filmbox (fbx) from Autodesk, the DAE format from Collada’s, or the Universal Scene Description ZIP (.USDZ) format developed by Pixar.</li></ul><ul id="2022377e-b56f-80d4-a861-ff4fe6cf5490" class="bulleted-list"><li style="list-style-type:disc">Realism, the third quality property identified by Radford et al. (1997), refers to how convincingly the objects are modelled and represent the real object.<br/>Elements of realism are typically colours and textures. Appleton and Lovett (2003) investigated levels of realism and let participants rate different visualisation alternatives of an environmental scene. They were not able to define sufficient level of realism, rather they found that a minimal degree of realism is indispensable in order to relate to a visual scene and form an opinion on it. Visual scenes of high realism-abstraction are inadequate (Daniel and Meitner 2001). However, highly realistic scenes might give the illusion of precision. In an<br/>urban planning context, rendering visual properties in optimal conditions may create highly subjective visualisations although visual scenes should be represented as objectively as possible (Day 2002).</li></ul><ul id="2022377e-b56f-80b0-a8a2-c5daeb8444b4" class="bulleted-list"><li style="list-style-type:disc">Regarding realism, virtual objects in augmented scenes can either be rendered as realistically as possible, or just the opposite, in a non-photorealistic<br/>manner (Haller 2004). An important effect for realistic AR applications is illumination, which consists of shadowing and lighting effects (Haller 2004). In particular, shadows are essential for a 3D impression of a virtual scene as they give<br/>direct information about objects spatial relationships (Kolivand, Sunar, and Ji 2014; Naemura et al. 2002; Slater, Usoh, and Chrysanthou 1995). To achieve<br/>impressing photorealistic results, graphical and geometric detail is required. For example, photorealistic building façades can be generated with photo-textures (Döllner 2007). Durand (2002) suggested that the interpretation of virtual<br/>objects should rather be convincing than realistic. Döllner (2007), for instance, found that too much detail and realism can distract users and interfere with understanding visualisations. So called non-photorealistic depictions allow removing unnecessary details and emphasise relevant features of represented objects and, therefore, provide more purpose-oriented and task-oriented visualisations (Döllner 2007; Halper, Schlechtweg, and Strothotte 2002). How much detail and realism are beneficial for easily and correctly interpreting such visualisations, and how these factors might influence the outcome of decisions about planned construction projects remains unclear (Klausener 2012) </li></ul><ul id="2022377e-b56f-8098-9ea8-eacd1a0a2e8e" class="bulleted-list"><li style="list-style-type:disc">The visual scene of the AR application is based on the swissALTI3D digital elevation model (Swisstopo 2020). The World Imagery basemap (a high resolu-<br/>tion satellite and aerial image data layer) from ArcGIS Online (Esri Inc 2020b) is laid over the elevation model (Figure 4). The basemap has the coordinate system WGS 84 Web Mercator (Esri Inc 2020b) and was clipped to the study area to minimise storage size. </li></ul><ul id="2022377e-b56f-8088-ada5-e7283efacae5" class="bulleted-list"><li style="list-style-type:disc">Previous research found that the more realistic a visualisation, the higher the rating of the perceived accuracy (Klausener 2012). This discrepancy<br/>could be due to the fact that Klausener (2012) and Zanola, Fabrikant, and Çöltekin (2009) displayed their visualisations on a screen as opposed to<br/>a mobile AR in our study which suffered from occasional motion lag when walking around the virtual objects, as one participant reported. Thus, the lower rating of accuracy of participants seeing LOD 3 compared to the two other conditions could be explained by the visualised building sometimes randomly showing motion lag, which could be interpreted as inaccurate. Furthermore, the results could also be skewed towards the small screen size of the used device. Newer mobile phone and tablet devices with a bigger screen might shift this perception towards higher LOD levels, i.e. LOD 3.</li></ul><ul id="2022377e-b56f-807a-9618-efc9adb77f71" class="bulleted-list"><li style="list-style-type:disc">Other research has found that ego-<br/>centric distances are underestimated in virtual environments (El Jamiy and Marsh 2019; Grechkin et al. 2010; Jerome and Witmer 2005; Richardson and<br/>Waller 2005; Steinicke et al. 2010). Grechkin et al. (2010) observed that participants significantly underestimated distances in an AR environment.</li></ul><ul id="2022377e-b56f-80ec-a258-ceabf59663f0" class="bulleted-list"><li style="list-style-type:disc">This is in line with previous research that construction spans are a good first indicator for communicating about a construction project in a non-textual form (Ilin 2019). Nonetheless, most participants greatly underestimated the height of the building from construc- tion spans. Perhaps, this is because construction spans are a linear representa- tion and the lack of volume representation may give room for interpretation (Ilin 2019). AR applications could step in and complement traditional visualisation methods, such as construction spans, with more detailed information (Adascalitei and Baltoi 2018; Ilin 2019), while construction spans could act as markers for the AR applications. However, combining construction spans and an AR application could lead to an even lower rating of the accuracy of the AR application. The perceived accuracy might be lower because the precision of overlaying the construction spans with a virtual building might be low when not calibrated accurately.</li></ul><ul id="2022377e-b56f-807e-9f4d-e7cd07f10dc5" class="bulleted-list"><li style="list-style-type:disc">Other research has found that ego- centric distances are underestimated in virtual environments (El Jamiy and Marsh 2019; Grechkin et al. 2010; Jerome and Witmer 2005; Richardson and Waller 2005; Steinicke et al. 2010). Grechkin et al. (2010) observed that partici- pants significantly underestimated distances in an AR environment. Furthermore, Cutting and Vishton (1995) suggested that the egocentric distance perception is not the same for the three subspaces of an observer’s visual environment, i.e. personal space (≤2 m), action space (2 m–30 m) and distant space (≥30 m). People seem to underestimate egocentric distances in action and distance spaces, while overestimating them in personal spaces (El Jamiy and Marsh 2019). Egocentric distance estimations can be improved when providing feedback to observers, for example, by letting them walk half as the distance they are asked to estimate (Richardson and Waller 2005). Hence, the task performance in this study could have been improved by letting participants walk around while estimating the distances.<br/></li></ul><ul id="2022377e-b56f-8037-a9f3-c0eeb1a45f67" class="bulleted-list"><li style="list-style-type:disc">providing citizens with an AR application to visualise a building project could increase their willingness to be involved in public participation processes. Integrating AR technology provides an addi- tional information source which could support citizens in their decision- making, for example with regard to a public voting. However, our findings may pertain to the particular use case in our study and further studies and applications need to be done. Moreover, long-term implications of the usage of AR in participatory processes remain to be investigated. There is a need to understand if participants’ responses are influenced by the novelty effect of seeing an AR visualisation of a building project for the first time. Furthermore, future research should investigate the influence of other factors, such as age, on the perceived suitability of an AR application. Lastly, it remains to be investigated what participants then effectively vote for after seeing the project virtually, i.e. how strongly is the political process, and therefore democracy influenced by the technological process? Therefore, future research should also compare participants’ opinion of the AR simulation and the finished building in reality</li></ul><p id="2022377e-b56f-807b-887d-c6ae23c54e00" class="">References<br/><br/></p><p id="2022377e-b56f-80f1-abf8-e9c4dea3c39f" class="">Allen, M, H Regenbrecht, and M Abbott, 2011. “Smart-Phone Augmented Reality for Public<br/>Participation in Urban Planning.” In <em>Proceedings of the 23rd Australian Computer-Human<br/>Interaction Conference OzCHI</em>, Canberra. 11–20. https://dl.acm.org/doi/abs/10.1145/<br/>2071536.2071538.</p><p id="2022377e-b56f-8085-9331-f0e8ae99e068" class="">Alulema, D, B Simbaña, C Vega, D Morocho, A Ibarra, and V Alulema. 2018. ”Design of an<br/>Augmented Reality-Based Application for Quito’s Historic Center,” 2018 IEEE Biennial<br/>Congress of Argentina (ARGENCON), pp. 1–5. doi:10.1109/ARGENCON.2018.8646296.</p><p id="2022377e-b56f-80b8-b84b-d8720d2fe8c9" class="">Appleton, K, and A Lovett. 2003. “GIS-Based Visualisation of Rural Landscapes: Defining<br/>‘Sufficient’ Realism for Environmental Decision-Making. Landsc.” <em>Urban Plan </em>65: 117–131.<br/>doi:10.1016/S0169-2046(02)00245-1.</p><p id="2022377e-b56f-8053-85e5-c872d8a94564" class="">Baek, F, I Ha, and H Kim. 2019. “Augmented Reality System for Facility Management Using<br/>Image-Based Indoor Localization.” <em>Automation in Construction </em>99: 18–26. doi:10.1016/j.<br/>autcon.2018.11.034.</p><p id="2022377e-b56f-80c2-93a3-d9964db316fe" class="">Biljecki, F, H Ledoux, J Stoter, and G Vosselman. 2016. “The Variants of an LOD of a 3D Building<br/>Model and Their Influence on Spatial Analyses.” <em>ISPRS Journal of Photogrammetry and<br/>Remote Sensing </em>116: 42–54. doi:10.1016/j.isprsjprs.2016.03.003.</p><p id="2022377e-b56f-8015-835c-d377b37a9594" class="">Bugs, G, C Granell, O Fonts, J Huerta, and M Painho. 2010. “An Assessment of Public<br/>Participation GIS and Web 2.0 Technologies in Urban Planning Practice in Canela, Brazil.”<br/><em>Cities </em>27: 172–181. doi:10.1016/j.cities.2009.11.008.</p><p id="2022377e-b56f-8084-895b-ce26c6e21c60" class="">Chu, M, J Matthews, and PE.D. Love. 2018. “Integrating Mobile Building Information Modelling<br/>and Augmented Reality Systems: An Experimental Study.” <em>Automation in Construction </em>85:<br/>305–316. doi:10.1016/j.autcon.2017.10.032.</p><p id="2022377e-b56f-80a4-9973-fa77539b8ffc" class="">Cirulis, A, and KB. Brigmanis. 2013. “3D Outdoor Augmented Reality for Architecture and<br/>Urban Planning.” <em>Procedia Computer Science </em>25: 71–79. doi:10.1016/j.procs.2013.11.009.</p><p id="2022377e-b56f-8081-9517-d471ebfd7ac8" class=""><br/>Cron, J, B Jenny, R Engell, and Z Lucarelli, 2019. “Head-Mounted Augmented Reality Visualisation for Outdoor Pedestrian Navigation.” In: <em>Adjunct Proceedings of the 15th International Conference on Location Based Services (LBS 2019)</em>, Vienna. 1–6. </p><p id="2022377e-b56f-80f7-a812-f8ce346c558d" class="">Cutting, JE., and PM. Vishton. 1995. “Perceiving Layout and Knowing Distances: The Integration, Relative Potency, and Contextual Use of Different Information About Depth ” In <em>Perception of Space and Motion</em>, edited by Epstein, William, Rogers, Sheena, 69–117. Academic Press.</p><p id="2022377e-b56f-80c2-98ee-dd323fc7f53d" class=""><br/>Daniel, TC., and MM. Meitner. 2001. “Representational Validity of Landscape Visualizations: The Effects of Graphical Realism on Perceived Scenic Beauty of Forest Vistas.” <em>Journal of Environmental Psychology </em>21: 61–72. doi:10.1006/jevp.2000.0182.</p><p id="2022377e-b56f-8046-adda-cb8c4e3ab7d6" class="">Davies, SR., C Selin, G Gano, and ÂG. Pereira. 2012. “Citizen Engagement and Urban Change:<br/>Three Case Studies of Material Deliberation.” <em>Cities </em>29: 351–357. doi:10.1016/j.cities.2011.11.012.</p><p id="2022377e-b56f-80a7-a8d6-c0ae725ce5e1" class="">Day, A. 2002. “Urban Visualization and Public Inquiries: The Case of the Heron Tower,<br/>London.” <em>Arq: Architectural Research Quarterly </em>6: 363–372. doi:10.1017/S135913550300188X.</p><p id="2022377e-b56f-8031-9041-f2de5083f941" class="">Degen, M, C Melhuish, and G Rose. 2017. “Producing Place Atmospheres Digitally:<br/>Architecture, Digital Visualisation Practices and the Experience Economy.” <em>Journal of<br/>Consumer Culture </em>17: 3–24. doi:10.1177/1469540515572238.</p><p id="2022377e-b56f-8070-910e-d2b164c0e855" class="">Devaux, A, C Hoarau, M Brédif, and S Christophe. 2018a. “3D Urban Geovisualization: In situ<br/>Augmented and Mixed Reality Experiments.” <em>ISPRS Annals of the Photogrammetry<br/></em>Remote Sensing Spatial Information Sciences 4: 41–48. doi:10.5194/isprs-annals-IV-4-41-2018.</p><p id="2022377e-b56f-805c-8c26-c81334be9073" class="">Devaux, Alexandre, C Hoarau, M Brédif, and S Christophe. 2018b. “Underground Visualization:<br/>Web-App, Virtual Reality, ex situ and in situ Augmented Reality.“ ISPRS Technical<br/>Commission IV Symposium 2018, Oct 2018, Delft, Netherlands.</p><p id="2022377e-b56f-8061-a2fb-c2ea3c82a939" class="">Döllner, J, K Baumann, and H Buchholz. 2006. “Virtual 3D City Models as Foundation of<br/>Complex Urban Information Spaces.” <em>Corp </em>2: 107–112.</p><p id="2022377e-b56f-8075-b2d9-c45cfa330291" class="">Döllner, J. 2007. ”Non-Photorealistic 3D Geovisualization. In <em>Multimedia Cartography </em>edited by<br/>Cartwright, W, Peterson, M.P, Gartner, G., 229–240. Berlin Heidelberg, Berlin, Heidelberg:<br/>Springer. doi: 10.1007/978-3-540-36651-5_16.</p><p id="2022377e-b56f-8050-bf15-d341950374ab" class="">Drettakis, G, M Roussou, A Reche, and N Tsingos. 2007. “Design and Evaluation of a Real-World<br/>Virtual Environment for Architecture and Urban Planning.” <em>Presence: Teleoperators &amp; Virtual<br/>Environments </em>16: 318–332. doi:10.1162/pres.16.3.318.</p><p id="2022377e-b56f-8073-9341-d8545fabb14a" class="">Durand, F, 2002. “An Invitation to Discuss Computer Depiction.” In: <em>Proceedings of the Second<br/>International Symposium on Non-Photorealistic Animation and Rendering - NPAR ’02</em>. 111.<br/>New York, USA: ACM Press.</p><p id="2022377e-b56f-804d-a51e-d3001a43bb41" class="">El Jamiy, F, and R Marsh. 2019. “Survey on Depth Perception in Head Mounted Displays:<br/>Distance Estimation in Virtual Reality, Augmented Reality, and Mixed Reality.” <em>IET Image<br/>Process </em>13: 707–712. doi:10.1049/iet-ipr.2018.5920.</p><p id="2022377e-b56f-80ed-9682-f6092c633b90" class="">Esri Inc. 2020a. “ArcGis Runtime SDK for iOs: System Requirements for 100.7.0 [WWW<br/>Document].” Accessed 2 April 2020. https://developers.arcgis.com/ios/latest/swift/guide/<br/>system-requirements.htm</p><p id="2022377e-b56f-80cd-b8d9-f0a2f47deca2" class="">Esri Inc. 2020b. “World Imagery.” [<em>WWW Document</em>], Accessed 13 April 2020. https://www.<br/>arcgis.com/home/item.html?id=10df2279f9684e4a9f6a7f08febac2a9</p><p id="2022377e-b56f-80b0-8b31-d16ff717ee52" class="">Esri Inc. 2020c. “ArcGis Survey123 [WWW Document].” Accessed 13 April 2020c. https://www.<br/>esri.com/en-us/arcgis/products/survey123/overview</p><p id="2022377e-b56f-80fa-895a-d82d383007a1" class="">Feiner, S, B MacIntyre, T Höllerer, and A Webster. 1997. “A Touring Machine: Prototyping 3D<br/>Mobile Augmented Reality Systems for Exploring the Urban Environment.” <em>Personal<br/>Technologies </em>1: 208–217. doi:10.1007/BF01682023.</p><p id="2022377e-b56f-8098-bb5f-e640cef2ccc9" class="">Fenais, A, ST. Ariaratnam, SK. Ayer, and N Smilovsky. 2019. “Integrating Geographic<br/>Information Systems and Augmented Reality for Mapping Underground Utilities.”<br/><em>Infrastructures </em>4 (4): 60. doi:10.3390/infrastructures4040060.</p><p id="2022377e-b56f-80dd-8884-e9829c7ed8f6" class="">Fonseca, D, N Martí, E Redondo, I Navarro, and A Sánchez. 2014. “Relationship Between<br/>Student Profile, Tool Use, Participation, and Academic Performance with the Use of<br/>Augmented Reality Technology for Visualized Architecture Models.” <em>Computers in Human<br/>Behavior </em>31: 434–445. doi:10.1016/j.chb.2013.03.006.</p><p id="2022377e-b56f-80ae-b899-f24aee686227" class="">Foth, M, B Bajracharya, R Brown, and G Hearn. 2009. “The Second Life of Urban Planning?<br/>Using NeoGeography Tools for Community Engagement.” <em>Journal of Location Based<br/>Services </em>3: 97–117. doi:10.1080/17489720903150016.</p><p id="2022377e-b56f-8006-97d9-c2408e47c4de" class="">Goudarznia, T, M Pietsch, and R Krug. 2017. “Testing the Effectiveness of Augmented Reality in<br/>the Public Participation Process: A Case Study in the City of Bernburg.” <em>Journal of Digital<br/>Landscape Architecture </em>2: 244–251.</p><p id="2022377e-b56f-80a5-bfad-fa1248095b5a" class="">Grechkin, TY., TD. Nguyen, JM. Plumert, JF. Cremer, and JK. Kearney. 2010. “How Does<br/>Presentation Method and Measurement Protocol Affect Distance Estimation in Real and<br/>Virtual Environments?” <em>ACM Transactions on Applied Perception </em>7: 1–18. doi:10.1145/<br/>1823738.1823744.</p><p id="2022377e-b56f-8036-b3f8-eb760aa68161" class="">Haller, M, 2004. Photorealism Or/and Non-Photorealism in Augmented Reality. Proceedings of<br/>the VRCAI 2004 - ACM SIGGRAPH International Conference on Virtual Reality Continnum<br/>and its Applications in Industry, Singapore. 189–196.</p><p id="2022377e-b56f-8031-a715-d9764d90354f" class="">Halper, N, S Schlechtweg, and T Strothotte, 2002. “Creating Non-Photorealistic Images the<br/>Designer’s Way.” In: <em>Proceedings of the Second International Symposium on Non-<br/>Photorealistic Animation and Rendering - NPAR ’02</em>, 97. Annecy (France): ACM Press.</p><p id="2022377e-b56f-80e9-beee-df74644c8b0d" class="">Hanzl, Malgorzata. 2009. ”Potential of the Information Technology for the Public Participation<br/>in the Urban Planning.“ Geoinformatics for the Natural Resources Management, 1–23. New<br/>York: Nova Science Pubishers, Inc.</p><p id="2022377e-b56f-809a-bb15-db2759063888" class="">Hu, Y, Z Lv, J Wu, K Janowicz, X Zhao, and B Yu. 2015. “A Multistage Collaborative 3D GIS to<br/>Support Public Participation.” <em>International Journal of Digital Earth </em>8: 212–234. doi:10.1080/<br/>17538947.2013.866172.</p><p id="2022377e-b56f-80be-9938-ea848386289e" class="">Huang, H, M Schmidt, and G Gartner. 2012. “Spatial Knowledge Acquisition with Mobile Maps,<br/>Augmented Reality and Voice in the Context of GPS-Based Pedestrian Navigation: Results<br/>from a Field Test.” <em>Cartography and Geographic Information Science </em>39: 107–116.<br/>doi:10.1559/15230406392107.</p><p id="2022377e-b56f-809a-a99d-f1cd49b64b5c" class="">Huang, H, G Gartner, J Krisp, M Raubal, and N Van de Weghe. 2018. “Location Based Services:<br/>Ongoing Evolution and Research Agenda.” <em>Journal of Location Based Services </em>12: 63–93.<br/>doi:10.1080/17489725.2018.1508763.</p><p id="2022377e-b56f-8045-b500-d09583ba83af" class="">Ilin, N. 2019. <em>Virtuelle Realität als neues Kommunikationsmittel zwischen Verwaltung und<br/>Bevölkerung? </em>Kassel: Universität Kassel.</p><p id="2022377e-b56f-80e6-8b9a-ed4b1f512b9f" class="">Jahnke, M, JM. Krisp, and H Kumke. 2011. “How Many 3D City Models are There? -<br/>A Typological Try.” <em>The Cartographic Journal </em>48: 124–130. doi:10.1179/<br/>1743277411Y.0000000010.</p><p id="2022377e-b56f-8085-a827-ed79331f2425" class="">Jerome, C, and B Witmer. 2005. “The Perception and Estimation of Egocentric Distance in Real<br/>and Augmented Reality Environments.” <em>Proceedings of the Human Factors and Ergonomics<br/>Society Annual Meeting </em>49: 2249–2252. doi:10.1177/154193120504902607.</p><p id="2022377e-b56f-807a-89f1-cf2a3bdaeaf8" class="">Jones, CB. 1997. <em>Geographical Information Systems and Computer Cartography</em>. London:<br/>Routledge.</p><p id="2022377e-b56f-80b9-9cc9-e4ac32597e57" class="">Kaji, S, H Kolivand, R Madani, M Salehinia, and M Shafaie. 2018. “Augmented Reality in Smart<br/>Cities: A Multimedia Approach.” <em>Journal of Engineering Technology </em>6: 28–45.</p><p id="2022377e-b56f-80aa-9592-c79c08b3e354" class="">Kälin, P. 2015. <em>Einsatz von Augmented Reality zur Vermittlung von räumlichen Informationen</em>.<br/>Zürich (Switzerland): Universität Zürich.</p><p id="2022377e-b56f-80a4-bade-f7623b9f07fa" class="">Klausener, R. 2012. <em>Der Effekt des Realitätsgrades von 3D-Modellen auf die Akzeptanz von<br/>Bauvorhaben</em>. Zürich (Switzerland): Universität Zürich.</p><p id="2022377e-b56f-8068-b80f-f7560be870d9" class="">Kolivand, H, MS. Sunar, and R Ji. 2014. “Realistic Real-Time Outdoor Rendering in Augmented<br/>Reality.” <em>PLoS One </em>9 (9): e108334. doi:10.1371/journal.pone.0108334.</p><p id="2022377e-b56f-807f-8bb0-d1255217b44f" class="">Lee, GA., A Dunser, S Kim, and M Billinghurst, 2012. CityViewar: A Mobile Outdoor AR<br/>Application for City Visualization. 11th IEEE International Symposium on Mixed<br/>Augmented Reality 2012 - Arts, Media, and Humanities Paper ISMAR-AMH 2012, Atlanta,<br/>GA, USA. 57–64.</p><p id="2022377e-b56f-80c3-9cee-e38a347bf784" class="">Löwner, M O., J Benner, G Gröger, and K H. Häfele. 2018. “New Concepts for Structuring 3D<br/>City Models – an Extended Level of Detail Concept for CityGml Buildings.” <em>Computational<br/>Science and Its Applications – ICCSA 2013</em>: 466–480.</p><p id="2022377e-b56f-80ee-978d-eda7d37f215e" class="">Naemura, T, et al. 2002. ”Virtual Shadows in Mixed Reality Environment Using Flashlight-Like<br/>Devices.” <em>Transactions of the Virtual Reality Society of Japan </em>7:227–237.</p><p id="2022377e-b56f-80d9-bccc-c02436c9063b" class="">Narooie, M. 2014. “Boosting Public Participation in Urban Planning Through the Use of Web<br/>GIS Technology : A Case Study of Stockholm County (Dissertation): 1–78.</p><p id="2022377e-b56f-8098-aa01-debd05c090db" class="">Olsson, T, E Lagerstam, T Kärkkäinen, and K Väänänen-Vainio-Mattila. 2013. “Expected User<br/>Experience of Mobile Augmented Reality Services: A User Study in the Context of Shopping<br/>Centres.” <em>Personal and Ubiquitous Computing </em>17: 287–304. doi:10.1007/s00779-011-0494-x.</p><p id="2022377e-b56f-802e-b93e-f03dfcab25f0" class="">Radford, A, R Woodbury, G Braithwaite, S Kirkby, R Sweeting, and E Huang. 1997. ”Issues of<br/>Abstraction, Accuracy and Realism in Large Scale Computer Urban Models ” In <em>CAAD<br/>Futures 1997</em>, edited by Junge, R, 679–690. Netherlands, Dordrecht:Springer.</p><p id="2022377e-b56f-80b8-9164-dbcfdb20d536" class="">Ramos, F, S Trilles, J Torres-Sospedra, and FJ. Perales, C A. Knoblock. 2018. “Map Archive<br/>Mining: Visual-Analytical Approaches to Explore Large Historical Map Collections.” <em>ISPRS<br/>International Journal of Geo-Information </em>7. doi:10.3390/ijgi7040148.</p><p id="2022377e-b56f-8029-8cbf-c7efa549e1d7" class="">Rehrl, K, E Häusler, S Leitinger, and D Bell. 2014. “Pedestrian Navigation with Augmented<br/>Reality, Voice and Digital Map: Final Results from an in situ Field Study Assessing<br/>Performance and User Experience.” <em>Journal of Location Based Services </em>8: 75–96.<br/>doi:10.1080/17489725.2014.946975.</p><p id="2022377e-b56f-80b6-a340-c106c2ee17f8" class="">Reitmayr, G, and D Schmalstieg. 2004. “Collaborative Augmented Reality for Outdoor<br/>Navigation and Information Browsing.” In: <em>Proceedings of the Second Symposium on<br/>Location Based Services and TeleCartography</em>, TU Wien. 53–62.</p><p id="2022377e-b56f-8043-8810-f04dd468ffcd" class="">Richardson, AR., and D Waller. 2005. “The Effect of Feedback Training on Distance Estimation<br/>in Virtual Environments.” <em>Applied Cognitive Psychology </em>19: 1089–1108. doi:10.1002/<br/>acp.1140.</p><p id="2022377e-b56f-801d-89e8-eee42426951f" class="">Rohrmann, B, and I Bishop. 2002. “Subjective Responses to Computer Simulations of Urban<br/>Environments.” <em>Journal of Environmental Psychology </em>22: 319–331. doi:10.1006/<br/>jevp.2001.0206.</p><p id="2022377e-b56f-808d-9717-df2f33fbe846" class="">Rudi, D, I Giannopoulos, P Kiefer, C Peier, and M Raubal, 2016. “Interacting with Maps on<br/>Optical Head-Mounted Displays.” In: <em>Proceedings of the 2016 Symposium on Spatial User<br/>Interaction</em>, Tokyo (Japan).</p><p id="2022377e-b56f-803a-82c3-f22e35104d6a" class="">Schaffers, H, et al. 2011. <em>Smart Cities and the Future Internet: Towards Cooperation Frameworks<br/>for Open Innovation, the Future Internet Assembly</em>. Berlin, Heidelberg: Springer.</p><p id="2022377e-b56f-803b-892f-ed4f21695765" class="">Schmalstieg, D, and G Reitmayr. 2007. “The World as a User Interface: Augmented Reality for<br/>Ubiquitous Computing. ” In: <em>Location Based Services and TeleCartography</em>. edited by<br/>Gartner, G, Cartwright, W, Peterson, M. P. Berlin, Heidelberg: Springer. doi:10.1007/978-3-<br/>540-36728-4_28.</p><p id="2022377e-b56f-80b8-9544-c22314d8b1a9" class="">Slater, M, M Usoh, and Y Chrysanthou. 1995. <em>The Influence of Dynamic Shadows on Presence in<br/>Immersive Virtual Environments</em>. Vienna: Springer.</p><p id="2022377e-b56f-8060-8b06-f05f42220efd" class="">Steinicke, F, G Bruder, K Hinrichs, and A Steed. 2010. “Gradual Transitions and Their Effects on<br/>Presence and Distance Estimation.” <em>Computers &amp; Graphics </em>34: 26–33. doi:10.1016/j.<br/>cag.2009.12.003.</p><p id="2022377e-b56f-8011-953c-ccee81dd7b5c" class="">Swisstopo. 2020. ”swissAlti3d [WWW Document].” Accessed 23 April 2020.<br/>Tom Dieck, MC., T Jung, and D-I. Han. 2016. “Mapping Requirements for the Wearable Smart<br/>Glasses Augmented Reality Museum Application.” </p><p id="2022377e-b56f-800f-a268-fb88f8e5fe8d" class=""><em>Journal of Hospitality and Tourism </em>7: 230–253.<br/>Tom Dieck, MC., and T Jung. 2018. “A Theoretical Model of Mobile Augmented Reality Acceptance in Urban Heritage Tourism.” <em>Current Issues in Tourism </em>21: 154–174.</p><p id="2022377e-b56f-8097-b68d-dc8901c0898d" class="">Vlahakis, V, J Karigiannis, M Tsotros, and IT Christou. 2001. ”<em>Archeoguide: First Results of an<br/>Augmented Reality, Mobile Computing System in Cultural Heritage Sites</em>.“ Proceedings of the<br/>2001 Conference on Virtual Reality, Archeology, and Cultural Heritage, November 28-30,<br/>Glyfada, Greece. academia.edu.</p><p id="2022377e-b56f-8013-97db-da033ca5ca42" class="">Walther-Franks, B, and R Malaka. 2008. “Evaluation of an Augmented Photograph-Based<br/>Pedestrian Navigation System.” In <em>Smart Graphics</em>, edited by Antonio Brian, K. Patrick,<br/>O. Andreas, C.M.B. Fisher, 94–105. Berlin Heidelberg: Springer.</p><p id="2022377e-b56f-8029-9986-ddc211e6c217" class="">Wilson, A, M Tewdwr-Jones, and R Comber. 2019. “Urban Planning, Public Participation and<br/>Digital Technology: App Development as a Method of Generating Citizen Involvement in<br/>Local Planning Processes.” <em>Environment and Planning B, Urban Analytics and City Science </em>46:<br/>286–302. doi:10.1177/2399808317712515.</p><p id="2022377e-b56f-8086-ae70-fec0052ca6a4" class="">Woodward, C, Hakkarainen, M, Korkalo, O, Kantonen, T, Aittala, M, Rainio, K, and Kähkönen, K.<br/>2010. “Mixed reality for mobile construction site visualization and communication.“ <em>10th<br/>International Conference on Construction Applications of Virtual Reality </em>(CONVR2010), 4–5.</p><p id="2022377e-b56f-80d5-a3ca-f5ae3b40ebfd" class="">Wu, H-K., Sw.-Y. Lee, H-Y. Chang, and J-C. Liang. 2013. “Current Status, Opportunities and<br/>Challenges of Augmented Reality in Education.” <em>Computers &amp; Education </em>62: 41–49.<br/>doi:10.1016/j.compedu.2012.10.024.</p><p id="2022377e-b56f-802f-a494-de026913a93a" class="">Zanola, S, SI. Fabrikant, and A Çöltekin, 2009. “The Effect of Realism on the Confidence in<br/>Spatial Data Quality in Stereoscopic 3D Displays.”</p><p id="2022377e-b56f-8004-a040-f0fb725a126a" class="">Zhang, L, S Chen, H Dong, and A El Saddik. 2018. “Visualizing Toronto City Data with HoloLens:<br/>Using Augmented Reality for a City Model.” <em>IEEE Consumer Electronics Magazine </em>7: 73–80.<br/>doi:10.1109/MCE.2018.2797658.</p><p id="2022377e-b56f-804c-afd4-d4035cca3db8" class="">Zürich, Stadt, and Amt Für Hochbauten und Studio Burkhardt, Studio für Architektur ETH SIA,<br/>Z. 2019. “Schulhaus Allmend [WWW Document].”</p><p id="2022377e-b56f-80b7-abbc-c080d58f3ffd" class="">Zürich, Stadt, 2020. “3D-Stadtmodell [WWW Document].” Accessed 18 September 2020. www.<br/>stadt-zuerich.ch/ted/de/index/geoz/geodaten_u_plaene/3d_stadtmodell.html</p><p id="2022377e-b56f-807c-9bfa-c04737d6f3aa" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

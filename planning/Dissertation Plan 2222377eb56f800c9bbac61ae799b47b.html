@@ -1,0 +1,688 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Dissertation Plan</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-default { background-color: rgba(84, 72, 49, 0.08); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2222377e-b56f-800c-9bba-c61ae799b47b" class="page sans"><header><h1 class="page-title">Dissertation Plan</h1><p class="page-description"></p></header><div class="page-body"><p id="2222377e-b56f-80f6-adbd-fa0679fe07cf" class="">How can we reduce data distortion and improve the efficiency of geospatial data transfer in early stage design workflows?</p><p id="2222377e-b56f-80d5-9773-fdd2daf1ab68" class="">Reducing data distortion in multi-source geospatial workflows: A web based platform for efficient and accurate site analysis.</p><p id="2222377e-b56f-8017-a48d-c72fc4920882" class="">To develop a web based mapping platform that enables efficient and reliable site analysis through the integration of multiple geospatial datasets with a focus on clarity, usability, and practical site insight. </p><p id="2222377e-b56f-8035-a74a-e108bfa23382" class="">Site analysis in architecture and civil engineering often requires data from diverse sources such as OpenStreetMap, local planning portals, environmental datasets and elevation models. This data is typically manually collected, converted and imported into tools like AutoCAD or Revit, which is a time consuming process prone to data distortion, misalignment, and a loss of meta data. </p><p id="2222377e-b56f-800c-82ff-f7cbbab367f6" class="">This project aims to design a web based platform that streamlines multi source geospatial data integration, maintains semantic and geometric fidelity, and produces interoperable output formats useable in common design software. This approach will reduce time, errors and cost while improving the quality of the early design process. </p><p id="2222377e-b56f-8024-85ae-eca88c87d526" class="">
+</p><h2 id="2222377e-b56f-804e-ac5c-d7c170a50543" class="">Existing tools:</h2><ul id="2222377e-b56f-80d7-be72-d60e13204bde" class="bulleted-list"><li style="list-style-type:disc">Require software e.g Autodesk</li></ul><ul id="2222377e-b56f-8040-ade8-fe5cc8f47894" class="bulleted-list"><li style="list-style-type:disc">Not built for cross discipline</li></ul><ul id="2222377e-b56f-80f3-941c-d35a3125e0c9" class="bulleted-list"><li style="list-style-type:disc">Not built for early stage collaboration</li></ul><ul id="2222377e-b56f-803e-8973-ea0975943bb9" class="bulleted-list"><li style="list-style-type:disc">dont address data fidelity in transfer/ conversion</li></ul><p id="2222377e-b56f-806a-ab7d-e39aaf0dc903" class="">Each platform has a different system for setting up the map.- Different tagging systems are used during data collection. e.g OSM label a street as “highway:””residential”, while a council database might use “type”:”local road”.</p><p id="2222377e-b56f-80b0-b163-cbe471aef635" class="">Overlays from different datasets can misalign.- Different Coordinate Reference Systems (CRS), Differing scales/ resolutions, Inconsistent digitisation.</p><p id="2222377e-b56f-80c0-8981-cbbde0a33bdd" class="">Existing platforms like Google Maps, Arc GIS Online, and Leaflet-based apps usually display data as is. User must then manually sort data so that it all matches, to be able to integrate it further. </p><p id="2222377e-b56f-80e7-bf7d-d7dbb8a67209" class="">They do not warn you of overlays, gaps or misalignments. Data used may then be guessed/not accurate or will require manual tweaking. QGIS does let a manual fix but requires knowledge of GIS.</p><p id="2222377e-b56f-8001-bce0-e9b69cf138ec" class="">No change simulation built on clean data</p><p id="2222377e-b56f-8091-89cd-e8669faa3ec8" class="">Most existing platforms either visualise data without allowing interaction or editing, or they allow editing without showing potential consequences. They also have their own data not caring about others so often grabbing data or using different platforms becomes uncertain when double checking as its unsure of which sites has distortion. </p><h3 id="2222377e-b56f-806d-8c4e-ec6d3036dd74" class="">Rendering Platforms-</h3><ul id="2222377e-b56f-8035-8258-ed6549d54dfd" class="bulleted-list"><li style="list-style-type:disc">MapLibre GL</li></ul><ul id="2222377e-b56f-8015-bf4b-cfbd9e575d98" class="bulleted-list"><li style="list-style-type:disc">Cesium JS</li></ul><ul id="2222377e-b56f-804f-b698-e0eff0b6c788" class="bulleted-list"><li style="list-style-type:disc">Deck.gl</li></ul><ul id="2222377e-b56f-8070-956a-ee057c274f2c" class="bulleted-list"><li style="list-style-type:disc">Open Layers</li></ul><h3 id="2222377e-b56f-802f-9f7f-fbdeac32b1c8" class="">Testing:</h3><p id="2222377e-b56f-8058-b42f-df518bcdcc75" class="">-rendering quality</p><p id="2222377e-b56f-8098-bd9f-fc33d48af0b5" class="">-performance</p><p id="2222377e-b56f-803c-bfae-d18a89ab3927" class="">-control options</p><p id="2222377e-b56f-808e-be14-fe3325117e01" class="">-ease of use/devloper experience</p><p id="2222377e-b56f-8096-9c06-e9c9423e7ee8" class="">-interactivity</p><p id="2222377e-b56f-8018-90d1-cf0ca940f96d" class="">-compatability with GeoJSON, live data, raster tiles</p><p id="2222377e-b56f-801b-8544-c0886893f484" class="">-custom styling and controls</p><p id="2222377e-b56f-8057-ac26-fab50ae67119" class="">-support for mobile and responsiveness</p><p id="2222377e-b56f-8074-b1d3-fcea3cb3fa47" class="">-licensing/ open soure vs paid</p><h3 id="2222377e-b56f-8099-82a2-d931ae7371ef" class="">Comparison table:</h3><table id="2222377e-b56f-8092-aed8-c3c029a31529" class="simple-table"><tbody><tr id="2222377e-b56f-800f-a6d5-e20a7eeb813a"><td id="or[J" class="">Load Speed</td><td id="N;YM" class="">Score</td></tr><tr id="2222377e-b56f-8042-be78-faee0f35d979"><td id="or[J" class="">Visual Quality</td><td id="N;YM" class=""></td></tr><tr id="2222377e-b56f-8098-8402-c2870f9fb3b3"><td id="or[J" class="">Ease of adding popups</td><td id="N;YM" class=""></td></tr><tr id="2222377e-b56f-8065-86ae-c6e126a1c869"><td id="or[J" class="">Controls (zoom, rotate)</td><td id="N;YM" class=""></td></tr><tr id="2222377e-b56f-80e7-8ca1-e8d42e956fe8"><td id="or[J" class="">Mobile compatability</td><td id="N;YM" class=""></td></tr></tbody></table><table id="2222377e-b56f-809b-9111-ee740dfdab6d" class="simple-table"><tbody><tr id="2222377e-b56f-80d2-8abe-d7d791407ac3"><td id="GGeu" class="">Platform</td><td id="GkAr" class="">Type</td><td id="SKBl" class="">Strengths</td><td id="CNRO" class="">Good For</td></tr><tr id="2222377e-b56f-807d-a094-d17f6f1f012d"><td id="GGeu" class="">Leaflet</td><td id="GkAr" class="">2D raster</td><td id="SKBl" class="">Simple, widely used, documented</td><td id="CNRO" class="">Small to medium static maps</td></tr><tr id="2222377e-b56f-8069-9963-c15e2a97055d"><td id="GGeu" class="">MapLibre GL JS</td><td id="GkAr" class="">2D/3D (vector)</td><td id="SKBl" class="">Vector tiles, smooth zoom, open source</td><td id="CNRO" class="">Professional map styling, mobile friendly, Mapbox alternative </td></tr><tr id="2222377e-b56f-8028-8102-d4294cdd787d"><td id="GGeu" class="">Cesium JS</td><td id="GkAr" class="">Full 3D globe</td><td id="SKBl" class="">3D terrain, line based data, realistic rendering</td><td id="CNRO" class="">Earth based analysis infrastructure, planning scenarios</td></tr><tr id="2222377e-b56f-8085-8571-c389bde2add0"><td id="GGeu" class="">Deck.gl</td><td id="GkAr" class="">Web GL based</td><td id="SKBl" class="">High performance, large datasets, layers like scatterplot, heatmap, path</td><td id="CNRO" class="">Advanced analytics, data visualisation</td></tr><tr id="2222377e-b56f-80a0-9232-dd6238c1674a"><td id="GGeu" class="">Open Layers</td><td id="GkAr" class="">2D/3D</td><td id="SKBl" class="">Powerful but complex, raster/vector and projections</td><td id="CNRO" class="">Scientific and advanced GIS apps</td></tr></tbody></table><h2 id="2222377e-b56f-80eb-b6fb-d77b63069946" class="">New Platform:</h2><ul id="2222377e-b56f-80e1-9dd5-f834a897a6e3" class="bulleted-list"><li style="list-style-type:disc">Open, real time data sources</li></ul><ul id="2222377e-b56f-8061-9c33-cf2bd53bc173" class="bulleted-list"><li style="list-style-type:disc">Interoperable exports</li></ul><ul id="2222377e-b56f-8068-82a8-d2aa2e7e1b93" class="bulleted-list"><li style="list-style-type:disc">eliminating human error in a specific but critical part of the design pipeline</li></ul><p id="2222377e-b56f-80e1-aa8d-c9c337cd9b13" class="">
+</p><p id="2222377e-b56f-8083-a9ed-e4c6d442285b" class="">Potential Concept:</p><p id="2222377e-b56f-80f4-80d1-d0100be9fed2" class="">Client: Urban designer needing quick, data rich site context to inform design decisions.</p><p id="2222377e-b56f-807c-a31f-fee2e0d7a475" class="">Jobs: 1. View and navigate to a specific location<div class="indented"><ol type="1" id="2222377e-b56f-8029-925d-ee49102e1a0d" class="numbered-list" start="2"><li>See different data layers (e.g land use)</li></ol><ol type="1" id="2222377e-b56f-80b5-b142-e761fc6213d2" class="numbered-list" start="3"><li>Export a map area of DXF/GeoJSON</li></ol><ol type="1" id="2222377e-b56f-80f5-91b6-f0eb653f2541" class="numbered-list" start="4"><li>Get info by clicking on map feature</li></ol><ol type="1" id="2222377e-b56f-80ea-9813-cc94a7403cf1" class="numbered-list" start="5"><li>Draw/mark a point or area manually</li></ol><ol type="1" id="2222377e-b56f-8069-8979-e706a2a507dd" class="numbered-list" start="6"><li>Switch base-map style (e.g satellite)</li></ol><ol type="1" id="2222377e-b56f-80f8-872f-c90599e3417c" class="numbered-list" start="7"><li>Check measurement (e.g area/distance)</li></ol></div></p><p id="2222377e-b56f-8057-85df-fe85029f1382" class="">Features: - Map view<div class="indented"><ul id="2222377e-b56f-8022-b395-edbbaa883edc" class="bulleted-list"><li style="list-style-type:disc">Search bar</li></ul><ul id="2222377e-b56f-8012-ade1-ec8fe5d5bde3" class="bulleted-list"><li style="list-style-type:disc">Layer toggle panel</li></ul><ul id="2222377e-b56f-80dc-bd86-f54b8b6222fd" class="bulleted-list"><li style="list-style-type:disc">export button</li></ul><ul id="2222377e-b56f-80ef-b0fc-e273fdbfbd95" class="bulleted-list"><li style="list-style-type:disc">click feature to show popup with info</li></ul></div></p><p id="2222377e-b56f-803b-a9b1-e63548d9bec9" class="">
+</p><p id="2222377e-b56f-8083-9b61-c928892a4f66" class="">
+</p><h3 id="2222377e-b56f-80c1-a6c8-f5540ace0605" class="">Objectives:</h3><ul id="2222377e-b56f-80b4-8110-fbbec46ef59e" class="bulleted-list"><li style="list-style-type:disc">Automate collection of site data from open geospatial sources (e.g OSM, Planning APIs, terrain/elevation)</li></ul><ul id="2222377e-b56f-80a5-b69f-e6848de65a2b" class="bulleted-list"><li style="list-style-type:disc">Normalise and validate geometries and data to ensure format fidelity</li></ul><ul id="2222377e-b56f-80ba-b1e8-d585feceee36" class="bulleted-list"><li style="list-style-type:disc">Provide visual in browser previews for designers/planners</li></ul><ul id="2222377e-b56f-809a-84cf-e84de4f4c7f3" class="bulleted-list"><li style="list-style-type:disc">enable export to industry standard formats (GeoJSON, DXF) with minimal loss/distortion</li></ul><ul id="2222377e-b56f-80f3-860f-e7b0080135de" class="bulleted-list"><li style="list-style-type:disc">evaluate the solutions efficiency and accuracy compared to traditional workflows</li></ul><p id="2222377e-b56f-8012-8db9-c5c0cc13ee99" class="">
+</p><h3 id="2222377e-b56f-80f3-89c3-cdce8055fdbd" class="">Deliverables</h3><ol type="1" id="2222377e-b56f-8078-860b-f2fb2e793a44" class="numbered-list" start="1"><li>Functional web based prototype</li></ol><ol type="1" id="2222377e-b56f-80c3-95e6-fe6db45f2567" class="numbered-list" start="2"><li>Data conversion engine with export capabilities</li></ol><ol type="1" id="2222377e-b56f-8038-acb7-cefdd2320453" class="numbered-list" start="3"><li>Technical report documenting system architecture, testing and evaluation</li></ol><ol type="1" id="2222377e-b56f-80a1-8c19-c50db7032abc" class="numbered-list" start="4"><li>Research context, implementation and results</li></ol><p id="2222377e-b56f-8061-abfc-df4788603d19" class="">
+</p><p id="2222377e-b56f-8007-a379-f61fcb5de98f" class="">Show evidence of thorough research and show evidence of comparison to justify why you chose software/ rendering platforms, ensuring to highlight core criteria needed. Fully investigate at least 2 other rendering sites chosen, by adding data and polish to make final decision. Ensure to critque on user interface and storage/ loading. </p><p id="2222377e-b56f-80d1-b77c-c2a1b039608a" class="">Add more data layers from different data supplies and explore how to clean and normalise.</p><p id="2222377e-b56f-8047-ba42-c5d0e16af8df" class="">Add live data and explore how to add something live that compliments other data on the map.</p><p id="2222377e-b56f-8032-8472-c284161029e3" class="">Research unified preprocessed layers so tags for example are harmonised.</p><p id="2222377e-b56f-80ed-8229-d14923c1d106" class="">Research details on demand in web development. </p><p id="2222377e-b56f-80ac-928d-f81f53e580a6" class="">
+</p><p id="2222377e-b56f-8040-9a2a-c09c6154b920" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

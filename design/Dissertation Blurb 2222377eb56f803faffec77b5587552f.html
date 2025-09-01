@@ -1,0 +1,691 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Dissertation Blurb</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-default { background-color: rgba(84, 72, 49, 0.08); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2222377e-b56f-803f-affe-c77b5587552f" class="page sans"><header><h1 class="page-title">Dissertation Blurb</h1><p class="page-description"></p></header><div class="page-body"><p id="2222377e-b56f-809a-bc12-dfaa02be0fde" class="">How can we reduce data distortion and improve the efficiency of geospatial data transfer in early stage design workflows?</p><p id="2222377e-b56f-805f-819b-f7b9c18ef18d" class="">Reducing data distortion in multi-source geospatial workflows: A web based platform for efficient and accurate site analysis.</p><p id="2222377e-b56f-8093-82bd-dad6c8d0f893" class="">To develop a web based mapping platform that enables efficient and reliable site analysis through the integration of multiple geospatial datasets with a focus on clarity, usability, and practical site insight. </p><p id="2222377e-b56f-8089-b273-d9316ed2d8a6" class="">Site analysis in architecture and civil engineering often requires data from diverse sources such as OpenStreetMap, local planning portals, environmental datasets and elevation models. This data is typically manually collected, converted and imported into tools like AutoCAD or Revit, which is a time consuming process prone to data distortion, misalignment, and a loss of meta data. </p><p id="2222377e-b56f-802c-a4d4-e75dd213d10e" class="">This project aims to design a web based platform that streamlines multi source geospatial data integration, maintains semantic and geometric fidelity, and produces interoperable output formats useable in common design software. This approach will reduce time, errors and cost while improving the quality of the early design process. </p><p id="2262377e-b56f-8041-9e92-dc6537512704" class="">The tool will not only visualise spatial data but also offer interpretative and evaluative functionality, enabling designers, planners, or researchers to assess how landscape features, built form, and proposed changes impact visual perception and character.</p><div><p id="20f2377e-b56f-8013-bd99-c89241bfdd56" class="">To create and evaluate a web based mapping platform that visualises spatial and environmental datasets and exports them in formats directly consumable by common design software. </p><table id="20f2377e-b56f-80a5-a42f-da8fbd592e2a" class="simple-table"><tbody><tr id="20f2377e-b56f-8006-aad9-d2f6021c850d"><td id="Z&lt;wb" class="">Objective</td><td id="MeN_" class="">How</td><td id="oEFc" class="">Success</td><td id="\JbC" class="">Notes</td></tr><tr id="20f2377e-b56f-80fc-86d2-c9e7d4957626"><td id="Z&lt;wb" class="">Review current data sources, design software interoperability standards and relevant research</td><td id="MeN_" class="">Critical reading of papers, OpenStreetMap Github repo, key HCI and cartography literature</td><td id="oEFc" class="">Annotated bibliography, refined requirements list</td><td id="\JbC" class=""></td></tr><tr id="20f2377e-b56f-8081-aa5f-e1c7def00859"><td id="Z&lt;wb" class="">Compile and clean core datasets (OSM, land use, flood risk, topography, transport)</td><td id="MeN_" class="">Use Overpass API, national data portals, environment agency downloads, clean with Python/GeoPandas</td><td id="oEFc" class="">Reproducible data pipeline, log</td><td id="\JbC" class=""></td></tr><tr id="20f2377e-b56f-8075-805c-c67e24534ba8"><td id="Z&lt;wb" class="">Build interactive map prototype</td><td id="MeN_" class="">Framework: React + MapLibre GL JS, PostGIS backend; deploy on Heroku or Vercel</td><td id="oEFc" class="">Responsive map loading &lt;2s, layer toggle, attribute query</td><td id="\JbC" class=""></td></tr><tr id="20f2377e-b56f-8016-ab51-d833318b5981"><td id="Z&lt;wb" class="">Implement export/compatibility</td><td id="MeN_" class="">GeoJSON, DXF and gITF export modules, plus direct QGIS and Rhino import recipe</td><td id="oEFc" class="">Files open in target software with correct coordinate system</td><td id="\JbC" class=""></td></tr><tr id="20f2377e-b56f-80f4-abca-d0e8edd2e1b6"><td id="Z&lt;wb" class="">Conduct user testing with design professionals</td><td id="MeN_" class="">Scenario-based tasks, System Usability Scale, think aloud interviews</td><td id="oEFc" class="">Greater than or equal to 70 SUS score, qualitative themes recorded</td><td id="\JbC" class=""></td></tr><tr id="20f2377e-b56f-8072-a29c-c8caaa5e9b78"><td id="Z&lt;wb" class="">Evaluate impact on design workflow</td><td id="MeN_" class="">Comparative task-completion study vs existing tools, measure time and error rate</td><td id="oEFc" class="">Greater than or equal to 20 % faster task completion</td><td id="\JbC" class=""></td></tr><tr id="20f2377e-b56f-8057-8522-c56555682e5c"><td id="Z&lt;wb" class="">Reflect on limitations and future work</td><td id="MeN_" class="">Critical analysis</td><td id="oEFc" class="">Clear recommendations and research agenda</td><td id="\JbC" class=""></td></tr></tbody></table><p id="20f2377e-b56f-80b1-9698-cdc64aff0151" class=""><strong>Choosing datasets: </strong>From literature review what open datasets, when combined, most improve early stage design decisions?</p><p id="20f2377e-b56f-80f8-8959-fc8bc02d362f" class=""><strong>Web page function: </strong>How can a web application load successful cartographic performance such a contours that can export for CAD and BIM tools?</p><p id="20f2377e-b56f-806d-9071-eb759fdea548" class=""><strong>Web page user interface: </strong>What usability factors most influence adoption among architects and urban designers</p><h2 id="20f2377e-b56f-80a3-b690-cf18c5bc1db2" class=""><strong>Method</strong></h2><ol type="1" id="20f2377e-b56f-80ff-aa6d-cedb761e68e8" class="numbered-list" start="1"><li>Literature and technology review- grounding in geovisual analytics, HCI and design technology</li></ol><ol type="1" id="20f2377e-b56f-80c4-8e2e-c8dee56e8f38" class="numbered-list" start="2"><li>Data acquisition and pipeline- documented extraction, cleaning and tiling</li></ol><ol type="1" id="20f2377e-b56f-803e-b130-ca32a4af2e32" class="numbered-list" start="3"><li>Iterative software development- website formation, git version control</li></ol><ol type="1" id="20f2377e-b56f-80d4-a9fe-e402d8c8b897" class="numbered-list" start="4"><li>Mixed methods evaluation- quantitative timings and SUS plus qualitative interviews</li></ol><ol type="1" id="20f2377e-b56f-80b8-8452-c888c8c3f4e1" class="numbered-list" start="5"><li>Ethical considerations- informed consent for testers, data licensing compliance (ODbl, OGL)</li></ol><p id="20f2377e-b56f-8034-849b-e46a8f18b869" class="">
+</p><h2 id="20f2377e-b56f-80d1-af7c-d05844b39994" class=""><strong>Deliverables</strong></h2><ul id="20f2377e-b56f-80a5-9dc9-ece72462b6ba" class="bulleted-list"><li style="list-style-type:disc">Clear code that can be reproducible with comments</li></ul><ul id="20f2377e-b56f-805d-bada-ce07ecad8d8b" class="bulleted-list"><li style="list-style-type:disc">Website with interactive map with documentation</li></ul><ul id="20f2377e-b56f-806c-a83d-c0d0c33d9523" class="bulleted-list"><li style="list-style-type:disc">Export plugs ins/ sample scripts for at least two design tools</li></ul><ul id="20f2377e-b56f-80f4-af28-d1bd1fece6a9" class="bulleted-list"><li style="list-style-type:disc">12000 word dissertation including evaluation results</li></ul><p id="20f2377e-b56f-800c-834b-ebacd782b9bf" class="">
+</p><h2 id="20f2377e-b56f-8062-b596-f5ac47319544" class=""><strong>Risks</strong></h2><table id="20f2377e-b56f-8005-95b0-d411dc320559" class="simple-table"><tbody><tr id="20f2377e-b56f-8028-87a4-eada65ec4a2a"><td id="CX}z" class="">Risk description</td><td id="BsWz" class="">Level of risk</td><td id="lM|K" class="">How to reduce/eliminate risk</td></tr><tr id="20f2377e-b56f-808d-8989-d5cb3326b4f3"><td id="CX}z" class="">Large datasets slow map load</td><td id="BsWz" class="">Medium</td><td id="lM|K" class=""></td></tr><tr id="20f2377e-b56f-80e8-9e90-ce3e053847c1"><td id="CX}z" class="">Export incompatibilities</td><td id="BsWz" class="">Medium</td><td id="lM|K" class=""></td></tr><tr id="20f2377e-b56f-80e8-a3e0-df618ae0257b"><td id="CX}z" class="">Limited tester availability</td><td id="BsWz" class="">Low-Medium</td><td id="lM|K" class=""></td></tr></tbody></table><p id="20f2377e-b56f-8079-ae99-fcab293c11d2" class=""><strong>Visualisation Methods</strong></p><p id="20f2377e-b56f-806e-8632-e2d095794b75" class="">To compliment the map visualisations will be used to abstract useful views and insights.</p><ul id="20f2377e-b56f-80e8-96b1-f77afec187e6" class="toggle"><li><details open=""><summary>Popular routes</summary><p id="20f2377e-b56f-8030-8fbe-f0ad5a87c17b" class="">GPS heatmap, path graph (nodes=intersections, edges = flows)</p></details></li></ul><ul id="20f2377e-b56f-8042-b54e-cc1ce225041e" class="toggle"><li><details open=""><summary>Local resources</summary><p id="20f2377e-b56f-801c-a99e-d94bb42486d6" class="">Businesses as nodes, categorised by material or service type</p></details></li></ul><ul id="20f2377e-b56f-8027-93fa-e406ce3a570a" class="toggle"><li><details open=""><summary>Section/profile view</summary><p id="20f2377e-b56f-8048-8a60-d6e4c5768db6" class="">Terrain/building profiles as data series, with semantic tags</p></details></li></ul><ul id="20f2377e-b56f-8024-8d85-e0915281a644" class="toggle"><li><details open=""><summary>3D contours</summary><p id="20f2377e-b56f-8029-9e8c-c57772e15aa3" class="">Image, mesh generation, surface approximation</p></details></li></ul><ul id="20f2377e-b56f-809a-9bb5-ddca18ab148c" class="toggle"><li><details open=""><summary>Draw and annotate </summary><p id="20f2377e-b56f-8089-b34a-f2f648c117e2" class="">Spatial annotation graph (user, location, comment)</p></details></li></ul><ul id="20f2377e-b56f-8037-a81d-cc65a8855e57" class="toggle"><li><details open=""><summary>All features </summary><p id="20f2377e-b56f-80cd-826d-fe46fd7146bb" class="">Recommend materials or routes via graph based reasoning</p><p id="20f2377e-b56f-8075-b18a-feb4f42570ed" class="">
+</p></details></li></ul><ul id="20f2377e-b56f-8001-b010-d9094d2a5a4a" class="bulleted-list"><li style="list-style-type:disc">Graph based route popularity scoring (combine OSM paths and heatmaps and tag frequency)</li></ul><ul id="20f2377e-b56f-80ce-9468-c9c408781247" class="bulleted-list"><li style="list-style-type:disc">K-means clustering of local businesses/resources to suggest material suppliers</li></ul><ul id="20f2377e-b56f-8053-8390-c697087ec541" class="bulleted-list"><li style="list-style-type:disc">Ai to detect interesting sites based on proximity and elevation and land use</li></ul><ul id="20f2377e-b56f-803c-a90b-c6cd9bfa87af" class="bulleted-list"><li style="list-style-type:disc">Autogenerate site summaries from tags/ metadata</li></ul><ul id="20f2377e-b56f-80bd-ad16-ce7b9ed9ec92" class="bulleted-list"><li style="list-style-type:disc">Pathfinding AI: Whats the sunniest/ flattest/ fastest walking route?<p id="20f2377e-b56f-80d0-958f-d33769e7463a" class="">
+</p></li></ul><ul id="20f2377e-b56f-8055-966b-ffae9bbf7b31" class="toggle"><li><details open=""><summary>Option A: Overlay Directly on Map</summary><p id="20f2377e-b56f-8026-b410-fd6d3bdc40a8" class="">Pedestrian flow graphs: Nodes at intersections, lines as weighted paths<br/>Proximity graphs: Circles connecting local businesses, or buildings connected by shadow paths</p></details></li></ul><ul id="20f2377e-b56f-80c5-9e94-e0204471e75c" class="toggle"><li><details open=""><summary>Option B: Side Panel Visualisations</summary><p id="20f2377e-b56f-8046-bcb1-c356e686ad97" class="">A collapsible panel on the side or bottom:<br/>Section/elevation chart drawn from a user path<br/>Network diagram showing business/ service clusters<br/>Materials supply chain graph based on nearby supplies</p></details></li></ul><p id="20f2377e-b56f-80be-b47d-d5a513a420ea" class="">
+</p><h2 id="20f2377e-b56f-8050-82e8-fb8f96b6000a" class="">Interactive</h2><ul id="20f2377e-b56f-807b-80df-fe87ca6958b6" class="bulleted-list"><li style="list-style-type:disc">Draw line on the map: see sectional elevation diagram</li></ul><ul id="20f2377e-b56f-8076-a038-d5d2edc969a7" class="bulleted-list"><li style="list-style-type:disc">Click on a building: see node-edge graph of nearby facilities/ resources</li></ul><ul id="20f2377e-b56f-80a1-b22f-cfca2a876932" class="bulleted-list"><li style="list-style-type:disc">Select a zone: auto generate a movement or usuage graph</li></ul><ul id="20f2377e-b56f-8032-a33b-f544cff20945" class="bulleted-list"><li style="list-style-type:disc">Filter businesses: show cluster graph based on material type or supplier</li></ul><p id="20f2377e-b56f-808a-8438-e7ef16e298e1" class="">
+</p><h2 id="20f2377e-b56f-8090-97ee-ed1ec8e053cb" class="">AI potential involvement</h2><ul id="20f2377e-b56f-80d1-8f40-d9a645169557" class="bulleted-list"><li style="list-style-type:disc">Clustering/ graph analysis when map is loaded or a user draws/selects</li></ul><ul id="20f2377e-b56f-803c-a473-c6513c8f6028" class="bulleted-list"><li style="list-style-type:disc">Rules, e.g if within 500m of a school and on a slope less then 10% mark as high access concern</li></ul><ul id="20f2377e-b56f-80df-b34a-f03675ee4d6e" class="bulleted-list"><li style="list-style-type:disc">Generate summaries</li></ul><p id="20f2377e-b56f-80b3-a2d7-f7b63e4f62ed" class="">
+</p></div><p id="2222377e-b56f-8096-b7d9-daa749f64f98" class=""><strong>Developing an Interactive Geospatial Platform for Designers</strong></p><p id="2222377e-b56f-80bc-9ba8-e90b58c24781" class="">A web-based tool to visualise spatial data (e.g. land use, environmental conditions, infrastructure) and support design workflows in the built environment sector, with integration to industry design software.</p><p id="2222377e-b56f-80cf-b4b6-dbba5d190db7" class="">Goals</p><ul id="2222377e-b56f-8064-8524-c934c3d80cf9" class="bulleted-list"><li style="list-style-type:disc">Bridge the gap between raw geospatial data and design decision-making.</li></ul><ul id="2222377e-b56f-80ef-981d-de2a7414a758" class="bulleted-list"><li style="list-style-type:disc">Support portable, site-responsive tools for designers (e.g. urban/landscape/architecture).</li></ul><ul id="2222377e-b56f-80aa-a096-d6ebaccc51fc" class="bulleted-list"><li style="list-style-type:disc">Explore how AI or visualisation techniques can enhance usability and insight.</li></ul><p id="2222377e-b56f-807b-af37-ff952bb3e169" class="">
+</p><p id="2222377e-b56f-8051-9196-db8c4700b4e8" class=""><strong>Features Under Consideration</strong></p><ul id="2222377e-b56f-80cc-857b-e4056451f1ce" class="bulleted-list"><li style="list-style-type:disc">OSM-based interactive map (core foundation)</li></ul><ul id="2222377e-b56f-803d-ad28-c4ac7afb2888" class="bulleted-list"><li style="list-style-type:disc">Overlay environmental data (contours, heights, land use)</li></ul><ul id="2222377e-b56f-80e7-be6f-d44394684499" class="bulleted-list"><li style="list-style-type:disc">AI-assisted 3D building form generation (for shadow/view analysis)</li></ul><ul id="2222377e-b56f-8086-a510-ce313b8a1277" class="bulleted-list"><li style="list-style-type:disc">Visualise popular pedestrian routes</li></ul><ul id="2222377e-b56f-80c0-a838-c46067423d67" class="bulleted-list"><li style="list-style-type:disc">Show local materials / businesses (useful for construction teams)</li></ul><ul id="2222377e-b56f-809b-b585-e653fcdbd45b" class="bulleted-list"><li style="list-style-type:disc">Comment/draw layer — users annotate directly on map (site visit notes)</li></ul><ul id="2222377e-b56f-8044-8d3b-fa54fc3b3c09" class="bulleted-list"><li style="list-style-type:disc">Hand-drawing tool (iPad/tablet friendly)</li></ul><ul id="2222377e-b56f-807d-970e-fcb85c1f2eae" class="bulleted-list"><li style="list-style-type:disc">Y-axis mapping or section visualisation tool (aid section generation)</li></ul><h3 id="2222377e-b56f-8019-bc2a-f5b5e21b662a" class="">Objectives:</h3><ul id="2222377e-b56f-801c-9e7c-f4057d1d3be9" class="bulleted-list"><li style="list-style-type:disc">Automate collection of site data from open geospatial sources (e.g OSM, Planning APIs, terrain/elevation)</li></ul><ul id="2222377e-b56f-80d5-88b0-e7f51fbc9dee" class="bulleted-list"><li style="list-style-type:disc">Normalise and validate geometries and data to ensure format fidelity</li></ul><ul id="2222377e-b56f-8020-86a5-f557d3bf21cc" class="bulleted-list"><li style="list-style-type:disc">Provide visual in browser previews for designers/planners</li></ul><ul id="2222377e-b56f-8037-bb6f-e0792242773d" class="bulleted-list"><li style="list-style-type:disc">enable export to industry standard formats (GeoJSON, DXF) with minimal loss/distortion</li></ul><ul id="2222377e-b56f-80bf-ae6a-ee734ded7899" class="bulleted-list"><li style="list-style-type:disc">evaluate the solutions efficiency and accuracy compared to traditional workflows</li></ul><p id="2222377e-b56f-801c-8758-caf6946941f3" class="">
+</p><h3 id="2222377e-b56f-8041-8967-f59d610d062a" class="">Deliverables</h3><ol type="1" id="2222377e-b56f-80bb-8aae-fc4e181042d3" class="numbered-list" start="1"><li>Functional web based prototype</li></ol><ol type="1" id="2222377e-b56f-80c8-a004-e537871e1971" class="numbered-list" start="2"><li>Data conversion engine with export capabilities</li></ol><ol type="1" id="2222377e-b56f-80f0-a328-fe0f53f864d6" class="numbered-list" start="3"><li>Technical report documenting system architecture, testing and evaluation</li></ol><ol type="1" id="2222377e-b56f-8017-a12c-fb5d0b861b1c" class="numbered-list" start="4"><li>Research context, implementation and results</li></ol><p id="2262377e-b56f-803d-8091-f53cceed1a10" class="">
+</p><p id="2262377e-b56f-8019-a71b-c179c790a697" class="">
+</p><h3 id="2262377e-b56f-80a7-8934-fbcb9bab06fe" class="">Selecting Appropriate Datasets</h3><p id="2262377e-b56f-8022-84a9-c248612158e1" class="">The project will include datasets that describe both physical form and perceptual qualities of a site. These include <strong>Digital Elevation Models (DEMs)</strong> for terrain understanding, <strong>tree and vegetation data</strong> for evaluating landscape texture and screening, <strong>land cover and land use zoning</strong> to define character types, <strong>heritage and listed buildings</strong> as cultural receptors, and <strong>transport infrastructure</strong> to map visual clutter and accessibility. Integration of <strong>planning constraint zones</strong>, <strong>viewpoints</strong>, and even <strong>photographic references</strong> could further enrich the platform’s contextual awareness.</p><h3 id="2262377e-b56f-808e-95fe-c7e460705e3a" class="">Visualisation and Analytical Features</h3><p id="2262377e-b56f-8019-887e-c70d2136a32b" class="">The platform&#x27;s visualisation tools should be chosen not for technical complexity alone, but for their relevance to design and assessment tasks. Suggested features include:</p><ul id="2262377e-b56f-80c8-af73-da541f0d4ba7" class="bulleted-list"><li style="list-style-type:disc"><strong>Interactive elevation profiles</strong> that respond to user-drawn paths, aiding in understanding terrain impact.</li></ul><ul id="2262377e-b56f-80b1-a7c8-ce6d8dab73a3" class="bulleted-list"><li style="list-style-type:disc"><strong>Land character overlays</strong> using colour-coded zones based on existing classifications or derived land use.</li></ul><ul id="2262377e-b56f-807d-bc10-e095de22ef95" class="bulleted-list"><li style="list-style-type:disc"><strong>Layer blending and toggles</strong> that allow scenario testing (e.g., existing vs proposed vegetation buffers).</li></ul><ul id="2262377e-b56f-8014-aee4-db5ff60e37de" class="bulleted-list"><li style="list-style-type:disc"><strong>Photographic viewpoints</strong> linked to map markers, connecting spatial data with ground-level perception.</li></ul><ul id="2262377e-b56f-8031-9515-f4ef2e02000a" class="bulleted-list"><li style="list-style-type:disc">Potentially, <strong>simplified viewshed simulations</strong> from user-defined locations could offer a novel interaction that approximates visual impact in a browser environment.</li></ul><p id="2262377e-b56f-80cd-a6a1-ef857e53268e" class="">The value of these tools lies not only in their visual expressiveness but in their ability to support <strong>alternative design scenarios</strong> and <strong>inform planning.</strong></p><p id="2262377e-b56f-80a9-9292-fda3fb1984e2" class="">The web mapping tool will be  evaluated based on six main criteria: (1) web mapping functionality and feature coverage, (2) usability and interface, (3) use limits and restrictions, (4) performance and scalability, (5) quality and accuracy of geospatial data and (6) stability.</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

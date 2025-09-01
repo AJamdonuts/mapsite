@@ -1,0 +1,681 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Multidimensional Web GIS Approach for Citizen
+Participation on Urban Evolution</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-default { background-color: rgba(84, 72, 49, 0.08); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2292377e-b56f-80a3-83cb-fc4eac44e974" class="page sans"><header><h1 class="page-title"><strong>Multidimensional Web GIS Approach for Citizen<br/>Participation on Urban Evolution</strong></h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-text"><th><span class="icon property-icon"><div data-testid="/icons/description_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/description_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/description_gray.svg?mode=light) no-repeat center;background-color:rgba(71, 70, 68, 0.6);fill:rgba(71, 70, 68, 0.6)"></div></span>Links</th><td><strong><a href="https://doi.org/10.3390/ijgi8060253">https://doi.org/10.3390/ijgi8060253</a></strong></td></tr></tbody></table></header><div class="page-body"><p id="22a2377e-b56f-80b2-a87c-f8f4bb96eec9" class="">The aim of our research was to design and develop a multidimensional web-mapping platform—supporting 2D, 3D, and 4D visualizations—to help users better understand the temporal evolution of their cities. Built using Cesium, an open-source virtual globe framework powered by JavaScript and WebGL, the platform combines a web-based questionnaire with dynamic spatial visualizations to enhance citizen engagement and participation. The resulting prototype serves as a proof of concept and offers a customizable framework suitable for various projects with minimal development time. In doing so, our work responds to the call by Resch et al. [13,20] for more studies exploring intuitive 4D representations of spatiotemporal phenomena on the web. We also propose a simulation mechanism that supports 2D and 3D web visualizations while fulfilling the requirements of participatory planning. This research builds upon previous work [21] by incorporating spatiotemporal simulations in citizen-driven consultations to better visualize change and its impacts.</p><p id="22a2377e-b56f-80b4-8bca-ca9f5b2a677a" class="">Web-mapping has significantly evolved over the past decade—from simple 2D representations to more immersive 3D environments—largely due to advances in WebGL. Alatalo et al. [22] identify WebGL as a valuable technology for developing visualizations in participatory urban planning. Virtual environments such as Unity, X3DOM, and Three.js have been commonly used to build public-facing tools [13,15,20,22], while virtual globes like NASA World Wind, Cesium.js, and Skyline have proven effective in participatory contexts [19,23–29]. These tools replicate familiar features from platforms like Google Earth, such as zooming, panoramic views, and project visualizations, which enhance accessibility for the general public. Lovett et al. [30] emphasize the potential of 3D visualizations in overcoming communication and mediation challenges in planning, though they stress the need for further studies to fully assess their effectiveness and to evaluate the added value of emerging technologies.</p><p id="22a2377e-b56f-8073-9d2c-fbad14a50709" class="">System performance is a critical factor in engaging the public—slow or unresponsive tools can deter participation. While WebGL has become the standard for 3D graphics on the web, it still lags in performance compared to native Windows applications, with a slowdown factor of two to five times [22]. Rendering large 3D datasets remains a technical challenge [15,22]. Chaturvedi et al. [31] proposed a tile-based CityGML rendering strategy via 3DCityDB, enabling efficient visualization in Cesium.js and Google Earth. Although Cesium’s 3D Tiles have emerged as a promising solution for online rendering of large city models, they still lacked support for direct CityGML conversion during the time of our research.</p><p id="22a2377e-b56f-8078-8066-e07891394153" class="">The ability to represent space at multiple levels of abstraction offers clear benefits throughout the planning and decision-making process [32]. According to Dambruch et al. [15], 3D models should be highly realistic to be comprehensible and persuasive in consultation settings. Conversely, Alatalo et al. and Semmo et al. [22,33] argue that abstract models can enhance performance and improve information recognition depending on the context. Both 2D and 3D representations have advantages: while 3D provides greater realism and intuitive understanding [17,19], Tory et al. [18] suggest that the combination of both is most effective for problem-solving.</p><p id="22a2377e-b56f-809f-9fd9-fb240e100c31" class="">To create a time-dynamic participatory platform, two essential components must be addressed: methods for spatiotemporal analysis and effective time representation. Zheng et al. [34] outline key spatiotemporal visual analytics for urban computing, with data filtering being one of the most effective techniques [35]. Filtering enhances performance and reduces visual clutter by limiting the number of displayed layers. Time is typically represented linearly along a timeline [36], supported by animations that reveal patterns in temporal data [37]. Changes are conveyed through visual variables such as color, height, texture, or through the appearance and disappearance of layers [24,38]. For instance, Yin and Shiode [17] used separate 3D models for different time steps and called for more research exploring how changes in 3D models correlate with variables like population growth. Echoing Resch et al. [20], we stress the need for more evaluations of 4D web-based visualizations to ensure they are understandable to the public.</p><p id="22a2377e-b56f-804f-ab30-d05bf5406b76" class="">A user-friendly interface is essential for successful citizen participation. Resch et al. [20] provide initial usability criteria for 3D/4D web maps, aligned with ISO9241-11 standards that define usability metrics and applications [39]. Interfaces modeled on familiar tools such as Google Maps and Earth offer intuitive navigation and enhance public accessibility. Our platform incorporates a web-based questionnaire as the primary engagement tool, offering a fast and cost-effective means for institutions to solicit citizen feedback. Compared to open-text responses, questionnaires also enable quicker statistical analysis [15].</p><p id="22a2377e-b56f-80fd-9118-e121e81de476" class="">To avoid cognitive overload, we excluded space–time cube visualizations (which represent time along a Z-axis), as they are often too complex for the general public to interpret [42]. Instead, we opted for more comprehensible methods, including linear timelines, animations, charts, and data filtering. Timelines provide a straightforward representation of time [36], while animations clearly communicate temporal changes but are best used sparingly to avoid overloading users [37]. We used color coding to depict different time steps and adopted grayscale environments to enhance perceptual contrast [37]. Charts, while traditionally used for statistics, also served as spatiotemporal analysis tools by explicitly linking animations and providing additional insights. Filtering allowed users to isolate specific time periods or data subsets, reducing visual complexity and enhancing clarity [24,35].</p><p id="22a2377e-b56f-8084-95af-d9e69b56f22b" class="">The platform interface consists of five main components: a questionnaire, a header, a toolbar, the main visualization scene, and a clock with an accompanying timeline. While Cesium API provides many built-in features, we developed additional functionalities such as switching between abstract (dark, simplified) and photorealistic (textured) building visualizations using Mapbox and Bing imagery. Users could toggle visual layers like 3D buildings and charts. Interaction tools included standard scene navigation (pan, zoom, rotate), as well as hover, click, and multi-click functions. Hovering highlighted objects; clicking displayed attribute data; and multi-click allowed users to select multiple features—useful in real-time consultations.</p><p id="22a2377e-b56f-803a-aa60-c283beb7f302" class="">Participants could switch between abstraction levels, and this feature was generally well received. It not only provided contextual detail but also improved performance by reducing graphical demand. However, we found that this feature should be made more prominent and potentially customizable, as suggested by Semmo et al. [33]. Developers should assess its suitability for each consultation scenario to avoid unnecessary development efforts.</p><p id="22a2377e-b56f-8014-8e07-f4d39862815f" class="">Although the approach needs further testing with a broader and more representative sample, our findings suggest that the platform could be highly beneficial for fostering citizen participation. In practice, 2D polyline representations may be sufficient for infrastructure elements like roads, bike lanes, and public transit. Conversely, buildings are better evaluated using 3D models, which are more intuitive for users. Furthermore, abstract concepts like population density are most effectively communicated through 3D spatiotemporal visualizations. These insights underscore the potential of multidimensional web-mapping tools to enhance participatory urban planning and decision-making.</p><p id="22a2377e-b56f-80be-a77c-c1bce0bf3e47" class=""><strong>References</strong></p><ol type="1" id="22a2377e-b56f-80d5-a9c2-c890a6bcd930" class="numbered-list" start="1"><li>Bryson, J.; Quick, K.S.; Slotterback, C.S.; Crosby, B.C. Designing Public Participation Process. <em>Public Adm. Rev.<br/></em><strong>2012</strong>, <em>73</em>, 23–34. [CrossRef]</li></ol><ol type="1" id="22a2377e-b56f-801d-bcb7-fbaca5ffa602" class="numbered-list" start="2"><li>Molinari, F. On Sustainable EParticipation. In <em>Electronic Participation. ePart 2010. Lecture Notes in Computer<br/>Science</em>; Springer: Berlin/Heidelberg, Germany, 2010; Volume 6229, pp. 126–139. [CrossRef]</li></ol><ol type="1" id="22a2377e-b56f-8045-8e62-c5d392ea6c58" class="numbered-list" start="3"><li>Marzouki, A.; Lafrance, F.; Daniel, S.; Mellouli, S. The Relevance of Geovisualization in Citizen Participation<br/>Processes. In <em>Proceedings of the 18th Annual International Conference on Digital Government Research—dg.o ’17</em>;<br/>ACM Press: New York, NY, USA, 2017; pp. 397–406. [CrossRef]</li></ol><ol type="1" id="22a2377e-b56f-8083-a84a-f1311d68565e" class="numbered-list" start="4"><li>Al-Kodmany, K. Public Participation: Technology and Democracy. <em>J. Archit. Educ. </em><strong>2000</strong>, <em>53</em>, 220–228. [CrossRef]</li></ol><ol type="1" id="22a2377e-b56f-8000-94c8-fdee8a6a9f67" class="numbered-list" start="5"><li>Salter, J.D.; Campbell, C.; Journeay, M.; Sheppard, S.R.J. The Digital Workshop: Exploring the Use of<br/>Interactive and Immersive Visualisation Tools in Participatory Planning. <em>J. Environ. Manag. </em><strong>2009</strong>, <em>90</em>,<p id="22a2377e-b56f-80fb-beb9-ed769e78bb9b" class="">2090–2101. [CrossRef]</p></li></ol><ol type="1" id="22a2377e-b56f-80ef-bf62-e443434c1ea2" class="numbered-list" start="6"><li>Nabatchi, T. Putting the “Public” Back in Public Values Research: Designing Participation to Identify and<p id="22a2377e-b56f-8029-8654-c5333164dba9" class="">Respond to Values. <em>Public Adm. Rev. </em><strong>2012</strong>, <em>72</em>, 699–708. [CrossRef]</p></li></ol><ol type="1" id="22a2377e-b56f-80d1-ae34-f8689b6b1b41" class="numbered-list" start="7"><li>Kingston, R. Public Participation in Local Policy Decision-Making: The Role of Web-Based Mapping.<p id="22a2377e-b56f-80a8-9ffa-f0917bd6f729" class=""><em>Cartogr. J. </em><strong>2007</strong>, <em>44</em>, 138–144. [CrossRef]</p></li></ol><ol type="1" id="22a2377e-b56f-807b-9002-d89ce3ba84d6" class="numbered-list" start="8"><li>Smith, S.; Dalakiouridou, E. Contextualising Public (e)Participation in the Governance of the European<p id="22a2377e-b56f-80c8-8c2f-d98c58bb9a73" class="">Union. <em>Eur. J. ePract. </em><strong>2009</strong>, <em>7</em>, 47–50.</p></li></ol><ol type="1" id="22a2377e-b56f-80e1-b018-ffe4db142d83" class="numbered-list" start="9"><li>Al-Kodmany, K. Visualization Tools and Methods for Participatory Planning and Design. <em>J. Urban Technol.</em><p id="22a2377e-b56f-80b1-b3bc-e45c5a0b43ee" class=""><strong>2001</strong>, <em>8</em>, 1–37. [CrossRef]</p></li></ol><ol type="1" id="22a2377e-b56f-8060-9cdf-e7171bc46828" class="numbered-list" start="10"><li>Sanford, C.; Rose, J. Characterizing EParticipation. <em>Int. J. Inf. Manag. </em><strong>2007</strong>, <em>27</em>, 406–421. [CrossRef]</li></ol><ol type="1" id="22a2377e-b56f-803c-a218-f629fdabe443" class="numbered-list" start="11"><li>Daniel, S.; Doran, M.-A. GeoSmartCity: Geomatics Contribution to the Smart City. In <em>Proceedings of the 14th</em><p id="22a2377e-b56f-806c-80ff-f5626dae9473" class=""><em>Annual International Conference on Digital Government Research—dg.o ’13</em>; ACM Press: New York, NY, USA,</p><p id="22a2377e-b56f-805d-9a33-dadf1a2db5c3" class="">2013; p. 65. [CrossRef]</p></li></ol><ol type="1" id="22a2377e-b56f-80dc-ac60-fed22847185f" class="numbered-list" start="12"><li>Hahmann, S.; Burghardt, D. How Much Information Is Geospatially Referenced? Networks and Cognition.<p id="22a2377e-b56f-801e-b548-e2d1d35ad89b" class=""><em>Int. J. Geogr. Inf. Sci. </em><strong>2013</strong>, <em>27</em>, 1171–1189. [CrossRef]</p></li></ol><ol type="1" id="22a2377e-b56f-80b8-aad6-ddca320d50fa" class="numbered-list" start="13"><li>Resch, B.; Hillen, F.; Reimer, A.; Spitzer, W. Towards 4D Cartography—Four-Dimensional Dynamic Maps for<p id="22a2377e-b56f-8063-996b-de949077f814" class="">Understanding Spatio-Temporal Correlations in Lightning Events. <em>Cartogr. J. </em><strong>2013</strong>, <em>50</em>, 266–275. [CrossRef]</p></li></ol><ol type="1" id="22a2377e-b56f-8082-a9fc-e729c2978626" class="numbered-list" start="14"><li>Aigner, W.; Miksch, S.; Müller, W.; Schumann, H.; Tominski, C. Visualizing Time-Oriented Data-A Systematic<p id="22a2377e-b56f-8059-a553-fafcb3be1fdc" class="">View. <em>Comput. Graph. </em><strong>2007</strong>, <em>31</em>, 401–409. [CrossRef]</p></li></ol><ol type="1" id="22a2377e-b56f-800e-94e6-f019830392ce" class="numbered-list" start="15"><li>Dambruch, J.; Krämer, M. Leveraging Public Participation in Urban Planning with 3D Web Technology.<p id="22a2377e-b56f-8009-b830-f521f401d0df" class="">In <em>Proceedings of the Nineteenth International ACM Conference on 3D Web Technologies—Web3D ’14</em>; ACM Press:</p><p id="22a2377e-b56f-80b2-aa43-e2ef5cf98719" class="">New York, NY, USA, 2014; pp. 117–124. [CrossRef]</p></li></ol><ol type="1" id="22a2377e-b56f-80fc-b097-d9434fa17237" class="numbered-list" start="16"><li>Yin, L. Integrating 3D Visualization and GIS in Planning Education. <em>J. Geogr. High. Educ. </em><strong>2010</strong>, <em>34</em>, 419–438.<p id="22a2377e-b56f-8071-8902-e0541eb410a5" class="">[CrossRef]</p></li></ol><ol type="1" id="22a2377e-b56f-802d-b103-f76b2514022a" class="numbered-list" start="17"><li>Yin, L.; Shiode, N. 3D Spatial-Temporal GIS Modeling of Urban Environments to Support Design and<p id="22a2377e-b56f-8094-abea-e55d51c6ab93" class="">Planning Processes. <em>J. Urban. Int. Res. Placemak. Urban Sustain. </em><strong>2014</strong>, <em>7</em>, 152–169. [CrossRef]</p></li></ol><ol type="1" id="22a2377e-b56f-80f7-934e-e2f4fb70b3de" class="numbered-list" start="18"><li>Tory, M.; Kirkpatrick, A.E.; Atkins, M.S.; Moller, T. Visualization Task Performance with 2D, 3D, and<p id="22a2377e-b56f-8003-9102-cee23197443a" class="">Combination Displays. <em>IEEE Trans. Vis. Comput. Graph. </em><strong>2006</strong>, <em>12</em>, 2–13. [CrossRef] [PubMed]</p></li></ol><ol type="1" id="22a2377e-b56f-803f-b374-f9ef603f254e" class="numbered-list" start="19"><li>Hu, Y.; Lv, Z.; Wu, J.; Janowicz, K.; Zhao, X.; Yu, B. A Multi-Stage Collaborative 3D GIS to Support Public<p id="22a2377e-b56f-8008-98e5-de7d86d76757" class="">Participation. <em>Int. J. Digit. Earth </em><strong>2013</strong>, <em>8</em>, 212–234. [CrossRef]</p></li></ol><ol type="1" id="22a2377e-b56f-8012-b458-f795b7d13b9c" class="numbered-list" start="20"><li>Resch, B.; Wohlfahrt, R.; Wosniok, C. Web-Based 4D Visualization of Marine Geo-Data Using WebGL.<p id="22a2377e-b56f-808e-b48a-e67cb45fbd10" class=""><em>Cartogr. Geogr. Inf. Sci. </em><strong>2014</strong>, <em>41</em>, 235–247. [CrossRef]</p></li></ol><ol type="1" id="22a2377e-b56f-80a4-a205-df4c12408efd" class="numbered-list" start="21"><li>Marzouki, A.; Mellouli, S.; Daniel, S. Towards a Context-Based Citizen Participation Approach. In <em>Proceedings</em><p id="22a2377e-b56f-8037-b491-fb5adc51a5f0" class=""><em>of the 10th International Conference on Theory and Practice of Electronic Governance—ICEGOV ’17</em>; ACM Press:</p><p id="22a2377e-b56f-80ba-b5b7-f4fb7f3200a2" class="">New York, NY, USA, 2017; pp. 204–213. [CrossRef]</p></li></ol><ol type="1" id="22a2377e-b56f-80ea-b217-c4cde3ce6da5" class="numbered-list" start="22"><li>Alatalo, T.; Pouke, M.; Koskela, T.; Hurskainen, T.; Florea, C.; Ojala, T. Two Real-World Case Studies on 3D<p id="22a2377e-b56f-8021-8d94-fd619c3a1741" class="">Web Applications for Participatory Urban Planning. In <em>Proceedings of the 22nd International Conference on 3D<br/>Web Technology—Web3D ’17</em>; ACM Press: New York, NY, USA, 2017; pp. 1–9. [CrossRef]</p></li></ol><p id="22a2377e-b56f-803a-940e-e17d0ea76943" class="">1. Brovelli, M.A.; Minghini, M.; Zamboni, G. Participatory gis: Experimentations for a 3d social virtual globe.<br/><em>Int. Arch. Photogramm. Remote Sens. Spat. Inf. Sci. </em><strong>2013</strong>, <em>2</em>, 13–18. [CrossRef]<br/><br/>2. Brovelli, M.A.; Hogan, P.; Prestifilippo, G.; Zamboni, G. Nasa WebWorldWind: Multidimensional Virtual<br/>Globe for Geo Big Data Visualization. <em>Int. Arch. Photogramm. Remote Sens. Spat. Inf. Sci. </em><strong>2016</strong>, <em>41</em>, 563–566.<br/>[CrossRef]<br/><br/>3. Brovelli, M.A.; Minghini, M.; Zamboni, G. Public Participation in GIS via Mobile Applications. <em>ISPRS J.<br/>Photogramm. Remote Sens. </em><strong>2016</strong>, <em>114</em>, 306–315. [CrossRef]<br/><br/>4. Brovelli, M.A.; Hogan, P.; Prestifilippo, G.; Zamboni, G. NASA World Wind: Virtual Globe for an Open<br/>Smart City. <em>PeerJ. Prepr. </em><strong>2016</strong>. [CrossRef]<br/><br/>5. Hu, Y.; Wu, J.; Lv, Z.; Zhong, H.; Yu, B. A Method for Representing Thematic Data in Three-Dimensional GIS.<br/>In <em>18th International Conference on Geoinformatics 2010</em>; IEEE: Beijing, China, 2010; pp. 1–5. [CrossRef]<br/><br/>6. Murshed, S.; Al-Hyari, A.; Wendel, J.; Ansart, L. Design and Implementation of a 4D Web Application for<br/>Analytical Visualization of Smart City Applications. <em>ISPRS Int. J. Geo-Inf. </em><strong>2018</strong>, <em>7</em>, 276. [CrossRef]<br/><br/>7. Wu, H.; He, Z.; Gong, J. A Virtual Globe-Based 3D Visualization and Interactive Framework for Public<br/>Participation in Urban Planning Processes. <em>Comput. Environ. Urban Syst. </em><strong>2010</strong>, <em>34</em>, 291–298. [CrossRef]<br/><br/>8. Lovett, A.; Appleton, K.; Warren-Kretzschmar, B.; Von Haaren, C. Using 3D Visualization Methods in<br/><br/>Landscape Planning: An Evaluation of Options and Practical Issues. <em>Landsc. Urban Plan. </em><strong>2015</strong>, <em>142</em>, 85–94.<br/><br/>[CrossRef]<br/><br/>9. Chaturvedi, K.; Yao, Z.; Kolbe, T.H. Web-Based Exploration of and Interaction with Large and Deeply<br/><br/>Structured Semantic 3D City Models Using HTML5 and WebGL. In <em>Bridging Scales-Skalenübergreifende Nah-und<br/>Fernerkundungsmethoden, 35</em>; Wissenschaftlich-Technische Jahrestagung der DGPF; Deutsche Gesellschaft für<br/>Photogrammetrie, Fernerkundung und Geoinformation e.V.: Hamburg, Germany, 2015; pp. 296–306.<br/><br/>10. Hayek, U.W. Which Is the Appropriate 3D Visualization Type for Participatory Landscape Planning<br/>Workshops? A Portfolio of Their Effectiveness. <em>Environ. Plan. B Plan. Des. </em><strong>2011</strong>, <em>38</em>, 921–939. [CrossRef]<br/><br/>11. Semmo, A.; Trapp, M.; Kyprianidis, J.E.; Döllner, J. Interactive Visualization of Generalized Virtual 3D City<br/>Models Using Level-of-Abstraction Transitions. <em>Comput. Graph. Forum </em><strong>2012</strong>, <em>31</em>, 885–894. [CrossRef]<br/><br/>12. Zheng, Y.; Wu, W.; Chen, Y.; Qu, H.; Ni, L.M. Visual Analytics in Urban Computing: An Overview. <em>IEEE Trans.<br/>Big Data </em><strong>2016</strong>, <em>2</em>, 276–296. [CrossRef]<br/><br/>13. Andrienko, N.; Andrienko, G.; Gatalsky, P. Exploratory Spatio-Temporal Visualization: An Analytical Review.<br/><em>J. Vis. Lang. Comput. </em><strong>2003</strong>, <em>14</em>, 503–541. [CrossRef]<br/><br/>14. Andrienko, G.; Andrienko, N.; Demsar, U.; Dransch, D.; Dykes, J.; Fabrikant, S.I.; Jern, M.; Kraak, M.;<br/>Schumann, H.; Tominski, C. Space, Time and Visual Analytics. <em>Int. J. Geogr. Inf. Sci. </em><strong>2010</strong>, <em>24</em>, 1577–1600. [CrossRef]<br/><br/>15. Aigner, W.; Miksch, S.; Schumann, H.; Tominski, C. <em>Visualization of Time-Oriented Data</em>; Human-Computer<br/><br/>Interaction Series; Springer London: London, UK, 2011. [CrossRef]<br/><br/>16. Nagarajan, M.; Gomadam, K.; Sheth, A.P.; Ranabahu, A.; Mutharaju, R.; Jadhav, A. Spatio-Temporal-Thematic<br/><br/>Analysis of Citizen Sensor Data: Challenges and Experiences. In <em>International Conference on Web Information<br/></em><br/><em>Systems Engineering</em>; Springer: Berlin/Heidelberg, Germany, 2009; pp. 539–553. [CrossRef]<br/><br/>17. International Organization for Standardization. ISO 9241-11:2018—Ergonomics of Human-System<br/>Interaction—Part 11: Usability: Definitions and Concepts. Available online: https://www.iso.org/standard/<br/><br/>63500.html (accessed on 19 January 2017).<br/><br/>18. International Organization for Standardization. ISO/TC 211—Geographic Information/Geomatics. Available<br/><br/>online: https://www.iso.org/committee/54904.html (accessed on 19 January 2017).<br/><br/>19. Open Geospatial Consortium. OGC Standards | OGC. Available online: http://www.opengeospatial.org/<br/><br/>docs/is (accessed on 19 January 2017).<br/><br/>20. Dubel, S.; Rohlig, M.; Schumann, H.; Trapp, M. 2D and 3D Presentation of Spatial Data: A Systematic Review.<br/><br/>In <em>2014 IEEE VIS International Workshop on 3DVis (3DVis)</em>; IEEE: Paris, France, 2014; pp. 11–18. [CrossRef]<br/><br/>21. Maceachren, A.M.; Wachowicz, M.; Edsall, R.; Haug, D.; Masters, R. Constructing Knowledge from<br/>Multivariate Spatiotemporal Data: Integrating Geographical Visualization with Knowledge Discovery in<br/><br/>Database Methods. <em>Int. J. Geogr. Inf. Sci. </em><strong>1999</strong>, <em>13</em>, 311–334. [CrossRef]</p><ol type="1" id="22a2377e-b56f-80a4-89bc-e8e80a6bfa68" class="numbered-list" start="1"><li>1.<p id="22a2377e-b56f-805c-bae7-c50d3ddc3ffb" class="">Brovelli, M.A.; Minghini, M.; Zamboni, G. Participatory gis: Experimentations for a 3d social virtual globe.<br/><em>Int. Arch. Photogramm. Remote Sens. Spat. Inf. Sci. </em><strong>2013</strong>, <em>2</em>, 13–18. [CrossRef]</p></li></ol><ol type="1" id="22a2377e-b56f-8082-8f5c-f14057733dd6" class="numbered-list" start="2"><li>2.<p id="22a2377e-b56f-805e-a51b-f730064d7ebc" class="">Brovelli, M.A.; Hogan, P.; Prestifilippo, G.; Zamboni, G. Nasa WebWorldWind: Multidimensional Virtual<br/>Globe for Geo Big Data Visualization. <em>Int. Arch. Photogramm. Remote Sens. Spat. Inf. Sci. </em><strong>2016</strong>, <em>41</em>, 563–566.<br/>[CrossRef]</p></li></ol><ol type="1" id="22a2377e-b56f-80ac-937c-cbb1de37c8aa" class="numbered-list" start="3"><li>3.<p id="22a2377e-b56f-804d-880f-f21283bc0a87" class="">Brovelli, M.A.; Minghini, M.; Zamboni, G. Public Participation in GIS via Mobile Applications. <em>ISPRS J.<br/>Photogramm. Remote Sens. </em><strong>2016</strong>, <em>114</em>, 306–315. [CrossRef]</p></li></ol><ol type="1" id="22a2377e-b56f-80b1-8b4a-c41529999787" class="numbered-list" start="4"><li>4.<p id="22a2377e-b56f-8005-9afa-c5680b66cab8" class="">Brovelli, M.A.; Hogan, P.; Prestifilippo, G.; Zamboni, G. NASA World Wind: Virtual Globe for an Open<br/>Smart City. <em>PeerJ. Prepr. </em><strong>2016</strong>. [CrossRef]</p></li></ol><ol type="1" id="22a2377e-b56f-8015-9da5-edc77d4cf7e3" class="numbered-list" start="5"><li>5.<p id="22a2377e-b56f-8083-8b2a-f0c126008120" class="">Hu, Y.; Wu, J.; Lv, Z.; Zhong, H.; Yu, B. A Method for Representing Thematic Data in Three-Dimensional GIS.<br/>In <em>18th International Conference on Geoinformatics 2010</em>; IEEE: Beijing, China, 2010; pp. 1–5. [CrossRef]</p></li></ol><ol type="1" id="22a2377e-b56f-8020-bdd2-da646e1bfd8c" class="numbered-list" start="6"><li>6.<p id="22a2377e-b56f-8093-90d7-e642fe1aa313" class="">Murshed, S.; Al-Hyari, A.; Wendel, J.; Ansart, L. Design and Implementation of a 4D Web Application for<br/>Analytical Visualization of Smart City Applications. <em>ISPRS Int. J. Geo-Inf. </em><strong>2018</strong>, <em>7</em>, 276. [CrossRef]</p></li></ol><ol type="1" id="22a2377e-b56f-80b4-aa63-f025f656362a" class="numbered-list" start="7"><li>7.<p id="22a2377e-b56f-80b6-85d6-cee6bad878dd" class="">Wu, H.; He, Z.; Gong, J. A Virtual Globe-Based 3D Visualization and Interactive Framework for Public<br/>Participation in Urban Planning Processes. <em>Comput. Environ. Urban Syst. </em><strong>2010</strong>, <em>34</em>, 291–298. [CrossRef]</p></li></ol><ol type="1" id="22a2377e-b56f-80f9-bab2-cadf6954912e" class="numbered-list" start="8"><li>8.<p id="22a2377e-b56f-80f7-bb52-e4f133938bc1" class="">Lovett, A.; Appleton, K.; Warren-Kretzschmar, B.; Von Haaren, C. Using 3D Visualization Methods in</p><p id="22a2377e-b56f-802c-b205-e0dd83eeda1b" class="">Landscape Planning: An Evaluation of Options and Practical Issues. <em>Landsc. Urban Plan. </em><strong>2015</strong>, <em>142</em>, 85–94.</p><p id="22a2377e-b56f-8083-b517-d40e7cea220d" class="">[CrossRef]</p></li></ol><ol type="1" id="22a2377e-b56f-80e9-b30d-fd644122d1a3" class="numbered-list" start="9"><li>9.<p id="22a2377e-b56f-8014-a7a6-c51622e6fada" class="">Chaturvedi, K.; Yao, Z.; Kolbe, T.H. Web-Based Exploration of and Interaction with Large and Deeply</p><p id="22a2377e-b56f-80d5-82a8-ec344598767e" class="">Structured Semantic 3D City Models Using HTML5 and WebGL. In <em>Bridging Scales-Skalenübergreifende Nah-und<br/>Fernerkundungsmethoden, 35</em>; Wissenschaftlich-Technische Jahrestagung der DGPF; Deutsche Gesellschaft für<br/>Photogrammetrie, Fernerkundung und Geoinformation e.V.: Hamburg, Germany, 2015; pp. 296–306.</p></li></ol><ol type="1" id="22a2377e-b56f-8075-bc75-d26cca5725c4" class="numbered-list" start="10"><li>10.<p id="22a2377e-b56f-80f0-9058-c8325225e549" class="">Hayek, U.W. Which Is the Appropriate 3D Visualization Type for Participatory Landscape Planning<br/>Workshops? A Portfolio of Their Effectiveness. <em>Environ. Plan. B Plan. Des. </em><strong>2011</strong>, <em>38</em>, 921–939. [CrossRef]</p></li></ol><ol type="1" id="22a2377e-b56f-8084-8445-d4b994b7ef8c" class="numbered-list" start="11"><li>11.<p id="22a2377e-b56f-8000-a52a-dd3d4a342785" class="">Semmo, A.; Trapp, M.; Kyprianidis, J.E.; Döllner, J. Interactive Visualization of Generalized Virtual 3D City<br/>Models Using Level-of-Abstraction Transitions. <em>Comput. Graph. Forum </em><strong>2012</strong>, <em>31</em>, 885–894. [CrossRef]</p></li></ol><ol type="1" id="22a2377e-b56f-803f-97db-ec00ca8cefef" class="numbered-list" start="12"><li>12.<p id="22a2377e-b56f-8034-97e4-deafb2e25613" class="">Zheng, Y.; Wu, W.; Chen, Y.; Qu, H.; Ni, L.M. Visual Analytics in Urban Computing: An Overview. <em>IEEE Trans.<br/>Big Data </em><strong>2016</strong>, <em>2</em>, 276–296. [CrossRef]</p></li></ol><ol type="1" id="22a2377e-b56f-80f3-86da-e62c928bebbe" class="numbered-list" start="13"><li>13.<p id="22a2377e-b56f-8021-8795-e7f9b19498e7" class="">Andrienko, N.; Andrienko, G.; Gatalsky, P. Exploratory Spatio-Temporal Visualization: An Analytical Review.<br/><em>J. Vis. Lang. Comput. </em><strong>2003</strong>, <em>14</em>, 503–541. [CrossRef]</p></li></ol><ol type="1" id="22a2377e-b56f-800c-94e2-ea5f78f4db09" class="numbered-list" start="14"><li>14.<p id="22a2377e-b56f-808a-833a-f7ae44b52739" class="">Andrienko, G.; Andrienko, N.; Demsar, U.; Dransch, D.; Dykes, J.; Fabrikant, S.I.; Jern, M.; Kraak, M.;<br/>Schumann, H.; Tominski, C. Space, Time and Visual Analytics. <em>Int. J. Geogr. Inf. Sci. </em><strong>2010</strong>, <em>24</em>, 1577–1600. [CrossRef]</p></li></ol><ol type="1" id="22a2377e-b56f-8059-b7c4-c94340c32d63" class="numbered-list" start="15"><li>15.<p id="22a2377e-b56f-808a-bb86-c634619ecf17" class="">Aigner, W.; Miksch, S.; Schumann, H.; Tominski, C. <em>Visualization of Time-Oriented Data</em>; Human-Computer</p><p id="22a2377e-b56f-8042-85da-e3a93a042827" class="">Interaction Series; Springer London: London, UK, 2011. [CrossRef]</p></li></ol><ol type="1" id="22a2377e-b56f-8050-8438-f864924e2e6a" class="numbered-list" start="16"><li>16.<p id="22a2377e-b56f-801e-95d2-d1ddc7571884" class="">Nagarajan, M.; Gomadam, K.; Sheth, A.P.; Ranabahu, A.; Mutharaju, R.; Jadhav, A. Spatio-Temporal-Thematic</p><p id="22a2377e-b56f-80ea-86d4-dd8fd18bb3f2" class="">Analysis of Citizen Sensor Data: Challenges and Experiences. In <em>International Conference on Web Information</em></p><p id="22a2377e-b56f-803b-9036-d1026702c496" class=""><em>Systems Engineering</em>; Springer: Berlin/Heidelberg, Germany, 2009; pp. 539–553. [CrossRef]</p></li></ol><ol type="1" id="22a2377e-b56f-809e-8cd0-d6bd1ba16194" class="numbered-list" start="17"><li>17.<p id="22a2377e-b56f-800f-a0df-e031fac4baaf" class="">International Organization for Standardization. ISO 9241-11:2018—Ergonomics of Human-System<br/>Interaction—Part 11: Usability: Definitions and Concepts. Available online: https://www.iso.org/standard/</p><p id="22a2377e-b56f-80eb-917d-f914052a2503" class="">63500.html (accessed on 19 January 2017).</p></li></ol><ol type="1" id="22a2377e-b56f-80c4-a046-e956921677dc" class="numbered-list" start="18"><li>18.<p id="22a2377e-b56f-803d-92e9-c04190ddce9e" class="">International Organization for Standardization. ISO/TC 211—Geographic Information/Geomatics. Available</p><p id="22a2377e-b56f-80bf-a02f-cb8abe8e1263" class="">online: https://www.iso.org/committee/54904.html (accessed on 19 January 2017).</p></li></ol><ol type="1" id="22a2377e-b56f-80e6-a0a2-e21d0cd6d3ac" class="numbered-list" start="19"><li>19.<p id="22a2377e-b56f-8090-84dc-f3e282afb1aa" class="">Open Geospatial Consortium. OGC Standards | OGC. Available online: http://www.opengeospatial.org/</p><p id="22a2377e-b56f-80c9-8c08-f3dc5fdcb2ef" class="">docs/is (accessed on 19 January 2017).</p></li></ol><ol type="1" id="22a2377e-b56f-80c1-aab2-cd53634f2393" class="numbered-list" start="20"><li>20.<p id="22a2377e-b56f-80cb-9dfa-dccc16a51a0d" class="">Dubel, S.; Rohlig, M.; Schumann, H.; Trapp, M. 2D and 3D Presentation of Spatial Data: A Systematic Review.</p><p id="22a2377e-b56f-8076-be0e-e9948ddfa1d2" class="">In <em>2014 IEEE VIS International Workshop on 3DVis (3DVis)</em>; IEEE: Paris, France, 2014; pp. 11–18. [CrossRef]</p></li></ol><ol type="1" id="22a2377e-b56f-80af-a6ec-f7d59f61b8f5" class="numbered-list" start="21"><li>21.<p id="22a2377e-b56f-8003-a119-c15eae8b743d" class="">Maceachren, A.M.; Wachowicz, M.; Edsall, R.; Haug, D.; Masters, R. Constructing Knowledge from<br/>Multivariate Spatiotemporal Data: Integrating Geographical Visualization with Knowledge Discovery in</p><p id="22a2377e-b56f-80ff-9b2d-d5d70fcbd26b" class="">Database Methods. <em>Int. J. Geogr. Inf. Sci. </em><strong>1999</strong>, <em>13</em>, 311–334. [CrossRef]</p></li></ol></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

@@ -1,4 +1,14 @@
 
+# flood risk.py
+#
+# This script filters a large national flood risk GeoJSON file to extract only features within a bounding box covering Kent (including Canterbury).
+# It reads the input GeoJSON, checks each feature's geometry to see if it falls within the Kent bounding box, and writes the filtered features to a new GeoJSON file.
+#
+# Usage:
+#   - Set the input_file and output_file paths as needed.
+#   - Run the script to produce a filtered GeoJSON for use in web mapping or GIS analysis.
+#
+# Date: 2025-08-07
 
 import json
 

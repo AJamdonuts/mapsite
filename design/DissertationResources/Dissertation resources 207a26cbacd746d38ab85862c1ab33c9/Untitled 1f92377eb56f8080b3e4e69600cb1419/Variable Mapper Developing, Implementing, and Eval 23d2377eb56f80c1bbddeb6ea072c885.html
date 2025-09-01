@@ -1,0 +1,684 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Variable Mapper: Developing, Implementing, and Evaluating an Online Tool for Multidimensional Spatial Data Visualization</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-default { background-color: rgba(84, 72, 49, 0.08); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="23d2377e-b56f-80c1-bbdd-eb6ea072c885" class="page sans"><header><h1 class="page-title">Variable Mapper: Developing, Implementing, and Evaluating an Online Tool for Multidimensional Spatial Data Visualization</h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-text"><th><span class="icon property-icon"><div data-testid="/icons/description_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/description_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/description_gray.svg?mode=light) no-repeat center;background-color:rgba(71, 70, 68, 0.6);fill:rgba(71, 70, 68, 0.6)"></div></span>Links</th><td><a href="https://doi.org/10.1007/s41651-025-00219-2">https://doi.org/10.1007/s41651-025-00219-2</a></td></tr></tbody></table></header><div class="page-body"><p id="23d2377e-b56f-8056-ae63-fac9219ec886" class="">
+</p><figure id="23d2377e-b56f-8065-84bf-f039047ffc9b" class="image"><a href="Variable%20Mapper%20Developing,%20Implementing,%20and%20Eval%2023d2377eb56f80c1bbddeb6ea072c885/Screenshot_2025-07-27_at_02.33.57.png"><img style="width:1036px" src="Variable%20Mapper%20Developing,%20Implementing,%20and%20Eval%2023d2377eb56f80c1bbddeb6ea072c885/Screenshot_2025-07-27_at_02.33.57.png"/></a></figure><p id="23d2377e-b56f-80f6-81d2-c639fbb2068d" class="">Super-diversity is an example of a broader issue that Variable Mapper aims to address. Understanding urban socioeconomic dynamics demands tackling complex interdependencies using large multidimensional spatial datasets, which typically requires deep statistical expertise. This complexity poses significant obstacles for policymakers attempting to make informed decisions on urban policy and has a substantial influence on investments in infrastructure and impacting large populations.</p><p id="23d2377e-b56f-80fd-8c04-ed676b757d80" class="">
+</p><figure id="23d2377e-b56f-804d-af53-dee4580e449d" class="image"><a href="Variable%20Mapper%20Developing,%20Implementing,%20and%20Eval%2023d2377eb56f80c1bbddeb6ea072c885/Screenshot_2025-07-27_at_15.17.17.png"><img style="width:1321px" src="Variable%20Mapper%20Developing,%20Implementing,%20and%20Eval%2023d2377eb56f80c1bbddeb6ea072c885/Screenshot_2025-07-27_at_15.17.17.png"/></a></figure><figure id="23d2377e-b56f-8023-acaf-f9d7e55c28c3" class="image"><a href="Variable%20Mapper%20Developing,%20Implementing,%20and%20Eval%2023d2377eb56f80c1bbddeb6ea072c885/Screenshot_2025-07-27_at_15.25.02.png"><img style="width:440.5px" src="Variable%20Mapper%20Developing,%20Implementing,%20and%20Eval%2023d2377eb56f80c1bbddeb6ea072c885/Screenshot_2025-07-27_at_15.25.02.png"/></a></figure><figure id="23d2377e-b56f-80c9-b1cf-e5e126fce6cc" class="image"><a href="Variable%20Mapper%20Developing,%20Implementing,%20and%20Eval%2023d2377eb56f80c1bbddeb6ea072c885/Screenshot_2025-07-27_at_15.18.05.png"><img style="width:440.5px" src="Variable%20Mapper%20Developing,%20Implementing,%20and%20Eval%2023d2377eb56f80c1bbddeb6ea072c885/Screenshot_2025-07-27_at_15.18.05.png"/></a></figure><p id="23d2377e-b56f-80da-98f0-ea547fd73fb8" class="">
+</p><figure id="23d2377e-b56f-80c2-b121-f58c6d9deb4e" class="image"><a href="Variable%20Mapper%20Developing,%20Implementing,%20and%20Eval%2023d2377eb56f80c1bbddeb6ea072c885/Screenshot_2025-07-27_at_15.17.47.png"><img style="width:440.5px" src="Variable%20Mapper%20Developing,%20Implementing,%20and%20Eval%2023d2377eb56f80c1bbddeb6ea072c885/Screenshot_2025-07-27_at_15.17.47.png"/></a></figure><p id="23d2377e-b56f-8088-91c5-de605de99161" class="">Variable Mapper has the potential to inform many of<br/>these, including spatial analyses in development studies on<br/>multidimensional poverty (Alkire and Foster 2011), social<br/>psychology studies of violence and peace-building (LópezLópez et al. 2021), organisational science on competitiveness and wellbeing (Androniceanu et al. 2020), spatial analyses of ageing in demography (Pilotto et al. 2020), recycling<br/>behaviour in urban planning (Lamnatou and Chemisana<br/>2022), patterns of deliberative democracy in political science (Mendonça et al. 2022), water and sanitation system<br/>vulnerability in environmental studies (Hughes 2022), and<br/>labour market spatial variations (González et al. 2021).</p><figure id="23d2377e-b56f-80a6-91e2-f6eefa8b7030" class="image"><a href="Variable%20Mapper%20Developing,%20Implementing,%20and%20Eval%2023d2377eb56f80c1bbddeb6ea072c885/Screenshot_2025-07-27_at_15.32.58.png"><img style="width:1291px" src="Variable%20Mapper%20Developing,%20Implementing,%20and%20Eval%2023d2377eb56f80c1bbddeb6ea072c885/Screenshot_2025-07-27_at_15.32.58.png"/></a></figure><p id="23d2377e-b56f-8005-82fe-c10714575954" class="">
+</p><figure id="23d2377e-b56f-807f-a240-d0f2eba82ba0" class="image"><a href="Variable%20Mapper%20Developing,%20Implementing,%20and%20Eval%2023d2377eb56f80c1bbddeb6ea072c885/Screenshot_2025-07-27_at_15.33.18.png"><img style="width:1257px" src="Variable%20Mapper%20Developing,%20Implementing,%20and%20Eval%2023d2377eb56f80c1bbddeb6ea072c885/Screenshot_2025-07-27_at_15.33.18.png"/></a></figure><p id="23d2377e-b56f-8001-828d-ca613c2a7270" class="">Chen et al 2018: Presenting multiple variables on a map simultaneously is challenging due to problems of overlapping and obscuring information.</p><p id="23d2377e-b56f-80ec-944c-d8257f562cc6" class="">Choropleth maps show univariate/bivariate data but struggle with multivariate. However, multiple thematic maps can be overlaid; for instance, proportional symbol maps can be placed on top of choropleths, and layers can be turned on and off to reduce visual overloading.</p><p id="23d2377e-b56f-80ce-beff-df89e72ea8f5" class="">Goodwin et al 2016: Small multiple maps present multidimensional spatial data facilitating comparison and on demand exploration of variables- limits on visual resolution as number of variables increase</p><ul id="23d2377e-b56f-802c-b6b4-fba69688bc15" class="bulleted-list"><li style="list-style-type:disc">matrices</li></ul><ul id="23d2377e-b56f-8095-90a3-e083ad69ada4" class="bulleted-list"><li style="list-style-type:disc">line graphs</li></ul><ul id="23d2377e-b56f-80e9-a13a-ff1ddc1c79b9" class="bulleted-list"><li style="list-style-type:disc">tree-maps</li></ul><p id="23d2377e-b56f-800f-84d4-cea3e8d7a9a3" class="">Occlusion</p><p id="23d2377e-b56f-8021-a3ab-cdfee42199ca" class="">Depth cue perception</p><p id="23d2377e-b56f-8082-9604-cf48d939b9ff" class="">Ware 2010: 1 person can recall 4-6 distinctions at a time</p><p id="23d2377e-b56f-80d0-8fdd-c7351e65725d" class="">Dimension reduction </p><p id="23d2377e-b56f-8079-bacd-c3615851895d" class="">clustering</p><p id="23d2377e-b56f-80ca-8d9f-f0b81f8461fa" class="">THREE.js</p><p id="23d2377e-b56f-807c-8a96-f75babc652ab" class="">Colours could be selected to represent different socio-economic variables.</p><p id="23d2377e-b56f-805e-8c03-fc07388eb169" class="">Dual colour scales (bivariate choropleths) could be selected to explore correlations between variables like ethnic diversity/income inequality, and additional variables could be assigned to visual parameters such as the height, width, and colour of cylindrical columns overlaid on these choropleths.</p><p id="23d2377e-b56f-803e-b110-f6d394f6e346" class="">Additional variables could be visualised by extruding area shapefile polygons in proportion to selected variables.</p><p id="23d2377e-b56f-80bb-9ee1-f178bd7368ac" class="">Shape</p><p id="23d2377e-b56f-801f-bc24-e88ff3aceb42" class="">Size</p><p id="23d2377e-b56f-806c-badb-f9f256fe0ce0" class="">colour</p><p id="23d2377e-b56f-80da-9f4a-c8d84308c3e4" class="">movement differences</p><p id="23d2377e-b56f-8074-8e2a-fd115b95426a" class="">Precoded shapefiles of statistical areas, data matric with socio economic indicies based on census data.</p><p id="23d2377e-b56f-8043-b0a2-cdc271b0a9a7" class="">Users can manipulate visual parameters using control panel.</p><p id="23d2377e-b56f-80de-923d-e5d920db411f" class="">Colour saturation for the choropleths could also be scaled in proportion to assigned variables.</p><p id="23d2377e-b56f-809b-9ce7-eeb19078fad0" class="">Time slider feature added dynamic temporal analysis</p><p id="23d2377e-b56f-8011-9b0b-f459f5034875" class="">Customise visualisations</p><p id="23d2377e-b56f-80c8-a897-c88638abc102" class="">save or reload visualisations via json files</p><p id="23d2377e-b56f-8040-8afa-c03cda64cd7c" class="">program flight paths through mapped data</p><p id="23d2377e-b56f-8083-9e06-c3b38268f8ec" class="">help section with a data dictionary and video tutorials, enhancing user understanding and engagement- map control interaction hint and new onboarding screen with 2 step tutorial</p><p id="23d2377e-b56f-8072-a458-c8e60fa625c6" class="">React.js</p><p id="23d2377e-b56f-80ee-9123-d665e13ee786" class="">Mapbox GL JS</p><p id="23d2377e-b56f-8008-840f-c4f6edaf7458" class="">Node js</p><p id="23d2377e-b56f-80a9-becf-fdb1be563278" class="">D3 js</p><p id="23d2377e-b56f-809f-bc7d-c359010c6223" class="">PostGIS</p><p id="23d2377e-b56f-8063-a2ae-e8727f3c0309" class="">GDAL</p><p id="23d2377e-b56f-80c4-89ff-eb98ac965809" class="">WebGL</p><p id="23d2377e-b56f-8016-88a6-f9518f04ce8b" class="">Some political commentators argue that diversity degrades urban liveability by undermining social cohesion and widening social divisions. Others argue that diversity enhances liveability by stimulating economic growth and increasing the range of cuisines and entertainment options.</p><p id="23d2377e-b56f-802b-9556-c459a488c495" class="">housing</p><p id="23d2377e-b56f-8070-82e3-cca79aaed690" class="">incomes</p><p id="23d2377e-b56f-80c6-8d36-c591927a1fac" class="">accessibility</p><p id="23d2377e-b56f-80e0-8a93-cecd1aeceb7b" class="">safety</p><p id="23d2377e-b56f-8086-b8d1-f78be250f09e" class="">education</p><p id="23d2377e-b56f-8077-a252-c079805af93e" class="">community</p><p id="23d2377e-b56f-801b-a705-e043e0b89278" class="">natural environment</p><p id="23d2377e-b56f-80e9-931a-c55a2884af29" class="">Standardising scales, colour schemes, saturation visual paramaters.</p><p id="23d2377e-b56f-80c2-96c6-df5cf369ca7f" class="">Displaying data specific to value ranges (low, medium, high) or by named geographical areas (postal area, local administrative area)</p><p id="23d2377e-b56f-806b-bda1-fa12f760e110" class="">Merge control panel, legend, histograms and year selection so that when users are selecting and filtering data visually, the legends will match part of the data they are working with.</p><p id="23d2377e-b56f-80b2-a210-dd2fffc06125" class="">Popup features provide specific data points</p><p id="23d2377e-b56f-8084-9643-d56aabf6ad98" class="">18 question survey using a 5 point libert scale</p><p id="23d2377e-b56f-809b-b212-c10c50de9ce4" class="">recorded workshop interation were analysed using visual timeline encoding to idetify patterns in user navigation, filtering preferences and data interpretation strategies.</p><p id="23d2377e-b56f-8031-994b-c57be12084a4" class="">Stratified sampling to ensure represntation across technical expertise levels.</p><p id="23d2377e-b56f-80ae-9336-f3133a4a777e" class="">Cross referencing user feedback with recorded session logs to identify recurring usability issues and enhance the tools interface design.</p><p id="23d2377e-b56f-8092-929a-c9e91541aab4" class="">Figma board with sticky notes for key quotes, grey and yellow word tages to indicate participant interactions or dataset selections, and coloured bars to represent the type of visualisation layer used. Ovals used to mark adjustments to visual parameters. </p><p id="23d2377e-b56f-802f-a0e4-df4943af3af6" class="">Visually encoded timelines generated a salient heat-map.</p><p id="23d2377e-b56f-8058-bb16-fa03047b2c29" class="">Results categorised into ease of use, trust and engagement.</p><p id="23d2377e-b56f-8077-b088-ebc96cd13fdf" class="">Dynamic bar heights</p><p id="23d2377e-b56f-8006-9fdc-c47e4d582ab9" class="">proportional scaling between width and height</p><p id="23d2377e-b56f-8089-b8e3-fa044a5fbdb8" class="">cylindrical bars</p><p id="23d2377e-b56f-80b8-bd4d-eeb4d851be05" class="">improved colour palettes</p><p id="23d2377e-b56f-8074-8e6a-ccb4c2e53193" class="">different colour schemes for visualisation exploration</p><p id="23d2377e-b56f-80bb-b091-eb366563f5bc" class="">z fighting</p><p id="23d2377e-b56f-80e0-bb83-df7b5688a01a" class="">Programmable fly through capability for dynamic data exploration, parameter scaling controls for column height and width, export/ import and save functions for user-generated visualisation settings, and colour scheme customisation.</p><p id="23d2377e-b56f-80c3-9389-fb056f97f32f" class="">Web based sharing link showing would enable online collaboration between planners, experts and community leaders</p><p id="23d2377e-b56f-805f-8102-d917f9ac0c7e" class="">Split screen comparison of different maps</p><p id="23d2377e-b56f-80c7-b9b7-ce10f355beac" class="">Expanding data import facilities for broader datasets</p><p id="23d2377e-b56f-805e-bb02-db383fd40d52" class="">Micro level neighbourhood details</p><p id="23d2377e-b56f-8047-8522-d66630565c81" class="">Macro level international regional comparisons</p><p id="23d2377e-b56f-80da-be3d-d812485cd82c" class="">data reduction and index generation through principal components analysis, factor analysis and multiple correspondence analysis</p><p id="23d2377e-b56f-8069-a576-df287cbffa2f" class="">Areal wombling- calculates and visualises statistical strength of the borders between regions based on user selected parameters- Goodwin and Dykes 2008</p><p id="23d2377e-b56f-80d6-b20a-c47e9813c70a" class="">For feedback community leaders and govenment policy makers</p><p id="23d2377e-b56f-804d-8ce5-ea3ff40e97f7" class="">How might we lower the barrier to access for using and understanding multidimensional urban and regional datasets?</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
